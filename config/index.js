@@ -8,22 +8,31 @@ module.exports = {
   dev: {
 
     // Paths
+    env:require('./dev.env'),
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {
-      '/api':{
-        target:'http://localhost:8081',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/api': ''
-        }
-      }
-    },
+    proxyTable: { },
+    context: [ //代理路径
+      '/shopping',
+      '/ugc',
+      '/v1',
+      '/v2',
+      '/v3',
+      '/v4',
+      '/bos',
+      '/member',
+      '/promotion',
+      '/eus',
+      '/payapi',
+      '/admin',
+      '/statis',
+      '/img',
+  ],
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
-    autoOpenBrowser: false,
+    autoOpenBrowser: true,
     errorOverlay: true,
     notifyOnErrors: true,
     poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-

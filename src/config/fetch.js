@@ -1,7 +1,7 @@
 import axios from 'axios'
 axios.defaults.timeout=5000;
-// axios.defaults.baseURL='http://cangdu.org:8001'
-axios.defaults.baseURL='/api'
+axios.defaults.baseURL='http://cangdu.org:8001'
+// axios.defaults.baseURL='/api'
 axios.defaults.headers.post['Content-Type'] = 'application/x-www=form-urlencoded'
 axios.defaults.withCredentials=true;
 
