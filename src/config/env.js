@@ -12,8 +12,8 @@
      baseUrl='http://localhost:8080';
      baseImgPath='http://localhost:8080/img/'
  }else{
-    baseUrl='http://localhost:8080';
-    baseImgPath='http://localhost:8080/img/'
+    baseUrl='http://cangdu.org:8001';
+    baseImgPath='http://cangdu.org:8001/img/'
  }
 
  export {

@@ -4,7 +4,7 @@ Vue.use(Router)
 
 const login = r => require.ensure([],() => r(require('../page/login')),'login');
 const manage = r => require.ensure([],() => r(require('../page/manage')),'manage')
-
+const home= r => require.ensure([],() => r(require('../page/home')),'home')
 
 const routes=[
   {
@@ -16,7 +16,8 @@ const routes=[
     component:manage,
     children:[{
       path:'',
-      
+      component:home,
+      mata:[]
     }]
   }
 ]

@@ -1,8 +1,9 @@
 <template>
     <div class="manage_page fillcontain">
-      <el-row class="tac">         
-            <el-col :span="4">
+      <el-row class="nav_container" style="height:100%;">         
+            <el-col :span="4" style="height:100%;">
                 <el-menu
+                style="height:100%;"
                 :default-active="defaultActive"
                 class="el-menu-vertical-demo"
                 background-color="#00474f"
