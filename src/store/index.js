@@ -1,28 +1,30 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import {getAdminInfo} from '../api/getData'
+import {getCurrentLoginInformations} from '../api/getData'
 Vue.use(Vuex);
 
 const state = {
-   adminInfo:{
-       avator:'default.jpp'
-   }
+    // login:false,
+    userInfo:null //用户信息
 }
 
 const mutations = {
-    saveAdminInfo(state,adminInfo){
-        state.adminInfo=adminInfo
-    }
+     saveUserInfo(state,userInfo){     
+         state.userInfo=userInfo
+     },
+     getUserInfo(state,userInfo){      
+         state.userInfo=userInfo
+     }
+
 }
 
 const actions = {
-    async getAdminData({commit}){
-   
+    async getUserInfo({commit,state}){
         try{
         
-            const res=await getAdminInfo();
-            if(res.status==1){
-                commit('saveAdminInfo',res)
+            let res=await getCurrentLoginInformations(); //seccession
+            if(res.success){
+                commit('getUserInfo',res.result)
             }else{
                 throw new Error(res)
             }

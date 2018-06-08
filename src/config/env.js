@@ -9,8 +9,8 @@
  let baseImgPath;
 
  if(process.env.NODE_ENC == 'development'){
-     baseUrl='http://localhost:8080';
-     baseImgPath='http://localhost:8080/img/'
+     baseUrl='http://localhost:10086';
+     baseImgPath='http://localhost:10086/img/'
  }else{
     baseUrl='http://cangdu.org:8001';
     baseImgPath='http://cangdu.org:8001/img/'

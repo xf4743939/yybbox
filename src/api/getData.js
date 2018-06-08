@@ -1,47 +1,27 @@
 import {get,post} from '../config/fetch'
-
-/**
- * 登陆
- */
-export const login = data => post('/admin/login',data)
-
-/**
- * 退出
- */
-export const signout = () => post('/admin/singout')
-
-/**
- * 获取用户信息
- */
-
- export const getAdminInfo = () => get('/admin/info')
+import api from '../constants/index'
+ /*
+  * test 易又宝网站接口
+  */
+ export const getTraders = data => post('/api/services/app/brokerCompanyAccountService/GetTraderForProfitSortList',data);
 
  /*
-  *用户注册量 
+  *首页的轮播图 
   */
- export const userCount = data => get('/statis/user/' + data + '/count');
+ export const getSwipers = data => post(api.getArticleListByPageFilter,data)
 
- /*
-  *某天的订单量 
-  */
- export const orderCount = data => get('/statis/order/' +data+ '/count');
+// 国内国际收益榜
+export const getTraderForProfitSortList = data => post(api.getTraderForProfitSortList,data)
 
- /*
-  * 某一天管理员注册量 
-  */
- export const adminDayCount = data => get('/statis/admin/' + data + '/count');
+//获取token
 
- /*
-  *管理员数量 
-  */
- export const adminCount = () => get('/admin/count')
+export const getToken= data => post(api.getToken,data);
 
- /*
-  *获取 用户数量
-  */
- export const getUserCount = data => get('/v1/users/count',data);
+//获取登陆信息
+export const  getCurrentLoginInformations= () => post(api.getCurrentLoginInformations)
 
- /*
-  *获取订单数量 
-  */
- export const getOrderCount = data => get('/bos/orders/count',data);
+//根据账号类型获取账户信息
+export const getByUserIdAndAccountTypeFC= data => post(api.getByUserIdAndAccountTypeFC,data)
+
+//微信支付生成二维码
+export const createCode= data => post(api.createCode + data)
