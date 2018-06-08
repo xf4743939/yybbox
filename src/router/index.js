@@ -18,6 +18,12 @@ const drawing = r => require.ensure([],() => r(require('../page/user/subWallet/d
 
 const prepaid = r => require.ensure([],() => r(require('../page/user/subWallet/prepaid.vue')),'prepaid'); 
 
+const safe = r => require.ensure([],() => r(require('../page/user/safe.vue')),'safe')
+
+const setting = r => require.ensure([],() => r(require('../page/user/setting.vue')),'setting')
+
+const shareMoney = r => require.ensure([],() => r(require('../page/user/shareMoney.vue')),'shareMoney')
+
 const routes=[
   {
     path:'/',
@@ -54,6 +60,18 @@ const routes=[
             component:detail
           }
         ]     
+      },
+      {
+         path:'safe',
+         component:safe
+      },
+      {
+        path:'setting',
+        component:setting
+      },
+      {
+        path:'shareMoney',
+        component:shareMoney
       }
    ]
   }

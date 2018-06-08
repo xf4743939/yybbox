@@ -55,6 +55,14 @@ export default {
        }else{
           this.user=this.userInfo.user;
        }
+      let url=  this.$route.path.substring(this.$route.path.lastIndexOf("/")+1);
+       if(url.toLowerCase()==="prepaid"){
+          this.active=0;
+       }else if(url.toLowerCase()==="drawing"){
+         this.active=1
+       }else{
+         this.active=2
+      }
     }
 }
 </script>
@@ -62,7 +70,7 @@ export default {
   #moneyDetail {
     width: 1035px;
     float: right;
-    height: 750px;
+    height: 800px;
     overflow: hidden;
     background: #fff;
     margin-top: 20px;
@@ -88,6 +96,7 @@ export default {
                     text-align: center;
                     float: left;
                     span{
+                        font-size: 16px;
                         color: #333;
                         display: inline-block;
                         height: 48px;

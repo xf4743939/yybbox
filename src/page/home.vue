@@ -116,6 +116,7 @@ export default {
         totalNum:0,
         isLoading:true,
         userTraderPofit:[], //交易榜交易者
+        isShow:true,
 
      }
    },
@@ -145,7 +146,7 @@ export default {
             this.swiperSlides=res.result.items;
          }else{  
             
-           message(res);
+           message(_that,res);
          }     
      },
     async showWorldOrHome(index,page){
@@ -166,7 +167,7 @@ export default {
                      _that.totalNum = res.result.totalCount;
                 }else{
                 
-                    message(res);
+                    message(_that,res);
                 }   
      },
      handleCurrentPage(val){

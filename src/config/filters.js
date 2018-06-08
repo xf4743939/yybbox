@@ -2,7 +2,7 @@ import Vue from 'vue'
 
 
 Vue.filter('subStr',function(name,type,end){
-    //type 1 表示姓名 2.表示电子邮箱 3. 证件号码 4.手机号码
+    //type 1 表示姓名 2.表示电子邮箱 3. 证件号码 4.手机号码 5 银行卡
     switch(type) {
      case 1:
        if (name && name.length > 2) {
@@ -24,9 +24,14 @@ Vue.filter('subStr',function(name,type,end){
        return name.substring(0, 2) + "*********" + name.substring(name.length - end);
        }
        break;
+       case 4 :
+       if (name && name.length > 2) {
+         return name.substring(0,3) + "****" + name.substring(name.length - end);
+        }
+        break;
        default:
        if (name && name.length > 2) {
-       return name.substring(0,3) + "****" + name.substring(name.length - end);
+        return "****" + name.substring(name.length - end);
        }
     }
  });

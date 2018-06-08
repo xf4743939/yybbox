@@ -10,25 +10,14 @@ module.exports = {
     // Paths
     env:require('./dev.env'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: './',
+    assetsPublicPath: '/',
     proxyTable: {
     
      },
     context: [ //代理路径
-      '/shopping',
-      '/ugc',
-      '/v1',
-      '/v2',
-      '/v3',
-      '/v4',
-      '/bos',
-      '/member',
-      '/promotion',
-      '/eus',
-      '/payapi',
-      '/admin',
+     
       '/statis',
-      '/img',
+      '/imgages',
   ],
 
     // Various Dev Server settings
@@ -62,7 +51,7 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: './',
+    assetsPublicPath: '/',
 
     /**
      * Source Maps

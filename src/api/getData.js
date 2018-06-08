@@ -25,3 +25,15 @@ export const getByUserIdAndAccountTypeFC= data => post(api.getByUserIdAndAccount
 
 //微信支付生成二维码
 export const createCode= data => post(api.createCode + data)
+
+//得到用户的所有银行卡
+export const getBankCards= data => post(api.getBankCards,data)
+
+//提款到银行卡
+export const moneyCreateFc= data => post(api.moneyCreateFc,data);
+
+//钱包明细 财务条件筛选数据
+export const getAllFC= data => post(api.getAllFC,data)
+
+//转化预付费
+export const conversionFeeMoney= data => post(api.conversionFeeMoney,data)

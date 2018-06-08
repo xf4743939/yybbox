@@ -1,14 +1,14 @@
 <template>
     <el-col :span="3"  class="menu_container">
-         <div class="user_info">
-              <img class="avator" src="../../images/default/50x50.png">
+         <div class="user_info" v-if="user">
+              <img class="avator" :src="avatorUrl">
               <span class="nickname">
-                  <img  src="../../images/default/men.png" alt=""> 
-                  <span class="ellipsis">醉里挑灯看剑</span>
+                  <img  :src="avatorUrl" alt=""> 
+                  <span class="ellipsis">{{ user.nickname }}</span>
               </span>
          </div>
          <div class="user_menu">
-            <el-menu default-active='1'>
+            <el-menu :default-active='activeIndex' @select="navClick">
                   <el-menu-item index="1">
                         <i class="iconfont icon-moban"></i>
                         <span slot="title">账户总览</span>
@@ -30,8 +30,53 @@
     </el-col>
 </template>
 <script>
+import {getStore} from '../../config/mUtils'
 export default {
-    
+    data(){
+          return{
+             user:null,
+             avatorUrl:require('../../images/trade/50x50.png'),
+             sexUrl:require('../../images/trade/50x50.png'),
+             activeIndex:'1'
+          }
+    },
+    methods:{
+          navClick(key,keyPath){
+             this.activeIndex=''+ key;
+             if(key==1){
+               this.$router.push({path:'/user/index'})
+             }else if(key==2){
+                this.$router.push({path:'/user/setting'}) 
+             }else if(key==3){
+                 this.$router.push({path:'/user/safe'}) 
+             }else{
+                  this.$router.push({path:'/user/shareMoney'}) 
+             }
+          }
+    },
+    mounted(){
+           if(!this.userInfo){  
+                  let getInfo=JSON.parse(getStore("userInfo"));  
+                    if(getInfo){          
+                        this.user=getInfo.user;
+                        if(this.user && this.user.icon){
+                           this.avatorUrl=this.user.icon
+                        }
+                        if(this.user.sex===0){
+                           this.sexUrl=require('../../images/trade/50x50.png')
+                         }
+                        else if(this.user.sex===1){
+                           this.sexUrl=require('../../images/default/men.png')
+                        }else if(this.user.sex===2){
+                           this.sexUrl=require('../../images/default/women.png')
+                        }
+                      }        
+                }else{
+                       this.user=this.userInfo.user;
+                 }
+                
+    }
+
 }
 </script>
 

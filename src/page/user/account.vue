@@ -8,7 +8,7 @@
                       <div class="wallet_info">
                           <span class="account_name">账户余额</span>
                           <span class="account_num" v-if="user"><span>{{ (user.useMoney + user.activityNoWithdrawMoney + user.activityWithdrawMoney + user.shareMoney + user.followProfitMoney).toFixed(2) }}</span>元</span>                     
-                          <span class="account_detail"><router-link to="/user/wallet">钱包明细</router-link></span>
+                          <span class="account_detail"><router-link to="/user/wallet/detail?type=1">钱包明细</router-link></span>
                       </div>
                    </div>
                    <div class="myMarket">
@@ -345,6 +345,7 @@ export default {
             bindLogo:'', //绑定或者没绑定的图标
             worldOrHoeme:1, //1.表示国际 2.表示国内
             isJoin:'',//图标地址报名未报名
+            isShow:true
 
         }
     },
@@ -397,9 +398,9 @@ export default {
           let res=await getByUserIdAndAccountTypeFC(data);
            if(res.success){
                this.accMoneyInfo=res.result.accMoneyInfo;
-               console.log( this.accMoneyInfo)
+             
            }else{
-              message(res);
+              message(this,res);
            }      
         },
         getImgUrl(item){

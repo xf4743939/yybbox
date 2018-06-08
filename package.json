@@ -1,5 +1,5 @@
 {
-  "name": "ele-project",
+  "name": "yyboxweb",
   "version": "1.0.0",
   "description": "A Vue.js project",
   "author": "",
@@ -81,5 +81,18 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "main": ".postcssrc.js",
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xf4743939/yybbox.git"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xf4743939/yybbox/issues"
+  },
+  "homepage": "https://github.com/xf4743939/yybbox#readme"
 }
