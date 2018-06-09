@@ -684,10 +684,7 @@ export default {
                 }
                 let res= await conversionFeeMoney(data)
                 if(res.success){
-                   message(_that,{},'转化成功','warning')
-                   if(this.isShow){
-                        this.$router.go(0)
-                   }
+                   message(_that,{},'转化成功','success',true)              
                 }else{
                    message(_that,res)
                 }

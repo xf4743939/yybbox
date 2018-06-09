@@ -37,3 +37,15 @@ export const getAllFC= data => post(api.getAllFC,data)
 
 //转化预付费
 export const conversionFeeMoney= data => post(api.conversionFeeMoney,data)
+
+//更新用户基本资料
+export const upDateUser = data => post(api.upDateUser,data)
+
+//上传头像
+export const updateHeadImg= data => post(api.updateHeadImg,data)
+
+//身份实名认证
+export const realNameAuthentication= data => post(api.realNameAuthentication,data)
+
+//得到身份证类型
+export const getCard = data => post(api.getCard,data)

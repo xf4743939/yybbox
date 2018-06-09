@@ -29,6 +29,18 @@ const getAllFC = "/api/services/app/financialRecordService/GetAllFC";
 //转化预付费
 const conversionFeeMoney = "/api/services/app/financialRecordService/ConversionFeeMoney";
 
+//更新用户基本资料
+const upDateUser = "/api/services/app/userService/UpdateUser";
+
+//头像上传
+const updateHeadImg="/api/services/app/userService/UpdateHeadImg"
+
+//身份实名认证
+const realNameAuthentication = "/api/services/app/userService/RealNameAuthentication";
+
+//得到身份证类型
+const getCard = "/api/services/app/cardTypeService/GetAll";
+
 let api={
     getArticleListByPageFilter:getArticleListByPageFilter,
     getTraderForProfitSortList:getTraderForProfitSortList,
@@ -39,7 +51,11 @@ let api={
     getBankCards:getBankCards,
     moneyCreateFc:moneyCreateFc,
     getAllFC:getAllFC,
-    conversionFeeMoney:conversionFeeMoney
+    conversionFeeMoney:conversionFeeMoney,
+    upDateUser:upDateUser,
+    updateHeadImg:updateHeadImg,
+    realNameAuthentication:realNameAuthentication,
+    getCard:getCard
 }
 
 export default api;

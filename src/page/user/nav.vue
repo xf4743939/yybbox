@@ -3,7 +3,7 @@
          <div class="user_info" v-if="user">
               <img class="avator" :src="avatorUrl">
               <span class="nickname">
-                  <img  :src="avatorUrl" alt=""> 
+                  <img  :src="sexUrl" alt=""> 
                   <span class="ellipsis">{{ user.nickname }}</span>
               </span>
          </div>
@@ -52,22 +52,69 @@ export default {
              }else{
                   this.$router.push({path:'/user/shareMoney'}) 
              }
+          },
+          getActiveIndex(){
+                let curUrl=this.$route.path  //全路径
+                let getUrl=this.$route.path.substring(curUrl.lastIndexOf('/')+1); //路径的最后一个
+               
+                switch(getUrl.toLowerCase()){
+                      case 'index':
+                      this.activeIndex='1'
+                      break;
+                      case 'setting':
+                      this.activeIndex='2'
+                      break;
+                      case 'info':
+                      this.activeIndex='2'
+                      break;
+                      case 'avator':
+                      this.activeIndex='2'
+                      break;
+                      case 'safe':
+                      this.activeIndex='3'
+                      break;
+                      case 'oauth':
+                      this.activeIndex='3'
+                      break;
+                      case 'bankcard':
+                      this.activeIndex='3'
+                      break;
+                      case 'phonenumber':
+                      this.activeIndex='3'
+                      break;
+                      case 'email':
+                      this.activeIndex='3'
+                      break;
+                      case 'loginpwd':
+                      this.activeIndex='3'
+                      break;
+                      case 'getmoneypwd':
+                      this.activeIndex='3'
+                      break;
+                      case 'sharemoney':
+                      this.activeIndex='4'
+                      break;
+                      default:
+                      this.activeIndex='1'
+                }
           }
     },
     mounted(){
+          this.getActiveIndex();
            if(!this.userInfo){  
                   let getInfo=JSON.parse(getStore("userInfo"));  
-                    if(getInfo){          
+                    if(getInfo){   
                         this.user=getInfo.user;
                         if(this.user && this.user.icon){
                            this.avatorUrl=this.user.icon
                         }
                         if(this.user.sex===0){
                            this.sexUrl=require('../../images/trade/50x50.png')
-                         }
+                        }
                         else if(this.user.sex===1){
                            this.sexUrl=require('../../images/default/men.png')
                         }else if(this.user.sex===2){
+                           
                            this.sexUrl=require('../../images/default/women.png')
                         }
                       }        
@@ -76,7 +123,6 @@ export default {
                  }
                 
     }
-
 }
 </script>
 

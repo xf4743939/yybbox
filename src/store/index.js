@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import {getCurrentLoginInformations} from '../api/getData'
+import{setStore} from '../config/mUtils.js'
 Vue.use(Vuex);
 
 const state = {
@@ -12,7 +13,7 @@ const mutations = {
      saveUserInfo(state,userInfo){     
          state.userInfo=userInfo
      },
-     getUserInfo(state,userInfo){      
+     getUserInfo(state,userInfo){  
          state.userInfo=userInfo
      }
 
@@ -24,6 +25,7 @@ const actions = {
         
             let res=await getCurrentLoginInformations(); //seccession
             if(res.success){
+                setStore('userInfo',res.result)
                 commit('getUserInfo',res.result)
             }else{
                 throw new Error(res)

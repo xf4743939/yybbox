@@ -24,6 +24,23 @@ const setting = r => require.ensure([],() => r(require('../page/user/setting.vue
 
 const shareMoney = r => require.ensure([],() => r(require('../page/user/shareMoney.vue')),'shareMoney')
 
+const info= r => require.ensure([],() => r(require('../page/user/subSetting/info.vue')),'info')
+
+const avator=r => require.ensure([],() => r(require('../page/user/subSetting/avator.vue')),'avator')
+
+const oauth = r => require.ensure([],() => r(require('../page/user/subSafe/oauth.vue')),'oauth')
+
+const bankCard = r => require.ensure([],() => r(require('../page/user/subSafe/bankCard.vue')),'bankCard')
+
+const getMoneyPwd = r => require.ensure([],() => r(require('../page/user/subSafe/getMoneyPwd.vue')),'getMoneyPwd')
+
+const loginPwd = r => require.ensure([],() => r(require('../page/user/subSafe/loginPwd.vue')),'loginPwd')
+
+const phoneNumber = r => require.ensure([],() => r(require('../page/user/subSafe/phoneNumber.vue')),'phoneNumber')
+
+const email = r => require.ensure([],() => r(require('../page/user/subSafe/email.vue')),'email')
+
+
 const routes=[
   {
     path:'/',
@@ -36,6 +53,7 @@ const routes=[
   {
     path:'/user',
     component:user,
+    meta: { requireAuth:true },  
     children:[
       {
         path:'index',
@@ -63,11 +81,52 @@ const routes=[
       },
       {
          path:'safe',
-         component:safe
+         component:safe,
+         children:[
+           {
+             path:'oauth',
+             component:oauth
+           },
+           {
+              path:'bankCard',
+              component:bankCard
+           },
+           {
+             path:'getMoneyPwd',
+             component:getMoneyPwd
+           },
+           {
+             path:'loginPwd',
+             component:loginPwd
+           },
+           {
+             path:'phoneNumber',
+             component:phoneNumber
+           },
+           {
+              path:'email',
+              component:email
+           }
+         ]
       },
       {
         path:'setting',
-        component:setting
+        component:setting,
+        children:[
+          {
+             path:'',
+             component:info
+          },
+          {
+            path:'info',
+            component:info
+          },
+          {
+            path:'avator',
+            component:avator
+          }
+          
+        ]
       },
       {
         path:'shareMoney',

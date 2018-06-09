@@ -1,4 +1,4 @@
-const  message=function(that,res={},tip='',type='warning'){
+const  message=function(that,res={},tip='',type='warning',fresh=false){
   
     if(Object.keys(res).length){
         that.$message({      
@@ -8,6 +8,9 @@ const  message=function(that,res={},tip='',type='warning'){
             center:true,
             onClose:function(){
               that.isShow=true;
+              if(fresh){
+                  that.$router.go(0)
+              }
             }
         })    
     }else{
@@ -18,6 +21,9 @@ const  message=function(that,res={},tip='',type='warning'){
             center:true,
             onClose:function(){
                 that.isShow=true;
+                if(fresh){
+                    that.$router.go(0)
+                }
               }
         })  
     }
