@@ -118,7 +118,7 @@ export default {
        }else{
           this.user=this.userInfo.user;
        }
-       this.getBankCards({})
+       this.getBankCards()
     },
     methods:{
             focus(event){         
@@ -135,9 +135,9 @@ export default {
                     event.target.type="password"
                 }  
             },
-            async getBankCards(data) {
+            async getBankCards() {
                 const _that = this; 
-                let res= await getBankCards(data);
+                let res= await getBankCards();
            
                 if(res.success){
                    this.bankCards=res.result 

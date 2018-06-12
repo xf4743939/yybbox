@@ -324,7 +324,21 @@
                             </div>
                        
                    </div>
-               </el-col>
+                   <div class="trader_wrap">
+                         <h4 class="title">
+                            <span class="line"></span>
+                            <span>交易详情</span>
+                        </h4>
+                        <el-tabs v-model="tradeActive" @tab-click="tradeNav" class="trade_navs">
+                            <el-tab-pane label="业绩" name="1">业绩</el-tab-pane>
+                            <el-tab-pane label="策略" name="2">策略</el-tab-pane>
+                            <el-tab-pane label="跟投" name="3">
+                                <follow-table :accountObj="accountObj"></follow-table>
+                            </el-tab-pane>
+                            <el-tab-pane label="订单" name="4">订单</el-tab-pane>
+                        </el-tabs>
+                   </div>
+        </el-col>
 </template>
 <script>
 import {getStore} from '../../config/mUtils'
@@ -332,11 +346,12 @@ import{mapState,mapActions} from 'vuex'
 import {getByUserIdAndAccountTypeFC} from '../../api/getData'
 import message from '../../config/message'
 import moment from 'moment'
-
+import followTable from '../../components/followList'
 export default {
     data(){
         return{
             activeName:'1', //当前的选择账户的class
+            tradeActive:'1',//交易详情导航指示
             user:null,
             isSim:false,//模拟账号
             accMoneyInfo:null,
@@ -345,7 +360,12 @@ export default {
             bindLogo:'', //绑定或者没绑定的图标
             worldOrHoeme:1, //1.表示国际 2.表示国内
             isJoin:'',//图标地址报名未报名
-            isShow:true
+            isShow:true,
+            accountObj:{
+                "accountType":2,
+                "worldOrHome":1,
+                "isTrader":0
+            }  //传给跟投列表
 
         }
     },
@@ -358,8 +378,13 @@ export default {
     computed:{
        ...mapState(['userInfo'])
     },
+    components:{
+        followTable
+    },
     methods:{
-       
+       tradeNav(tab,event){
+
+       },
       async selectAccount(tab,event){
             let mr; 
             let tp;
@@ -394,7 +419,10 @@ export default {
                 "accountType": tp,
                 "worldOrHome": mr
                 };
-              
+              this.accountObj={
+                "accountType": tp,
+                "worldOrHome": mr
+              }
           let res=await getByUserIdAndAccountTypeFC(data);
            if(res.success){
                this.accMoneyInfo=res.result.accMoneyInfo;
@@ -429,6 +457,7 @@ export default {
        if(!this.brokerCompanyAccountsLongInfo){
             this.bindLogo=require('../../images/nogame.png') 
        }else{
+          this.accountObj.isTrader=this.brokerCompanyAccountsLongInfo.accountType==1? 1 : 0
           this.bindLogo=require('../../images/game.png');
           this.getImgUrl(this.brokerCompanyAccountsLongInfo);
        }
@@ -498,6 +527,9 @@ export default {
       }
   }
   .myMarket{
+      .el-tabs__nav{
+          margin-left: 0px;
+      }
       .el-tabs{
           background: #f5f5f5;
           margin-left: 14px;
@@ -647,6 +679,39 @@ export default {
           }
       }
   } 
+  .trader_wrap{
+      background: #fff;
+      width: 1035px;
+      margin-left: 15px;
+      margin-top: 20px;
+      .el-tabs__nav{
+          margin-left: 30px;
+      }
+      .el-tabs__content{
+          padding-left: 30px;
+      }
+      .title{
+          padding-left: 7px;
+          padding-top: 0px;
+      }
+    .line{
+        width: 3px;
+        height: 25px;
+        background: #CA534C;
+        display: inline-block;
+        margin-top: 5px;
+        top:4px;
+    }
+    .el-tabs__item:hover{
+        color: #fc543c;
+    }
+    .el-tabs__item.is-active{
+        color: #fc543c;
+    }
+    .el-tabs__active-bar{
+        background-color: #fc543c;
+    }
+  }
 </style>
 
 

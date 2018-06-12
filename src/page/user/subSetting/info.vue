@@ -82,7 +82,7 @@ export default {
     }
 }
 </script>
-<style lang="less">
+<style lang="less" >
   .user_information{
       background:#fff;
       background: #fff;

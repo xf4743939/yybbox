@@ -2,6 +2,7 @@
  *首页轮播图 
  */
 const getArticleListByPageFilter='/api/services/app/articleService/getArticleListByPageFilter';
+
 // 国际国内收益榜
 const getTraderForProfitSortList='/api/services/app/brokerCompanyAccountService/GetTraderForProfitSortList';
 
@@ -41,6 +42,36 @@ const realNameAuthentication = "/api/services/app/userService/RealNameAuthentica
 //得到身份证类型
 const getCard = "/api/services/app/cardTypeService/GetAll";
 
+//获得所有的开户银行
+const getAllBanks ="/api/services/app/bankService/GetAll";
+
+//解绑银行卡
+const deleteCard ="/api/services/app/bankCardService/Delete?id=";
+
+//设置默认卡
+const setDefaultCard="/api/services/app/bankCardService/SetDefault?id=";
+
+//添加用户银行卡
+const addBankCard = "/api/services/app/bankCardService/Create";
+
+//核对当前手机号是否是当前账户
+const checkPhoneNumIsYourSelf = "/api/services/app/userService/CheckPhoneNumIsYourSelf";
+
+//获取手机验证码（type=1 为修改手机号码第一个验证码  type=4为新手机号验证码）
+const getPhoneCode= "/api/Sms";
+
+//验证经纪商账号是否属于您自己
+const checkBrokerCompanyAccountIsYourSelf = "/api/services/app/brokerCompanyAccountService/CheckBrokerCompanyAccountIsYourSelf";
+
+//更新手机号码
+const upDatePhoneNum = "/api/services/app/userService/UpdatePhoneNum";
+
+//更新登录密码
+const upDateLoginPwd='/api/services/app/userService/UpDatePassword'
+
+//修改提款密码
+const upDatePayPwd = "/api/services/app/userService/UpdatePayPassword";
+
 let api={
     getArticleListByPageFilter:getArticleListByPageFilter,
     getTraderForProfitSortList:getTraderForProfitSortList,
@@ -55,7 +86,17 @@ let api={
     upDateUser:upDateUser,
     updateHeadImg:updateHeadImg,
     realNameAuthentication:realNameAuthentication,
-    getCard:getCard
+    getCard:getCard,
+    getAllBanks:getAllBanks,
+    deleteCard:deleteCard,
+    setDefaultCard:setDefaultCard,
+    addBankCard:addBankCard,
+    checkPhoneNumIsYourSelf:checkPhoneNumIsYourSelf,
+    getPhoneCode:getPhoneCode,
+    checkBrokerCompanyAccountIsYourSelf:checkBrokerCompanyAccountIsYourSelf,
+    upDatePhoneNum:upDatePhoneNum,
+    upDateLoginPwd:upDateLoginPwd,
+    upDatePayPwd:upDatePayPwd
 }
 
 export default api;

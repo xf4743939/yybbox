@@ -1,6 +1,12 @@
 import axios from 'axios'
 import {getStore,removeStore} from './mUtils'
 import router from '../router/index'
+
+axios.defaults.timeout=5000;
+axios.defaults.baseURL="http://localhost:10088";
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+//  axios.defaults.withCredentials=true;
+
 axios.interceptors.request.use(
   config => {
       const token=JSON.parse(getStore('token'))
@@ -35,10 +41,7 @@ axios.interceptors.response.use(
      return Promise.reject(error.response.data);  //返回接口返回的错误信息
    })
 
-axios.defaults.timeout=5000;
-axios.defaults.baseURL="http://localhost:10088";
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-//  axios.defaults.withCredentials=true;
+
 
 export function get(url,params={}){
   return new Promise((resolve,reject) => {

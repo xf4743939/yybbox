@@ -53,17 +53,16 @@ const routes=[
   {
     path:'/user',
     component:user,
-    meta: { requireAuth:true },  
     children:[
       {
         path:'index',
-        component:account,
-        meta: { requireAuth:true },      
+        component:account,   
+        meta: { requireAuth:true },   
       },
       {
         path:'wallet',
         component:wallet,
-        meta: { requireAuth:true },
+        meta: { requireAuth:true },  
         children:[
           {
             path:'prepaid',
@@ -82,7 +81,12 @@ const routes=[
       {
          path:'safe',
          component:safe,
+         meta: { requireAuth:true },  
          children:[
+           {
+             path:'',
+             component:oauth 
+           },
            {
              path:'oauth',
              component:oauth
@@ -112,6 +116,7 @@ const routes=[
       {
         path:'setting',
         component:setting,
+        meta: { requireAuth:true },  
         children:[
           {
              path:'',
@@ -130,7 +135,8 @@ const routes=[
       },
       {
         path:'shareMoney',
-        component:shareMoney
+        component:shareMoney,
+        meta: { requireAuth:true },  
       }
    ]
   }

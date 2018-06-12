@@ -20,20 +20,6 @@ Vue.use(VueForm)
 router.beforeEach((to,from,next) => {
    const token=JSON.parse(getStore('token'));
    const that=this;
-   if(token){
-     getCurrentLoginInformations().then(res=>{
-        if(res.success){
-            store.state.userInfo=res.result;
-        }else{
-          next()
-        }
-     })
-   }else{
-      next({
-        path:'/login',
-        query:{redirect: to.fullPath}
-      })
-   }
    if(to.meta.requireAuth){
       if(token){
         next()
@@ -45,7 +31,7 @@ router.beforeEach((to,from,next) => {
         })
       }
    }else{
-      next()
+      next();
    }
 })
 

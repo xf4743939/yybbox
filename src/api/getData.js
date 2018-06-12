@@ -27,7 +27,7 @@ export const getByUserIdAndAccountTypeFC= data => post(api.getByUserIdAndAccount
 export const createCode= data => post(api.createCode + data)
 
 //得到用户的所有银行卡
-export const getBankCards= data => post(api.getBankCards,data)
+export const getBankCards= () => post(api.getBankCards)
 
 //提款到银行卡
 export const moneyCreateFc= data => post(api.moneyCreateFc,data);
@@ -49,3 +49,33 @@ export const realNameAuthentication= data => post(api.realNameAuthentication,dat
 
 //得到身份证类型
 export const getCard = data => post(api.getCard,data)
+
+//获得所有的开户银行
+export const getAllBanks = () => post(api.getAllBanks)
+
+//解绑银行卡
+export const deleteCard= data => post(api.deleteCard + data)
+
+//设置默认银行卡
+export const setDefaultCard= data => post(api.setDefaultCard + data)
+
+//添加用户银行卡
+export const addBankCard = data => post(api.addBankCard,data)
+
+//核对当前手机号是否是当前账户
+export const checkPhoneNumIsYourSelf = data => post(api.checkPhoneNumIsYourSelf,data)
+
+//获取手机验证码（type=1 为修改手机号码第一个验证码  type=4为新手机号验证码）
+export const getPhoneCode= data => post(api.getPhoneCode + "?phoneNumber=" + data.phoneNumber + "&type=" + data.type)
+
+//验证经纪商账号是否属于您自己
+export const checkBrokerCompanyAccountIsYourSelf= data => post(api.checkBrokerCompanyAccountIsYourSelf,data)
+
+//更新手机号码
+export const upDatePhoneNum= data => post(api.upDatePhoneNum,data)
+
+//更新登录密码
+export const upDateLoginPwd= data => post(api.upDateLoginPwd,data);
+
+//修改提款密码
+export const upDatePayPwd= data => post(api.upDatePayPwd,data);

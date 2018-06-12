@@ -186,8 +186,7 @@ export default {
    },
    mounted(){
      this.getBanner();
-     this.showWorldOrHome(1,1);  
-    
+     this.showWorldOrHome(1,1);    
    }
 }
 </script>
