@@ -70,7 +70,22 @@ const upDatePhoneNum = "/api/services/app/userService/UpdatePhoneNum";
 const upDateLoginPwd='/api/services/app/userService/UpDatePassword'
 
 //修改提款密码
-const upDatePayPwd = "/api/services/app/userService/UpdatePayPassword";
+const upDatePayPwd = "/api/services/app/userService/UpdatePayPassword"
+
+//创建实盘跟投关系
+const followCreate = "/api/services/app/followRelationshipService/Create"
+
+//解除跟投关系
+const unFollowBind = "/api/services/app/followRelationshipService/UnBind"
+
+//根据国内国际获取一个经纪商账号
+const getBrokerCompanyAccountOrNullFC = "/api/services/app/brokerCompanyAccountService/GetBrokerCompanyAccountOrNullFC?worldOrHome="
+
+//交易者详细 //获取策略投资下的交易员列表
+const getTraderList="/api/services/app/brokerCompanyAccountService/GetTraderList"
+
+//获取当前用户的参赛状态
+const currentUserGameStatus="/api/services/app/gameUserService/CurrentUserGameStatus?worldOrHome="
 
 let api={
     getArticleListByPageFilter:getArticleListByPageFilter,
@@ -96,7 +111,12 @@ let api={
     checkBrokerCompanyAccountIsYourSelf:checkBrokerCompanyAccountIsYourSelf,
     upDatePhoneNum:upDatePhoneNum,
     upDateLoginPwd:upDateLoginPwd,
-    upDatePayPwd:upDatePayPwd
+    upDatePayPwd:upDatePayPwd,
+    followCreate:followCreate,
+    unFollowBind:unFollowBind,
+    getBrokerCompanyAccountOrNullFC:getBrokerCompanyAccountOrNullFC,
+    getTraderList:getTraderList,
+    currentUserGameStatus:currentUserGameStatus
 }
 
 export default api;

@@ -9,8 +9,7 @@ import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'element-ui/lib/theme-chalk/index.css'
 import router from './router'
 import store from './store/index'
-import {getStore} from './config/mUtils';
-import {getCurrentLoginInformations} from './api/getData'
+import {getStore} from './config/mUtils'
 import './config/filters'
 Vue.config.productionTip = false
 Vue.use(ElementUI)
@@ -20,6 +19,7 @@ Vue.use(VueForm)
 router.beforeEach((to,from,next) => {
    const token=JSON.parse(getStore('token'));
    const that=this;
+
    if(to.meta.requireAuth){
       if(token){
         next()

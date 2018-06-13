@@ -7,6 +7,8 @@ const getUserInfo=function(that){
         let getInfo=JSON.parse(getStore("userInfo"));  
           if(getInfo){          
             that.user=getInfo.user;
+           }else{
+             that.user=null;
            }        
       }else{
         that.user=that.userInfo.user;

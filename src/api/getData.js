@@ -79,3 +79,18 @@ export const upDateLoginPwd= data => post(api.upDateLoginPwd,data);
 
 //修改提款密码
 export const upDatePayPwd= data => post(api.upDatePayPwd,data);
+
+//创建实盘跟投关系
+export const followCreate= data => post(api.followCreate,data)
+
+//解除跟投关系
+export const unFollowBind= data => post(api.unFollowBind,data)
+
+//根据国内国际获取一个经纪商账号
+export const getBrokerCompanyAccountOrNullFC= data => post(api.getBrokerCompanyAccountOrNullFC + data)
+
+//交易者详细 //获取策略投资下的交易员列表
+export const getTraderList= data => post(api.getTraderList,data)
+
+//获取当前用户的参赛状态
+export const currentUserGameStatus= data => post(api.currentUserGameStatus + data)

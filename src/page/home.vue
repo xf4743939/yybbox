@@ -214,7 +214,7 @@ export default {
       align-items: center;
     }
 .body-main{
-  margin-top: 118px;
+ 
   width: 100%;
   border: 0;
   .piclist{

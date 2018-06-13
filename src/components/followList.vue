@@ -100,8 +100,13 @@ export default {
          this.active=index;
       },
       async getData(status){
+          let data={
+               "hasNickName": 1,
+               "followDirection": 0,
+               "rows":10 
+          }
           if(status==followStatus.following){
-
+              
           }else if(status==followStatus.followed){
 
           }else{

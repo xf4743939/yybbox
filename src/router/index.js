@@ -40,6 +40,9 @@ const phoneNumber = r => require.ensure([],() => r(require('../page/user/subSafe
 
 const email = r => require.ensure([],() => r(require('../page/user/subSafe/email.vue')),'email')
 
+const trader = r => require.ensure([],() => r(require('../page/strategy/index.vue')),'trader')
+
+const tradeDetail = r => require.ensure([],() => r(require('../page/tarderOrFollow/index.vue')),'tradeDetail')
 
 const routes=[
   {
@@ -47,8 +50,16 @@ const routes=[
     component:home
   },
   {
+    path:'/home',
+    component:home
+  },
+  {
     path:'/login',
     component:login
+  },
+  {
+     path:'/tradeDetail/:worldOrHomw/:isTrader',
+     component:tradeDetail
   },
   {
     path:'/user',
@@ -139,6 +150,10 @@ const routes=[
         meta: { requireAuth:true },  
       }
    ]
+  },
+  {
+    path:'/trader',
+    component:trader
   }
 ]
 

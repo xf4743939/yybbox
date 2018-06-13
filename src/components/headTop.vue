@@ -1,5 +1,5 @@
 <template>
-     <div class="header_container">
+     <div class="header_container clear">
     
         <div class="header_top">
             
@@ -61,7 +61,7 @@
                         <router-link to="/">首页</router-link> 
                    </el-menu-item>
                     <el-menu-item v-bind:style="{ 'border-bottom-color':activeIndex==2 ? '#EF5E5D':'' }" v-bind:class="activeIndex==2 ? 'isActive' : '' " index="2">
-                        <router-link to="/Trade/Trader">策略投资</router-link> 
+                        <router-link to="/trader">策略投资</router-link> 
                     </el-menu-item>
                     <el-menu-item v-bind:style="{ 'border-bottom-color':activeIndex==3 ? '#EF5E5D':'' }" v-bind:class="activeIndex==3 ? 'isActive' : '' " index="3">
                         <router-link to="/Trade/Follower">跟投牛人</router-link>
@@ -109,7 +109,6 @@ import {getCurrentLoginInformations} from '../api/getData'
                    var url = window.location.href.substring(window.location.href.lastIndexOf("/") + 1);
                     if (!url) {
                         this.activeIndex = 1;
-
                     } else {
                         if (url.toLowerCase() === 'trader') {
                             this.activeIndex = 2;
@@ -147,12 +146,15 @@ import {getCurrentLoginInformations} from '../api/getData'
         if(token){
           this.initData();
         }else{
-            this.$router.push('/login');
+           this.userInfos=null;
         }
     }
 }
 </script>
 <style lang="less" scoped>
+   .header_container{
+       height: 119px;
+   }
     .header_top{
         background: #f5f5f5;
         height: 40px;
