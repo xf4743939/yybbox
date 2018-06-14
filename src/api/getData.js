@@ -94,3 +94,9 @@ export const getTraderList= data => post(api.getTraderList,data)
 
 //获取当前用户的参赛状态
 export const currentUserGameStatus= data => post(api.currentUserGameStatus + data)
+
+//跟投者详细 (跟投达人)
+export const getTraderForNBList= data => post(api.getTraderForNBList,data)
+
+//获取跟投列表信息
+export const followRelationshipService= data => post(api.followRelationshipService,data)

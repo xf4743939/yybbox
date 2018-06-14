@@ -265,7 +265,7 @@ export default {
       }
     }
     .profit_table {
-       min-height: 700px;
+       min-height: 500px;
        .traderOrfollow {
           font-size: 12px;
         display: inline-block;

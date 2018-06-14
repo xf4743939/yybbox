@@ -1,9 +1,9 @@
 <template>
      <div class="template_container">
           <div class="btn_group">
-                    <a @click="selectFolow(1)" :class="{active_btn:active==1}">正在跟投</a>
-                    <a @click="selectFolow(2)" :class="{active_btn:active==2}">历史跟投</a>
-                    <a @click="selectFolow(3)" :class="{active_btn:active==3}">已付费</a>
+                    <a @click="selectFolow(1)" :class="{active_btn:relationStatus==1}">正在跟投</a>
+                    <a @click="selectFolow(2)" :class="{active_btn:relationStatus==2}">历史跟投</a>
+                    <a @click="selectFolow(3)" :class="{active_btn:relationStatus==3}">已付费</a>
                     <div class="table_list">
                          <el-table
                                 :data="tableData"
@@ -79,16 +79,20 @@
      </div>
 </template>
 <script>
-import {followStatus} from '../constants/enum'
-
+import {followStatus,tableField} from '../constants/enum'
+import {followRelationshipService} from '../api/getData'
+import message from '../config/message'
 export default {
    data(){
        return{
           tableData:[],
-          active:1
+          active:1,
+          isShow:true,
+          tableField:tableField,//表格字段
+          followers:[],
        }
    },
-   props:['accountObj'],
+   props:['followOptions','relationStatus'],
    methods:{
       handleEdit(index, row) {
         console.log(index, row);
@@ -97,30 +101,29 @@ export default {
         console.log(index, row);
       },
       selectFolow(index){
-         this.active=index;
+         this.$emit('handleStatus',index)
+          
       },
-      async getData(status){
-          let data={
-               "hasNickName": 1,
-               "followDirection": 0,
-               "rows":10 
-          }
-          if(status==followStatus.following){
-              
-          }else if(status==followStatus.followed){
-
-          }else{
-
-          }
+      async getData(){
+          debugger
+         let res= await followRelationshipService(this.followOptions);
+         debugger;
+         if(res && res.success){
+              this.followers=res.result;
+         }else{
+             message(this,res)
+         }
       }
    },
    mounted(){
-       console.log(this.accountObj)
+      this.getData()
    }    
 }
 </script>
 <style lang="less">
    .template_container{
+       padding-left: 20px;
+       padding-right: 20px;
        .btn_group{
            .active_btn{
                 color: #fff;

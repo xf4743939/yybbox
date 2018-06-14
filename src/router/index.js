@@ -58,7 +58,7 @@ const routes=[
     component:login
   },
   {
-     path:'/tradeDetail/:worldOrHomw/:isTrader',
+     path:'/tradeDetail/:traderUserId/:worldOrHomw/:isTrader',
      component:tradeDetail
   },
   {

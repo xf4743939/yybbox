@@ -196,8 +196,9 @@
 
             </el-pagination>
         </div>
+
         <!-- 跟投弹窗 -->
-         <el-dialog
+        <el-dialog
                  class="followDialog"
             v-bind:visible.sync="isVisible"          
                    >
@@ -291,7 +292,6 @@ export default {
                 isLoading: true,
                 isShow:true, //message显示
                 isVisible:false,//跟投dialog
-                showMessages: true, //控制提示信息
                 num1: 1, //固定手数值
                 num2: 1,  //百分比
                 activeStyle: 1, //1表示选中固定数量2.表示按比例下单
@@ -439,18 +439,32 @@ export default {
                     _that.activeDrection = 1;
                     _that.num1 = 1;
                     _that.num2 = 1;
-                }else {
-                    if (row.simFollowRelationShip.followCount === 0 && row.simFollowRelationShip.followPercentage!==0) {
-                        _that.activeStyle = 2;
-                        _that.activeDrection = row.simFollowRelationShip.followDirection;
-                        _that.num2 = row.simFollowRelationShip.followPercentage;
-                        _that.num1 = 1;
-                    } else if (row.simFollowRelationShip.followCount !== 0 && row.simFollowRelationShip.followPercentage === 0) {
-                        _that.activeStyle = 1;
-                        _that.activeDrection = row.simFollowRelationShip.followDirection;
-                        _that.num1 = row.simFollowRelationShip.followCount;
-                        _that.num2 = 1;
-                    }                
+                }else if(index===1){
+                    if(row.firmFollow){
+                            if (row.followRelationShip.followCount === 0 && row.followRelationShip.followPercentage!==0) {
+                                _that.activeStyle = 2;
+                                _that.activeDrection = row.followRelationShip.followDirection;
+                                _that.num2 = row.followRelationShip.followPercentage;
+                                _that.num1 = 1;
+                            } else if (row.followRelationShip.followCount !== 0 && row.followRelationShip.followPercentage === 0) {
+                                _that.activeStyle = 1;
+                                _that.activeDrection = row.followRelationShip.followDirection;
+                                _that.num1 = row.followRelationShip.followCount;
+                                _that.num2 = 1;
+                            }             
+                    }              
+                }else if(index===3){
+                      if (row.simFollowRelationShip.followCount === 0 && row.simFollowRelationShip.followPercentage!==0) {
+                            _that.activeStyle = 2;
+                            _that.activeDrection = row.simFollowRelationShip.followDirection;
+                            _that.num2 = row.simFollowRelationShip.followPercentage;
+                            _that.num1 = 1;
+                        } else if (row.simFollowRelationShip.followCount !== 0 && row.simFollowRelationShip.followPercentage === 0) {
+                            _that.activeStyle = 1;
+                            _that.activeDrection = row.simFollowRelationShip.followDirection;
+                            _that.num1 = row.simFollowRelationShip.followCount;
+                            _that.num2 = 1;
+                        }             
                 }
                 _that.clickBtn = index;
                 _that.worldOrHome = row.worldOrHome;
@@ -465,12 +479,13 @@ export default {
                 }else{
                             let res;                         
                             if (row.worldOrHome === 1) {
+                                
                                res = await getBrokerCompanyAccountOrNullFC(1);
      
                             } else {
                                 res= await getBrokerCompanyAccountOrNullFC(2)                            
                             }
-                         
+                           //获取经济商账户，有就让他跟投
                             if(res && res.success){
                                 _that.isVisible = true;
                             }else{
@@ -573,13 +588,14 @@ export default {
                
             },
             goDetail(row){
-                let url=`tradeDetail/${row.worldOrHome}/true`
+              
+                let url=`tradeDetail/${row.id}/${row.worldOrHome}/1`
                 this.$router.push({path:url})
             }
     },
     mounted(){
          this.getUserGameStatus();
-        this.getData(1,sortField.noSort) 
+         this.getData(1,sortField.noSort) 
     }
 }
 </script>

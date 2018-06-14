@@ -61,3 +61,10 @@ Vue.filter('subStr',function(name,type,end){
     }
     return s;
  })
+
+ Vue.filter('toPercent',function(x){
+     if(!x) return ;
+     let str=Number(x*100).toFixed(2)
+     str+='%'
+     return str;
+ })

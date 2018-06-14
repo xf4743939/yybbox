@@ -84,8 +84,14 @@ const getBrokerCompanyAccountOrNullFC = "/api/services/app/brokerCompanyAccountS
 //交易者详细 //获取策略投资下的交易员列表
 const getTraderList="/api/services/app/brokerCompanyAccountService/GetTraderList"
 
+//跟投者详细 (跟投达人)
+const getTraderForNBList="/api/services/app/brokerCompanyAccountService/GetTraderForNBList"
+
 //获取当前用户的参赛状态
 const currentUserGameStatus="/api/services/app/gameUserService/CurrentUserGameStatus?worldOrHome="
+
+//获取跟投列表信息
+const followRelationshipService="/api/services/app/followRelationshipService/GetALLFC";
 
 let api={
     getArticleListByPageFilter:getArticleListByPageFilter,
@@ -116,7 +122,9 @@ let api={
     unFollowBind:unFollowBind,
     getBrokerCompanyAccountOrNullFC:getBrokerCompanyAccountOrNullFC,
     getTraderList:getTraderList,
-    currentUserGameStatus:currentUserGameStatus
+    currentUserGameStatus:currentUserGameStatus,
+    getTraderForNBList:getTraderForNBList,
+    followRelationshipService:followRelationshipService
 }
 
 export default api;

@@ -33,5 +33,34 @@ export const sortDirection={
     asc:2 //从低到高
 }
 
+//判断跟投按钮状态
+export const btnStatus={
+    editFirm:1, //编辑实盘
+    FirmFollow:2, //实盘跟投
+    editSim:3, //编辑模拟
+    simFollow:4 //模拟跟投
+}
+
+//交易者正在跟投字段
+const traderFollowing=['用户','跟随类型','比例/手数','跟投方向','跟投收益','首次跟随时间','年费','跟投总资金']
+
+//交易者历史跟投字段
+const traderFollowed=['用户','跟随类型','比例/手数','跟投方向','跟投收益','首次跟随时间','结束跟随时间','年费','跟投总资金']
+
+//组合正在跟投
+const groupFollowing=['用户','跟随类型','份额','跟投收益','首次跟随时间','年费','跟投总资金']
+
+//组合历史跟投
+const groupFollowed=['用户','跟随类型','份额','跟投收益','首次跟随时间','结束跟随时间','年费','跟投总资金']
+
+//跟投列表显示字段
+export const tableField={
+    traderFollowing:traderFollowing,
+    traderFollowed:traderFollowed,
+    groupFollowing:groupFollowing,
+    groupFollowed:groupFollowed
+}
+
+
 
 export const prdUrl='http://follow.yybbox.com';
