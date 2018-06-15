@@ -14,6 +14,12 @@ export const followStatus={
     vipFollow:3 //表示已付费
 }
 
+export const orderStatus={
+    account:1, //持仓单
+    trader:2, //成交单
+    delegate:3 //挂单
+}
+
 //交易员(跟随者)搜索排序字段
 export const sortField={
    noSort:0, //默认排序
@@ -53,12 +59,24 @@ const groupFollowing=['用户','跟随类型','份额','跟投收益','首次跟
 //组合历史跟投
 const groupFollowed=['用户','跟随类型','份额','跟投收益','首次跟随时间','结束跟随时间','年费','跟投总资金']
 
-//跟投列表显示字段
+//成交单
+const account=['合约','持仓方向','总持仓','今仓','昨仓','持仓均价','占用保证金','币种','持仓盈亏']
+
+//成交单
+const trader=['成交编号','合约','持仓方向','成交价格','成交手数','成交时间','报单编号']
+
+//委托单
+const delegate=['报单编号','合约','持仓方向','挂单状态','报单价格','报单手数','成交手数','未成交手数','报单时间']
+
+//列表显示字段
 export const tableField={
     traderFollowing:traderFollowing,
     traderFollowed:traderFollowed,
     groupFollowing:groupFollowing,
-    groupFollowed:groupFollowed
+    groupFollowed:groupFollowed,
+    account:account,
+    trader:trader,
+    delegate:delegate
 }
 
 

@@ -44,6 +44,15 @@ Vue.filter('subStr',function(name,type,end){
      return date1 + " " +date3
    
  });
+
+ Vue.filter('formatDate',function(value){
+    if(!value) return '';   
+     let date1=value.split('T')[0]  
+     let date2=value.split('T')[1]
+     return date1.replace(/(\/)/g,'-');
+ });
+
+
  Vue.filter('toDecimal',function(x){
     let f=parseFloat(x);
     if(isNaN(x)){

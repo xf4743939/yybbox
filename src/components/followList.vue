@@ -1,71 +1,75 @@
 <template>
      <div class="template_container">
           <div class="btn_group">
-                    <a @click="selectFolow(1)" :class="{active_btn:relationStatus==1}">正在跟投</a>
-                    <a @click="selectFolow(2)" :class="{active_btn:relationStatus==2}">历史跟投</a>
-                    <a @click="selectFolow(3)" :class="{active_btn:relationStatus==3}">已付费</a>
-                    <div class="table_list">
+                    <a @click="selectFolow(followStatus.following)" :class="{active_btn:active==followStatus.following}">正在被跟投</a>
+                    <a @click="selectFolow(followStatus.followed)" :class="{active_btn:active==followStatus.followed}">历史被跟投</a>
+                    <a @click="selectFolow(followStatus.vipFollow)" :class="{active_btn:active==followStatus.vipFollow}">已付费</a>
+                    <div class="table_list" v-if="followers">
                          <el-table
-                                :data="tableData"
+                                :data="followers"
                                 stripe
                                 style="width: 100%">
                                     <el-table-column    
-                                    label="交易者"
+                                    :label="tableField[0]"
                                     >   
                                         <template slot-scope="scope">     
-                                        <span>组合</span>
+                                        <span>{{ scope.row.nickName}}</span>
                                         </template>
                                     </el-table-column>
                                     <el-table-column    
-                                    label="市场类型"
+                                    :label="tableField[1]"
                                     >   
                                         <template slot-scope="scope">     
-                                        <span>国际市场</span>
+                                        <span>{{  scope.row.followType==2 ? '实盘跟随中' : '模拟跟随中'  }}</span>
                                         </template>
                                     </el-table-column>
                                     <el-table-column    
-                                    label="跟随类型"
+                                    :label="tableField[2]"
                                     >   
                                         <template slot-scope="scope">     
-                                        <span>策略组合</span>
+                                        <span v-if="scope.row.followCount">{{ scope.row.followCount }}手</span>
+                                        <span v-if="scope.row.followPercentage">{{ scope.row.followPercentage }}.00倍</span>
                                         </template>
                                     </el-table-column>
                                     <el-table-column    
-                                    label="份额"
+                                    :label="tableField[3]"
                                     >   
                                         <template slot-scope="scope">     
-                                        <span>2</span>
+                                        <span>{{ scope.row.followDirection==1 ? '多' : '空' }}</span>
                                         </template>
                                     </el-table-column>
                                     <el-table-column    
-                                    label="比例/手数"
+                                    :label="tableField[4]"
                                     >   
                                         <template slot-scope="scope">     
-                                        <span>--</span>
+                                        <span v-if="!scope.row.followProfit">0</span>
+                                        <span v-else>{{ scope.row.followProfit }}</span>
                                         </template>
                                     </el-table-column>
                                     <el-table-column    
-                                    label="跟投方向"
+                                    :label="tableField[5]"
                                     >   
                                         <template slot-scope="scope">     
-                                        <span>多</span>
+                                        <span>{{ scope.row.creationTime | formatDate}}</span>
                                         </template>
                                     </el-table-column>
                                     <el-table-column    
-                                    label="跟投收益"
+                                    :label="tableField[6]"
                                     >   
                                         <template slot-scope="scope">     
-                                        <span>4875港币</span>
+                                        <span>100</span>
                                         </template>
                                     </el-table-column>
                                     <el-table-column    
-                                    label="首次跟随时间"
+                                    :label="tableField[7]"
                                     >   
                                         <template slot-scope="scope">     
-                                        <span>2018/05/21</span>
+                                        <span v-if="!scope.row.lastModificationTime">未变更</span>
+                                        <span v-else>变更</span>
                                         </template>
                                     </el-table-column>
-                                    <el-table-column    
+                                    <el-table-column
+                                    v-if="!isTrader"    
                                     label="跟投操作"
                                     >   
                                         <template slot-scope="scope">     
@@ -82,17 +86,25 @@
 import {followStatus,tableField} from '../constants/enum'
 import {followRelationshipService} from '../api/getData'
 import message from '../config/message'
+import moment from 'moment'
 export default {
    data(){
        return{
           tableData:[],
           active:1,
           isShow:true,
-          tableField:tableField,//表格字段
+          followStatus:followStatus,
+          tableField:[],//表格字段
           followers:[],
+          copyFollowers:[]
        }
    },
-   props:['followOptions','relationStatus'],
+   created(){
+       this.followers=this.userInfoForTrader.followerList
+       this.copyFollowers=this.userInfoForTrader.followerList
+
+   },
+   props:['userInfoForTrader','isTrader'],
    methods:{
       handleEdit(index, row) {
         console.log(index, row);
@@ -101,22 +113,20 @@ export default {
         console.log(index, row);
       },
       selectFolow(index){
-         this.$emit('handleStatus',index)
-          
+        this.active=index;
+        if(index==this.followStatus.following){
+           this.followers=this.copyFollowers.filter(x=>x.relationshipStatus>0)      
+        }else if(index==this.followStatus.followed){
+           this.followers=this.copyFollowers.filter(x=>x.relationshipStatus==0) 
+        }else{
+
+        }
       },
-      async getData(){
-          debugger
-         let res= await followRelationshipService(this.followOptions);
-         debugger;
-         if(res && res.success){
-              this.followers=res.result;
-         }else{
-             message(this,res)
-         }
-      }
+   
    },
    mounted(){
-      this.getData()
+       this.tableField=tableField.traderFollowing;
+       
    }    
 }
 </script>

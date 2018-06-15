@@ -77,9 +77,11 @@
                 <el-tab-pane label="业绩" name="1">业绩</el-tab-pane>
                 <el-tab-pane label="策略" name="2">策略</el-tab-pane>
                 <el-tab-pane label="跟投" name="3">
-                   <follow-list v-if="isShowFollowTable" :followOptions="followOptions" :relationStatus="relationStatus" v-on:handleStatus="handleStatus" ></follow-list>
+                   <follow-list v-if="isShowFollowTable" :isTrader="isTrader" :userInfoForTrader="userInfoForTrader" ></follow-list>
                 </el-tab-pane>
-                <el-tab-pane label="订单" name="4">订单</el-tab-pane>
+                <el-tab-pane label="订单" name="4">
+                    <order-list v-if="showOrderTable" :worldOrHome="this.modalInfo.worldOrHome" :userInfoForTrader="userInfoForTrader" ></order-list>
+                </el-tab-pane>
             </el-tabs>
         </div>
     </section>
@@ -97,7 +99,7 @@
  import { btnStatus} from '../../constants/enum'
  import followModal from '../../components/followModal'
  import followList from '../../components/followList'
- 
+ import orderList from '../../components/orderList'
 export default {
     data(){
         return{
@@ -119,6 +121,8 @@ export default {
             followOptions:{
                //正在跟投历史跟投的参数
             }, 
+            worldOrHome:1,
+            showOrderTable:false, //显示订单列表
             isShowFollowTable:false, //显示跟投列表
             relationStatus:1, //1.表示正在跟投 2.表示历史跟投   
             userInfoForTrader:null,  //交易者或跟投者的个人信息
@@ -134,7 +138,8 @@ export default {
       headTop,
       footBom,
       followModal,
-      followList
+      followList,
+      orderList
     },
     created(){
        getUserInfo(this);
@@ -151,25 +156,25 @@ export default {
             this.getTraderInfo();
        },
        //判断正在跟投历史跟投按钮
-       handleStatus(index){
-          this.relationStatus=index;
-          if(index==1){
-             this.followOptions.followRelationshipStatus=1
-          }else if(index==2){
-             this.followOptions.followRelationshipStatus=0
-          }
-       },
-      getFollowOptions(){
-          let arrUrl=this.$route.path.split('/');
-          this.followOptions.worldOrHome=Number(arrUrl[3]);
-          this.followOptions.isTrader=Number(arrUrl[4]);
-          this.followOptions.hasNickName=1;
-          this.followOptions.followDirection=0;
-          this.followOptions.followType=2; //表示实盘
-          this.followOptions.rows=10;
-          this.followOptions.traderUserId=Number(arrUrl[2]) //交易员id
-          this.followOptions.followRelationshipStatus=this.relationStatus  //1.表示正在跟投 0表示历史跟投
-      },
+    //    handleStatus(index){
+    //       this.relationStatus=index;
+    //       if(index==1){
+    //          this.followOptions.followRelationshipStatus=1
+    //       }else if(index==2){
+    //          this.followOptions.followRelationshipStatus=0
+    //       }
+    //    },
+    //   getFollowOptions(){
+    //       let arrUrl=this.$route.path.split('/');
+    //       this.followOptions.worldOrHome=Number(arrUrl[3]);
+    //       this.followOptions.isTrader=Number(arrUrl[4]);
+    //       this.followOptions.hasNickName=1;
+    //       this.followOptions.followDirection=0;
+    //       this.followOptions.followType=2; //表示实盘
+    //       this.followOptions.rows=10;
+    //       this.followOptions.traderUserId=Number(arrUrl[2]) //交易员id
+    //       this.followOptions.followRelationshipStatus=this.relationStatus  //1.表示正在跟投 0表示历史跟投
+    //   },
       async getTraderInfo(){
             const _that=this
             let arrUrl=this.$route.path.split('/');
@@ -296,20 +301,17 @@ export default {
                
         },
     tradeNav(tab,event){
-        debugger;
+     
            switch(parseInt(tab.name)){
                case 1:
                break;
                case 2: 
                break;
                case 3:
-               debugger;
-                this.isShowFollowTable=true;
-                if( this.isShowFollowTable){
-                   this.getFollowOptions();
-                }        
+                this.isShowFollowTable=true;       
                break;
                default:
+               this.showOrderTable=true;
 
            }
            console.log(tab,event)
