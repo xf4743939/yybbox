@@ -4,7 +4,7 @@
                     <a @click="selectFolow(followStatus.following)" :class="{active_btn:active==followStatus.following}">正在被跟投</a>
                     <a @click="selectFolow(followStatus.followed)" :class="{active_btn:active==followStatus.followed}">历史被跟投</a>
                     <a @click="selectFolow(followStatus.vipFollow)" :class="{active_btn:active==followStatus.vipFollow}">已付费</a>
-                    <div class="table_list" v-if="followers">
+                    <div class="table_list" v-if="followers && isTrader==1" >
                          <el-table
                                 :data="followers"
                                 stripe
@@ -79,6 +79,67 @@
                                     </el-table-column>
                         </el-table>
                     </div>
+                    <div class="table_list" v-if="followers && isTrader==0" >
+                         <el-table
+                                :data="followers"
+                                stripe
+                                style="width: 100%">
+                                    <el-table-column    
+                                    :label="tableField[0]"
+                                    >   
+                                        <template slot-scope="scope">     
+                                        <span>{{ scope.row.nickName}}</span>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column    
+                                    :label="tableField[1]"
+                                    >   
+                                        <template slot-scope="scope">     
+                                        <span>{{  scope.row.followType==2 ? '实盘跟随中' : '模拟跟随中'  }}</span>
+                                        </template>
+                                    </el-table-column>
+                                       <el-table-column    
+                                    :label="tableField[2]"
+                                    >   
+                                        <template slot-scope="scope">     
+                                      
+                                        <span>2</span>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column    
+                                    :label="tableField[3]"
+                                    >   
+                                        <template slot-scope="scope"> 
+                                            <span>2</span>    
+                                        <span v-if="scope.row.followCount">{{ scope.row.followCount }}手</span>
+                                        <span v-if="scope.row.followPercentage">{{ scope.row.followPercentage/100 }}.00倍</span>
+                                        </template>
+                                    </el-table-column>                   
+                                    <el-table-column    
+                                    :label="tableField[4]"
+                                    >   
+                                        <template slot-scope="scope">     
+                                        <span>{{ scope.row.followDirection==1 ? '多' : '空' }}</span>
+                                        </template>
+                                    </el-table-column>
+                                      <el-table-column    
+                                    :label="tableField[5]"
+                                    >   
+                                        <template slot-scope="scope">     
+                                        <span v-if="!scope.row.followProfit">0</span>
+                                        <span v-else>{{ scope.row.followProfit }}</span>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column    
+                                    :label="tableField[6]"
+                                    >   
+                                        <template slot-scope="scope">     
+                                        <span>{{ scope.row.creationTime | formatDate}}</span>
+                                        </template>
+                                    </el-table-column>
+                                    
+                        </el-table>
+                    </div>
           </div>
      </div>
 </template>
@@ -96,11 +157,11 @@ export default {
           followStatus:followStatus,
           tableField:[],//表格字段
           followers:[],
-          copyFollowers:[]
        }
    },
    created(){
        this.followers=this.userInfoForTrader.followerList
+  
        this.copyFollowers=this.userInfoForTrader.followerList
 
    },
@@ -117,16 +178,21 @@ export default {
         if(index==this.followStatus.following){
            this.followers=this.copyFollowers.filter(x=>x.relationshipStatus>0)      
         }else if(index==this.followStatus.followed){
+         
            this.followers=this.copyFollowers.filter(x=>x.relationshipStatus==0) 
         }else{
 
         }
       },
    
+   
    },
    mounted(){
-       this.tableField=tableField.traderFollowing;
-       
+       if(this.isTrader){
+          this.tableField=tableField.traderFollowing
+       }else{
+           this.tableField=tableField.followerFollowing
+       }
    }    
 }
 </script>

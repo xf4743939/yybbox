@@ -93,6 +93,24 @@ const currentUserGameStatus="/api/services/app/gameUserService/CurrentUserGameSt
 //获取跟投列表信息
 const followRelationshipService="/api/services/app/followRelationshipService/GetALLFC";
 
+//获取全部国际合约
+const getAllWorldInstrument="/api/services/app/baseInstrumentService/GetAll"
+
+//获取过不国内合约
+const getAllHomeInstrument="/api/services/app/baseHomeInstrumentService/GetAll"
+
+//获取国际商品货物信息
+const getWordProducts="/api/services/app/baseProductService/GetAll"
+
+//获取国内所有商品
+const getAllHomeProduct='/api/services/app/baseHomeProductService/GetAll'
+
+//通过用户id获取国际挂单
+const getDelegateOrder='/api/services/app/todayBrokerCompanyAccountDelegateOrderService/GetDelegateOrder?userId='
+
+//通过用户id获取国际模拟挂单
+const getHomeDelegateOrder='api/services/app/todayHomeBrokerCompanyAccountDelegateOrderService/GetDelegateOrder?userId='
+
 let api={
     getArticleListByPageFilter:getArticleListByPageFilter,
     getTraderForProfitSortList:getTraderForProfitSortList,
@@ -124,7 +142,13 @@ let api={
     getTraderList:getTraderList,
     currentUserGameStatus:currentUserGameStatus,
     getTraderForNBList:getTraderForNBList,
-    followRelationshipService:followRelationshipService
+    followRelationshipService:followRelationshipService,
+    getAllWorldInstrument:getAllWorldInstrument,
+    getAllHomeInstrument:getAllHomeInstrument,
+    getWordProducts:getWordProducts,
+    getAllHomeProduct:getAllHomeProduct,
+    getDelegateOrder:getDelegateOrder,
+    getHomeDelegateOrder:getHomeDelegateOrder
 }
 
 export default api;

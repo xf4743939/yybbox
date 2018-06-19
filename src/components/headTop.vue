@@ -64,10 +64,10 @@
                         <router-link to="/trader">策略投资</router-link> 
                     </el-menu-item>
                     <el-menu-item v-bind:style="{ 'border-bottom-color':activeIndex==3 ? '#EF5E5D':'' }" v-bind:class="activeIndex==3 ? 'isActive' : '' " index="3">
-                        <router-link to="/Trade/Follower">跟投牛人</router-link>
+                        <router-link to="/follower">跟投牛人</router-link>
                     </el-menu-item>
                     <el-menu-item index="4" v-bind:style="{ 'border-bottom-color':activeIndex==4 ? '#EF5E5D':'' }" v-bind:class="activeIndex==4 ? 'isActive' : '' ">
-                           <router-link to="/game/game">模拟大赛</router-link>                  
+                           <router-link to="/game">模拟大赛</router-link>                  
                     </el-menu-item>
                     <el-menu-item index="5" v-bind:style="{ 'border-bottom-color':activeIndex==5 ? '#EF5E5D':'' }"  v-bind:class="activeIndex==5 ? 'isActive' : '' ">                
                             <router-link to="/user/index">个人中心</router-link>

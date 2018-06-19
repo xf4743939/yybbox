@@ -44,6 +44,10 @@ const trader = r => require.ensure([],() => r(require('../page/strategy/index.vu
 
 const tradeDetail = r => require.ensure([],() => r(require('../page/tarderOrFollow/index.vue')),'tradeDetail')
 
+const follower= r => require.ensure([],() => r(require('../page/follow/index.vue')),'follower')
+
+const game= r => require.ensure([],() => r(require('../page/game/index.vue')),'game')
+
 const routes=[
   {
     path:'/',
@@ -154,6 +158,14 @@ const routes=[
   {
     path:'/trader',
     component:trader
+  },
+  {
+     path:'/follower',
+     component:follower
+  },
+  {
+    path:'/game',
+    component:game   
   }
 ]
 

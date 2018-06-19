@@ -1,4 +1,4 @@
-import {get,post} from '../config/fetch'
+import {spread,all,post,postList} from '../config/fetch'
 import api from '../constants/index'
  /*
   * test 易又宝网站接口
@@ -100,3 +100,27 @@ export const getTraderForNBList= data => post(api.getTraderForNBList,data)
 
 //获取跟投列表信息
 export const followRelationshipService= data => post(api.followRelationshipService,data)
+
+//获取全部国际合约
+export const getAllWorldInstrument= () => postList(api.getAllWorldInstrument)
+
+//获取全部国内合约
+export const getAllHomeInstrument= () => postList(api.getAllHomeInstrument)
+
+//获取国际全部商品
+export const getWordProducts= () => postList(api.getWordProducts)
+
+//获取国内全部商品
+export const getAllHomeProduct= () => postList(api.getAllHomeProduct)
+
+//获取国际国内货币和商品
+export const getAllInstrumentAndproduct= data => all(data)
+
+//分发请求对象
+export const spreads = data => spread(data)
+
+//通过用户id获取国际实盘挂单
+export const getDelegateOrder= data => post(api.getDelegateOrder + data)
+
+//通过用户id获取国内实盘挂单
+export const getHomeDelegateOrder= data => post(api.getHomeDelegateOrder + data)

@@ -59,7 +59,13 @@ const groupFollowing=['用户','跟随类型','份额','跟投收益','首次跟
 //组合历史跟投
 const groupFollowed=['用户','跟随类型','份额','跟投收益','首次跟随时间','结束跟随时间','年费','跟投总资金']
 
-//成交单
+//跟投者正在跟投字段
+const followerFollowing=['交易者','跟随类型','份额','比例/手数','跟投方向','跟投收益','首次跟随时间']
+
+//跟投者历史跟投
+const followerFollowed=['交易者','跟随类型','份额','比例/手数','跟投方向','跟投收益','首次跟随时间','结束跟随时间']
+
+//持仓单
 const account=['合约','持仓方向','总持仓','今仓','昨仓','持仓均价','占用保证金','币种','持仓盈亏']
 
 //成交单
@@ -76,7 +82,9 @@ export const tableField={
     groupFollowed:groupFollowed,
     account:account,
     trader:trader,
-    delegate:delegate
+    delegate:delegate,
+    followerFollowing,
+    followerFollowed
 }
 
 

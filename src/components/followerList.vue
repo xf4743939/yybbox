@@ -1,7 +1,7 @@
 <template>
     <div class="traderMain">
         <div class="trader_content">
-            <h3>策略组合/交易员</h3>
+            <h3>跟投牛人排行榜</h3>
             <div class="trade_tips">
                 <el-tabs type="border-card" v-model="activeName" v-on:tab-click="handleClick">
                     <el-tab-pane label="精选组合" name='1'>
@@ -99,7 +99,7 @@
             </div>
         </div>
         <div class="profit_table">
-            <el-table v-bind:data="tarders"
+            <el-table v-bind:data="followers"
                       stripe
                       v-on:sort-change="sortChange"
                       style="width: 100%"
@@ -108,7 +108,7 @@
                       element-loading-spinner="el-icon-loading"
                       element-loading-background="rgba(0, 0, 0, 0.7)">
                 <el-table-column label="基本信息"
-                                 width="180">
+                              >
                     <template slot-scope="scope" class="clear">
                         <a style="display:inline-block;cursor:pointer" @click="goDetail(scope.row)" class="clear left">
                             <img v-bind:src="scope.row.icon!=null ? iconUrl + scope.row.icon : defaultUrl "/>
@@ -122,7 +122,7 @@
                 <el-table-column
                     label="净值"
                     sortable='custom'
-                    width="130">
+                 >
                 </el-table-column>
                 <el-table-column prop="oneUserInfo.totalPlusProfitQty"
                                  sortable='custom'
@@ -132,58 +132,36 @@
 
                 <el-table-column label="交易胜率"
                                   sortable='custom'                          
-                                 width="100">
+                               >
                     <template slot-scope="scope">
                         <span 
                         v-if="(scope.row.oneUserInfo.totalPlusProfitQty + scope.row.oneUserInfo.totalMinusProfitQty)">
-                        {{ (scope.row.oneUserInfo.totalPlusProfitQty/(scope.row.oneUserInfo.totalPlusProfitQty + scope.row.oneUserInfo.totalMinusProfitQty)) | toDecimal }}</span>
-                        <span v-else>{{ (scope.row.oneUserInfo.totalPlusProfitQty/1) | toDecimal }}</span>
+                        {{ (scope.row.oneUserInfo.totalPlusProfitQty/(scope.row.oneUserInfo.totalPlusProfitQty + scope.row.oneUserInfo.totalMinusProfitQty)) | toPercent }}</span>
+                        <span v-else>{{ (scope.row.oneUserInfo.totalPlusProfitQty/1) | toPercent }}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
                     sortable='custom'
-                    width="130"
+                  
                     label="收益回撤比">
                     <template slot-scope="scope">
-                        <span>{{ scope.row.oneUserInfo.sortPercent | toDecimal }}</span>
+                        <span>{{ scope.row.oneUserInfo.sortPercent.toFixed(2) + '%'  }}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
                     sortable='custom'
-                    label="最小跟投资金">
-                </el-table-column>
-                <el-table-column
-                    sortable='custom'
-                    width="110"
+                
                     label="跟投人数">
                     <template slot-scope="scope">
                         <span>{{ scope.row.followPeopleForFrim + scope.row.followPeopleForSim }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="weekNum"
-                                 label="剩余份额/总份额">
+                <el-table-column label="走势图">
+                     <template slot-scope="scope">
+                        <span style="display:inline-block;height:100%;width:100%" :id="scope.row.i">12</span>
+                    </template>    
                 </el-table-column>
-                <el-table-column
-                    label="跟头操作">
-                    <template slot-scope="scope">
-                        <el-button v-if="scope.row.firmFollow" size="mini"
-                                   style="padding: 3px 15px;"
-                                   type="danger"
-                                   v-on:click="handleFirm(1 ,true,scope.row)">编辑实盘</el-button>
-                        <el-button v-else size="mini"
-                                   style="padding: 3px 15px;"
-                                   type="danger"
-                                   v-on:click="handleFirm(2,true,scope.row)">实盘跟投</el-button>
-                        <el-button v-if="scope.row.simFollow" size="mini"
-                                   v-bind:disabled="isDisableSimBtn"
-                                   style="padding: 3px 15px; margin-top: 5px; margin-left: 0px;"
-                                   v-on:click="handleFirm(3,false,scope.row)">编辑模拟</el-button>
-                        <el-button v-else size="mini"
-                                   v-bind:disabled="isDisableSimBtn"
-                                   style="padding: 3px 15px; margin-top: 5px; margin-left: 0px;"
-                                   v-on:click="handleFirm(4,false,scope.row)">模拟跟投</el-button>
-                    </template>
-                </el-table-column>
+        
             </el-table>
         </div>
         <div class="profit_page">
@@ -196,86 +174,11 @@
 
             </el-pagination>
         </div>
-
-        <!-- 跟投弹窗 -->
-        <el-dialog
-                 class="followDialog"
-            v-bind:visible.sync="isVisible"          
-                   >
-            <span slot="title">
-                  <span v-if="worldOrHome==1" style="position: relative; left: 5px; font-weight: bold;" >国际</span>
-                  <span v-else style="position: relative; left: 5px; font-weight: bold;">国内</span>
-                  <span v-if="isFirm==2" class="title_type">实盘跟投</span>
-                  <span v-else class="title_type">模拟跟投</span>
-                  <span class="title_img"><img :src="arrowUrl" /></span>
-                  <span class="title_trader">交易大师</span>
-            </span>
-         
-            <div class="followContent">
-                <div class="followStyle">
-                    <div class="style_title">
-                        <span class="style1">1</span>
-                        <span>请选择跟投方式</span>
-                    </div>
-                    <div class="style_content">
-                        <div class="style_num">
-                            <div class="num1 " v-bind:class="activeStyle==1 ? 'followActive': '' " v-on:click="followStyle(1)">
-                                <p>固定数量下单</p>
-                                <p>例如您设置固定数量1手，不论交易员下单多少手，您手数均为1手。最低跟随手数为1.</p>
-                            </div>
-                            <div class="num2" v-if="activeStyle===1">
-                                <span>固定跟投</span>
-                               
-                                     <el-input-number v-bind:min="1" class="num_val" size="mini" v-model="num1"></el-input-number>
-                               
-                                <span>手</span>
-                            </div>
-                        </div>
-                        <div class="style_perce">
-                            <div class="num1" v-on:click="followStyle(2)" v-bind:class="activeStyle==2 ? 'followActive': '' ">
-                                <p>按比例下单</p>
-                                <p>例如您设置为0.5倍比例跟随，交易员下单2手，您的手数为1手。不足1手时将默认为不跟随下单.</p>
-                            </div>
-                            <div class="num2" v-if="activeStyle===2">
-                                <span>按比例下单</span>                             
-                                   <el-input-number class="num_val" size="mini" v-model="num2" v-bind:precision="2" v-bind:step="1" v-bind:min="1"></el-input-number>
-                              
-                                <span>倍</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="followStyle">
-                    <div class="style_title">
-                        <span class="style1">2</span>
-                        <span>请选择跟投方向</span>
-                    </div>
-                    <div class="style_content">
-                        <div class="style_num">
-                            <div class="num1" v-on:click="followDirection(1)" v-bind:class="activeDrection==1 ? 'followActive': '' ">
-                                <p>正向跟投</p>
-                                <p>交易员<span class="buy">买入</span>,您的操作也为<span class="buy">买入</span></p>
-                            </div>
-                        </div>
-                        <div class="style_perce">
-                            <div class="num1"  v-on:click="followDirection(2)" v-bind:class="activeDrection==2 ? 'followActive': '' ">
-                                <p>反向跟投</p>
-                                <p>交易员<span class="buy">买入</span>,您的操作也为<span class="sale">买出</span>.</p>
-                            </div>              
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <span slot="footer" class="dialog-footer">             
-                <el-button  v-on:click="handleFollow" >确定跟投</el-button>
-                <el-button class="cancelFollow" v-if="(clickBtn==1 || clickBtn==3 )" v-on:click="cancelFollow">取消跟投</el-button>
-            </span>
-        </el-dialog>
     </div>    
 </template>
 <script>
 import {navIndex} from '../constants/enum'
-import{followCreate,unFollowBind,getBrokerCompanyAccountOrNullFC,getTraderList,currentUserGameStatus,getTraderForNBList} from '../api/getData.js'
+import{getBrokerCompanyAccountOrNullFC,getTraderForNBList} from '../api/getData.js'
 import message from '../config/message';
 import{mapState,mapActions} from 'vuex'
 import getUserInfo from '../config/getUserInfo'
@@ -286,21 +189,13 @@ export default {
     data(){
         return{
                 activeName: '1',
-                tarders: [],
+                followers: [],
                 user:null,
                 totalNum: 0,
                 isLoading: true,
                 isShow:true, //message显示
-                isVisible:false,//跟投dialog
-                num1: 1, //固定手数值
-                num2: 1,  //百分比
-                activeStyle: 1, //1表示选中固定数量2.表示按比例下单
-                activeDrection: 1, //表示正向跟投 2.表示反向跟投
                 followTraderId: 0, //表示当前跟投的交易员Id
-                isFirm: 1, //1表示模拟跟实盘2.表示实盘跟实盘
                 worldOrHome: 1, //1.表示国际 2.表示国内
-                clickBtn: 1, //1.表示编辑实盘 2.表示实盘跟投3.编辑模拟 4.模拟跟投
-                isDisableSimBtn: false, //参加模拟比赛禁用
                 activeWorldOrHome: 1, //帅选排序选择国内国际
                 selectedTradeDate: "", //近期交易时间
                 activeDateBtn: 1, //1.全部2.一周
@@ -373,14 +268,6 @@ export default {
             searchByName() {
                 this.getData(1,sortField.noSort);
             },
-             //选择跟投按比例还是固定数量
-            followStyle(index) {
-                this.activeStyle =index ;
-            },
-               //正向反向
-            followDirection(index) {
-                this.activeDrection = index;
-            },
               //选项卡
             handleClick(tab, event) {
                 this.activeWorldOrHome = 1;
@@ -389,111 +276,7 @@ export default {
                 this.searchName = "";
                 this.getData(1,sortField.noSort);
             },
-               //确定跟投
-           async handleFollow(){
-                const _that = this;     
-                let data = {
-                    "traderUserId": _that.followTraderId,
-                    "followType": _that.isFirm,
-                    "worldOrHome": _that.worldOrHome,
-                    "followDirection":_that.activeDrection
-                }
-              
-                if (_that.activeStyle === 1) {
-                    data["followCount"] = Number(_that.num1);
-                } else {
-                    data["followPercentage"] = Number(_that.num2);
-                }
-                let res= await followCreate(data);
-                if(res && res.success){
-                     _that.isVisible=false //dialog隐藏
-                     _that.getData(1,sortField.noSort);
-                }else{
-                     message(_that,res)
-                }
-            },
-              //取消跟投
-           async cancelFollow() {
-                const _that = this;
-                      
-                let data= {
-                    "traderUserId": _that.followTraderId,
-                    "unBingType":_that.isFirm,
-                    "worldOrHome": _that.worldOrHome
-                }
-               let res = await unFollowBind(data);
-               if(res && res.success){
-                      _that.isVisible = false; //dialog隐藏                  
-                        _that.getData(1,sortField.noSort);
-               }else{
-                   message(_that,res)
-               }
-            },
-               //跟投(点击跟投出现dialog)
-           async handleFirm(index,isFirm,row) {      
-                const _that = this;
-                //跟随关系传参
-              
-                if (index===2 || index===4) {
-                    _that.activeStyle = 1;
-                    _that.activeDrection = 1;
-                    _that.num1 = 1;
-                    _that.num2 = 1;
-                }else if(index===1){
-                    if(row.firmFollow){
-                            if (row.followRelationShip.followCount === 0 && row.followRelationShip.followPercentage!==0) {
-                                _that.activeStyle = 2;
-                                _that.activeDrection = row.followRelationShip.followDirection;
-                                _that.num2 = row.followRelationShip.followPercentage;
-                                _that.num1 = 1;
-                            } else if (row.followRelationShip.followCount !== 0 && row.followRelationShip.followPercentage === 0) {
-                                _that.activeStyle = 1;
-                                _that.activeDrection = row.followRelationShip.followDirection;
-                                _that.num1 = row.followRelationShip.followCount;
-                                _that.num2 = 1;
-                            }             
-                    }              
-                }else if(index===3){
-                      if (row.simFollowRelationShip.followCount === 0 && row.simFollowRelationShip.followPercentage!==0) {
-                            _that.activeStyle = 2;
-                            _that.activeDrection = row.simFollowRelationShip.followDirection;
-                            _that.num2 = row.simFollowRelationShip.followPercentage;
-                            _that.num1 = 1;
-                        } else if (row.simFollowRelationShip.followCount !== 0 && row.simFollowRelationShip.followPercentage === 0) {
-                            _that.activeStyle = 1;
-                            _that.activeDrection = row.simFollowRelationShip.followDirection;
-                            _that.num1 = row.simFollowRelationShip.followCount;
-                            _that.num2 = 1;
-                        }             
-                }
-                _that.clickBtn = index;
-                _that.worldOrHome = row.worldOrHome;
-                _that.isFirm = isFirm ? 2 : 1;
-                _that.followTraderId = row.id;
-
-                if(!this.user){
-                    if(this.isShow){
-                        this.isShow=false;
-                        message(_that,{},'您当前未登入系统，不能跟随操作')
-                    } 
-                }else{
-                            let res;                         
-                            if (row.worldOrHome === 1) {
-                                
-                               res = await getBrokerCompanyAccountOrNullFC(1);
-     
-                            } else {
-                                res= await getBrokerCompanyAccountOrNullFC(2)                            
-                            }
-                           //获取经济商账户，有就让他跟投
-                            if(res && res.success){
-                                _that.isVisible = true;
-                            }else{
-                                 message(_that,res)
-                            }
-                }
-               
-            },
+         
             getSortField(sortVal){
                   switch(sortVal){
                       case sortField.noSort:
@@ -544,9 +327,10 @@ export default {
                     "page": page,
                     "rows": 10
                 };
-                     let res = await getTraderList(data);
+                     let res = await getTraderForNBList(data);
+                     debugger;
                      if(res && res.success){       
-                         _that.tarders = res.result.items;              
+                         _that.followers = res.result.items;              
                         _that.totalNum = res.result.totalCount;
                        }else{
                               message(_that,res)
@@ -565,35 +349,12 @@ export default {
             handleNext: function (val) {          
                 this.getData(val,sortField.noSort);
             },
-           async getUserGameStatus(){
-               const _that=this;
-               let res;
-               if(this.worldOrHome===1){
-                  res = await currentUserGameStatus(1)
-               }else{
-                   res= await currentUserGameStatus(2)
-               }
-             
-               if(res && res.success)
-               {
-                   this.getData(1,sortField.noSort)
-                    if (res.result) {
-                        if (res.result === 1 || res.result === 2) {
-                            _that.isDisableSimBtn = true;
-                        } else {
-                            _that.isDisableSimBtn = false;
-                        }
-                    }
-               }
-               
-            },
             goDetail(row){             
-                let url=`tradeDetail/${row.id}/${row.worldOrHome}/1`
+                let url=`tradeDetail/${row.id}/${row.worldOrHome}/0`
                 this.$router.push({path:url})
             }
     },
     mounted(){
-         this.getUserGameStatus();
          this.getData(1,sortField.noSort) 
     }
 }

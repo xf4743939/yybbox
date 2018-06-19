@@ -35,6 +35,7 @@ Vue.filter('subStr',function(name,type,end){
        }
     }
  });
+
  Vue.filter('format',function(value){
     if(!value) return '';
     
@@ -45,6 +46,7 @@ Vue.filter('subStr',function(name,type,end){
    
  });
 
+ //格式化时间为2018/06/19
  Vue.filter('formatDate',function(value){
     if(!value) return '';   
      let date1=value.split('T')[0]  
@@ -71,6 +73,7 @@ Vue.filter('subStr',function(name,type,end){
     return s;
  })
 
+ 
  Vue.filter('toPercent',function(x){
      if(!x) return ;
      let str=Number(x*100).toFixed(2)

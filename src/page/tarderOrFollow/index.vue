@@ -4,7 +4,7 @@
     <section class="detail_wrap">
         <div class="step_tip">
             <el-breadcrumb separator-class="el-icon-arrow-right">
-                <el-breadcrumb-item>策略组合/{{ isTrader? '交易员' : '跟随者' }}</el-breadcrumb-item>
+                <el-breadcrumb-item>策略组合/{{ isTrader? '交易员' : '跟投者' }}</el-breadcrumb-item>
                 <el-breadcrumb-item>精选组合</el-breadcrumb-item>
                 <el-breadcrumb-item class="text">{{modalInfo.worldOrHome==1 ? '国际期货' : '国内期货'}}</el-breadcrumb-item>
             </el-breadcrumb>
@@ -32,17 +32,17 @@
                 </li>
                 <li class="left li_width">
                     <p>交易手数</p>
-                    <p>{{ userInfoForTrader.oneUserInfo.totalQty }}</p>
+                    <p>{{ userInfoForTrader.oneUserInfo.totalQty }}手 </p>
                 </li>
                 <li class="left li_width">
                     <p>胜率</p>
                     <p>{{ (userInfoForTrader.oneUserInfo.totalPlusProfitQty/(userInfoForTrader.oneUserInfo.totalQty==0 ? 1 : userInfoForTrader.oneUserInfo.totalQty )) | toPercent   }}</p>
                 </li>
-                <li class="left li_width">
+                <li class="left li_width" v-if="isTrader==1">
                    <el-progress :text-inside="true" :stroke-width="13" :percentage="50" color="#fc543c"></el-progress>
                    <div style="text-align:left;margin-top:20px;padding-left:45px">100份</div>
                 </li>
-                <li class="left btns">
+                <li class="left btns" v-if="isTrader==1">
                     <div class="clear">
                          <el-button v-if="userInfoForTrader.firmFollow" size="mini"
                                    style="padding: 3px 15px;display:block;"
@@ -105,7 +105,7 @@ export default {
         return{
             user:null,
             traderUrl:'../../../static/default/trade.png',   
-            isTrader:0, //1交易者0，跟投者 
+            isTrader:0, //1交易者,0，跟投者 
             isVisible:false,//跟投dialog    
             initData:false, //不要modal 
             modalInfo:{
@@ -318,6 +318,7 @@ export default {
        },
     },
     mounted(){
+        debugger;
         this.getUserGameStatus();
         this.getTraderInfo();
     }

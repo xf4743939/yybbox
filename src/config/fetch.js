@@ -43,19 +43,17 @@ axios.interceptors.response.use(
 
 
 
-export function get(url,params={}){
-  return new Promise((resolve,reject) => {
-    axios.get(url,{
-      params:params
-    })
-    .then(response => {
-      resolve(response.data);
-    })
-    .catch(err => {
-      reject(err)
-    })
-  })
+export function all(request){
+   return axios.all(request)
 }
+
+export function spread(func){
+  return axios.spread(func)
+}
+
+export function postList(url,data={}){
+  return  axios.post(url,data)
+} 
 
 export function post(url,data = {}){
 
