@@ -69,7 +69,7 @@
                           </el-table-column>
                       </el-table>
                   </div>
-                  <div class="profit_page">
+                  <div class="profit_page" v-if="showPage">
                       <el-pagination
                           background
                           layout="prev, pager, next"
@@ -111,6 +111,7 @@ export default {
              clickable:true
            }          
         },
+        showPage:true,
         swiperSlides:[],
         active:1,
         totalNum:0,

@@ -111,6 +111,15 @@ const getDelegateOrder='/api/services/app/todayBrokerCompanyAccountDelegateOrder
 //通过用户id获取国际模拟挂单
 const getHomeDelegateOrder='api/services/app/todayHomeBrokerCompanyAccountDelegateOrderService/GetDelegateOrder?userId='
 
+//获取国际国内比赛期数
+const getGameCycle='/api/services/app/gameCycleService/GetAllFC'
+
+//获取大赛排名
+const getMatchResult='/api/services/app/gameUserService/GetMatchResult'
+
+//解绑实盘账号
+const unBind='/api/services/app/brokerCompanyAccountService/UnBind?worldOrHome='
+
 let api={
     getArticleListByPageFilter:getArticleListByPageFilter,
     getTraderForProfitSortList:getTraderForProfitSortList,
@@ -148,7 +157,10 @@ let api={
     getWordProducts:getWordProducts,
     getAllHomeProduct:getAllHomeProduct,
     getDelegateOrder:getDelegateOrder,
-    getHomeDelegateOrder:getHomeDelegateOrder
+    getHomeDelegateOrder:getHomeDelegateOrder,
+    getGameCycle:getGameCycle,
+    getMatchResult:getMatchResult,
+    unBind:unBind
 }
 
 export default api;

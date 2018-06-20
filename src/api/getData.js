@@ -124,3 +124,12 @@ export const getDelegateOrder= data => post(api.getDelegateOrder + data)
 
 //通过用户id获取国内实盘挂单
 export const getHomeDelegateOrder= data => post(api.getHomeDelegateOrder + data)
+
+//获取国际国内比赛期数
+export const getGameCycle= data => post(api.getGameCycle,data)
+
+//获取大赛排名
+export const getMatchResult= data => post(api.getMatchResult,data)
+
+//解绑实盘账号
+export const unBind= data => post(api.unBind + data)

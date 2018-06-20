@@ -305,7 +305,7 @@ export default {
        }
    },
    created(){
-      console.log(this.userInfoForTrader)
+    
        this.accounts=this.userInfoForTrader.positionList;
        this.tradeOrders=this.userInfoForTrader.tradeOrderList;
    },

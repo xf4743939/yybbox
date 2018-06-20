@@ -42,7 +42,7 @@
                                                         <li v-if="!brokerCompanyAccountsLongInfo">
                                                             <img class="img_type firm_icon"  :src="bindLogo" alt="">
                                                             <span class="text1 firm_tip">未绑定实盘</span>
-                                                            <el-button type="danger" size="mini" class="btn_bind">
+                                                            <el-button @click="bindFirm" type="danger" size="mini" class="btn_bind">
                                                                     立即绑定
                                                             </el-button>
                                                         </li>
@@ -50,7 +50,7 @@
                                                </div>
                                       </template>
                                       <div class="operator acconut_info">
-                                           <ul class="clear">
+                                           <ul class="clear" v-if="brokerCompanyAccountsLongInfo">
                                                <li class="left" style="margin-left:176px;">
                                                    <span style="color:#666;">
                                                        经济商
@@ -66,7 +66,7 @@
                                                    </span>
                                                </li>
                                                <li style="float:right;margin-right:22px">
-                                                    <el-button type="danger" size="mini" class="btn_bind">
+                                                    <el-button @click="unBinding" type="danger" size="mini" class="btn_bind">
                                                                 解除绑定
                                                      </el-button>
                                                </li>
@@ -140,7 +140,7 @@
                                                    </span>
                                                </li>
                                                <li style="float:right;margin-right:22px">
-                                                    <el-button type="danger" size="mini" class="btn_bind">
+                                                    <el-button @click="unBinding"  type="danger" size="mini" class="btn_bind">
                                                                 解除绑定
                                                      </el-button>
                                                </li>
@@ -343,7 +343,7 @@
 <script>
 import {getStore} from '../../config/mUtils'
 import{mapState,mapActions} from 'vuex'
-import {getByUserIdAndAccountTypeFC} from '../../api/getData'
+import {getByUserIdAndAccountTypeFC,unBind} from '../../api/getData'
 import message from '../../config/message'
 import moment from 'moment'
 import followTable from '../../components/followList'
@@ -383,8 +383,41 @@ export default {
     },
     methods:{
        tradeNav(tab,event){
-
+          
        },
+      async unBinding(){
+         const _that=this;
+         this.$confirm('确定解绑经济商账号之前,请确保已全撤清仓!','提示',{
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning',
+                center: true
+         }).then( async() => {
+            let res= await unBind(this.worldOrHoeme);
+            if(res && res.success){
+               message(_that,{},'解除绑定成功','success',true)
+            }else{
+                message(_that,res)
+            }
+
+         }).catch(() => {
+            //  message(_that,{},'已取消')
+         })
+      },
+      bindFirm(){
+           this.$confirm('确定立即绑定!','提示',{
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning',
+                center: true
+           }).then( () => {
+                this.$router.push({
+                    path:'/openFirm'
+                }) 
+           }).catch( () => {
+
+           })
+      },
       async selectAccount(tab,event){
             let mr; 
             let tp;
@@ -441,13 +474,13 @@ export default {
         }
     },
     mounted(){  
-      
+     
        if(!this.userInfo){  
          let getInfo=JSON.parse(getStore("userInfo"));
        
            if(getInfo){          
               this.user=getInfo.user;
-             this.brokerCompanyAccountsLongInfo=getInfo.brokerCompanyAccountsLongInfo;          
+              this.brokerCompanyAccountsLongInfo=getInfo.brokerCompanyAccountsLongInfo;          
          
             }        
        }else{
@@ -661,6 +694,7 @@ export default {
   }
   .operator{
       background: #f5f5f5;
+      border-top:1px solid #e4e4e4;
       ul{
           padding-top: 10px;
       }
@@ -711,6 +745,19 @@ export default {
     .el-tabs__active-bar{
         background-color: #fc543c;
     }
+  }
+  .el-message-box {
+      .el-message-box__btns{
+          text-align: right;
+          padding-right: 28px;
+          .el-button--small{
+              padding: 6PX 25PX;
+              border: 0;
+          }
+          button:nth-child(2){
+              background: #fc543c;
+          }
+      }
   }
 </style>
 

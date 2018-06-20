@@ -3,21 +3,13 @@
         <head-top></head-top>
         <section class="game_main">
             <div class="game_type">
-                <span>国际模拟大赛</span>
+                <span @click="match(1)" :style="{color:worldOrHome===1? '#fc543c': '#666'} ">国际模拟大赛</span>
                 <span class="line"></span>
-                <span>国内模拟大赛</span>
+                <span @click="match(2)" :style="{color:worldOrHome===2? '#fc543c': '#666'} ">国内模拟大赛</span>
             </div>
-        <div class="game_nav">
-            <el-tabs type="border-card" v-model="active" @tab-click="gameNav" class="trade_navs">
-                <el-tab-pane label="大赛首页" name="1">
-                    <img src="../../../static/default/gameNum.png" alt="">
-                </el-tab-pane>
-                <el-tab-pane label="交易规则" name="2">交易规则</el-tab-pane>
-                <el-tab-pane label="大赛排名" name="3">
-                  大赛排名
-                </el-tab-pane>
-            </el-tabs>
-        </div>
+            <transition>
+                <router-view></router-view>
+            </transition>
         </section>
         <foot-bom></foot-bom>
     </div>
@@ -25,13 +17,13 @@
 <script>
 import headTop from '../../components/headTop'
 import footBom from '../../components/footer'
-
+import {getGameCycle,getMatchResult} from '../../api/getData'
 import{mapState,mapActions} from 'vuex'
-
+import message from '../../config/message'
 export default {
     data(){
         return{
-           active:'1'
+           worldOrHome:1
         }
     },
     computed:{
@@ -42,14 +34,27 @@ export default {
        footBom,
     },
     methods:{
-       gameNav(tab){
-           console.log(tab)
-       }
-      
+         match(index){
+             this.worldOrHome=index;
+          if(index==1){
+            this.$router.push({
+                path:'/game/world'
+            })
+          }else{
+            this.$router.push({
+                path:'/game/home'
+            }) 
+          }
+       },  
     },
     mounted(){  
-      
-     
+      let url=this.$route.path.substring(this.$route.path.lastIndexOf('/')+1)
+      if(!url) return;
+      if(url=='home'){
+          this.worldOrHome=2
+      }else if('world'==url){
+          this.worldOrHome==1
+      }
     }
 }
 </script>
@@ -70,12 +75,30 @@ export default {
                }
          }
       } 
+      .game_nav{
+          .rules{
+              margin-bottom: 25px;
+              h3{
+                  font-size: 16px;
+                  margin-bottom: 8px;
+                
+              }
+              p{
+                  color: #666;
+                  margin-bottom: 8px;
+              }
+              .text{
+                  padding-left: 20px;
+              }
+          }
+      }
       .game_type{
           margin-bottom: 10px;
           span:nth-of-type(1){
                 font-size: 16px;
                 color: #fc543c;
                 display: inline-block;
+                cursor: pointer;
           }
          .line{
                 width: 2px;
@@ -90,8 +113,24 @@ export default {
          span:nth-of-type(3){
              display: inline-block;
              font-size: 16px;
+             cursor: pointer;
          }
       }
+  }
+  .table_rank{
+      min-height:600px;
+      margin-top: 20px;
+      .el-table__header{
+          tr{
+              th{
+                  background: #fc543c;
+                  color: #fff;
+              }
+          }
+      }
+       td,th{
+           padding: 8px 0;
+       }
   }
   
 </style>

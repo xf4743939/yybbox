@@ -160,8 +160,9 @@ export default {
        }
    },
    created(){
+   
+       if(!this.userInfoForTrader)return;
        this.followers=this.userInfoForTrader.followerList
-  
        this.copyFollowers=this.userInfoForTrader.followerList
 
    },

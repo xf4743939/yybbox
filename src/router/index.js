@@ -48,6 +48,10 @@ const follower= r => require.ensure([],() => r(require('../page/follow/index.vue
 
 const game= r => require.ensure([],() => r(require('../page/game/index.vue')),'game')
 
+const world= r => require.ensure([],() => r(require('../page/game/world.vue')),'world')
+
+const homeGame= r => require.ensure([],() => r(require('../page/game/home.vue')),'home')
+
 const routes=[
   {
     path:'/',
@@ -165,7 +169,21 @@ const routes=[
   },
   {
     path:'/game',
-    component:game   
+    component:game,
+    children:[
+      {
+        path:'',
+        component:world
+      },
+      {
+        path:'world',
+        component:world
+      },
+      {
+        path:'home',
+        component:homeGame
+      }
+    ]   
   }
 ]
 
