@@ -52,6 +52,8 @@ const world= r => require.ensure([],() => r(require('../page/game/world.vue')),'
 
 const homeGame= r => require.ensure([],() => r(require('../page/game/home.vue')),'home')
 
+const openFirm= r => require.ensure([],() => r(require('../page/user/openFirm/index.vue')),'openFirm')
+
 const routes=[
   {
     path:'/',
@@ -184,6 +186,10 @@ const routes=[
         component:homeGame
       }
     ]   
+  },
+  {
+    path:'/openFirm',
+    component:openFirm
   }
 ]
 

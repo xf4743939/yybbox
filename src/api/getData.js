@@ -133,3 +133,9 @@ export const getMatchResult= data => post(api.getMatchResult,data)
 
 //解绑实盘账号
 export const unBind= data => post(api.unBind + data)
+
+//得到所有经纪商
+export const getAllForNormalFC= data => post(api.getAllForNormalFC + data)
+
+//创建经纪商账号(实盘账号)
+export const createBrokerCompanyAccountFC= data => post(api.createBrokerCompanyAccountFC,data)

@@ -120,6 +120,13 @@ const getMatchResult='/api/services/app/gameUserService/GetMatchResult'
 //解绑实盘账号
 const unBind='/api/services/app/brokerCompanyAccountService/UnBind?worldOrHome='
 
+//得到所有经纪商
+const getAllForNormalFC='/api/services/app/brokerCompanyService/GetAllForNormalFC?worldOrHome='
+
+//创建经纪商账号(实盘账号)
+const createBrokerCompanyAccountFC="/api/services/app/brokerCompanyAccountService/CreateBrokerCompanyAccountFC"
+
+
 let api={
     getArticleListByPageFilter:getArticleListByPageFilter,
     getTraderForProfitSortList:getTraderForProfitSortList,
@@ -160,7 +167,9 @@ let api={
     getHomeDelegateOrder:getHomeDelegateOrder,
     getGameCycle:getGameCycle,
     getMatchResult:getMatchResult,
-    unBind:unBind
+    unBind:unBind,
+    getAllForNormalFC:getAllForNormalFC,
+    createBrokerCompanyAccountFC:createBrokerCompanyAccountFC
 }
 
 export default api;

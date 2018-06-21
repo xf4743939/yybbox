@@ -343,7 +343,7 @@
 <script>
 import {getStore} from '../../config/mUtils'
 import{mapState,mapActions} from 'vuex'
-import {getByUserIdAndAccountTypeFC,unBind} from '../../api/getData'
+import {getByUserIdAndAccountTypeFC,unBind,getBrokerCompanyAccountOrNullFC} from '../../api/getData'
 import message from '../../config/message'
 import moment from 'moment'
 import followTable from '../../components/followList'
@@ -391,7 +391,7 @@ export default {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning',
-                center: true
+               
          }).then( async() => {
             let res= await unBind(this.worldOrHoeme);
             if(res && res.success){
@@ -409,7 +409,6 @@ export default {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning',
-                center: true
            }).then( () => {
                 this.$router.push({
                     path:'/openFirm'
@@ -456,7 +455,14 @@ export default {
                 "accountType": tp,
                 "worldOrHome": mr
               }
-          let res=await getByUserIdAndAccountTypeFC(data);
+            let res2=await  getBrokerCompanyAccountOrNullFC(this.worldOrHoeme);
+          
+            if(res2 && res2.success){
+               this.brokerCompanyAccountsLongInfo=res2.result;
+            }else{
+                message(_that,res2)
+            } 
+           let res=await getByUserIdAndAccountTypeFC(data);
            if(res.success){
                this.accMoneyInfo=res.result.accMoneyInfo;
              

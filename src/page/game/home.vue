@@ -83,7 +83,7 @@
                              <el-table-column
                                 label="净值">
                                 <template slot-scope="scope">
-                                    <span>{{ ((scope.row.totalMoney + scope.row.profit - scope.row.commission)/600000).toFixed(2) }}</span>  
+                                    <span>{{ ((scope.row.totalMoney + scope.row.profit - scope.row.commission)/500000).toFixed(2) }}</span>  
                                 </template>
                             </el-table-column>
                             </el-table>
