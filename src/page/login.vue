@@ -36,7 +36,7 @@
 
                                             <!-- <span>记住密码</span> -->
 
-                                            <a href="/user/forgetPassword">忘记密码？</a>
+                                            <a href="/forgetPassword">忘记密码？</a>
                                         </p>
                                         <input type="submit" id="submitBtn" v-model="loginText"/>
                                         

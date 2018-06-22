@@ -15,20 +15,20 @@
         <div class="e3">
             <ul style="margin-left: 44px">
                 关于我们
-                <li><a href="/componey/Index/brief">平台简介</a></li>
-                <li><a href="/componey/Index/partner">合作伙伴</a></li>
-                <li><a href="/componey/Index/about">联系我们</a></li>
+                <li><a href="/introduce/placard">平台简介</a></li>
+                <li><a href="/introduce/partner">合作伙伴</a></li>
+                <li><a href="/introduce/about">联系我们</a></li>
             </ul>
             <ul>
                 网站条款
-                <li><a href="/componey/Index/private">隐私政策</a></li>
-                <li><a href="/componey/Index/service">服务协议</a></li>
-                <li><a href="/componey/Index/declare">免责声明</a></li>
+                <li><a href="/introduce/private">隐私政策</a></li>
+                <li><a href="/introduce/service">服务协议</a></li>
+                <li><a href="/introduce/declare">免责声明</a></li>
             </ul>
             <ul style="margin-right: 44px">
                 帮助中心
-                <li><a href="/componey/Index/guide">新手指南</a></li>
-                <li><a href="/componey/Index/problem">常见问题</a></li>
+                <li><a href="/introduce/guide">新手指南</a></li>
+                <li><a href="/introduce/problem">常见问题</a></li>
             </ul>
 
         </div>

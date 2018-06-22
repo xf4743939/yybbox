@@ -54,6 +54,16 @@ const homeGame= r => require.ensure([],() => r(require('../page/game/home.vue'))
 
 const openFirm= r => require.ensure([],() => r(require('../page/user/openFirm/index.vue')),'openFirm')
 
+const register = r => require.ensure([],() => r(require('../page/register.vue')),'register')
+
+const forgetPassword = r => require.ensure([],() => r(require('../page/forgetPassword.vue')),'forgetPassword')
+
+const introduce = r => require.ensure([],() => r(require('../page/introduce/index.vue')),'introduce')
+
+const placard= r => require.ensure([],() => r(require('../page/introduce/subpage/placard.vue')),'placard')
+
+const cardDetail= r =>require.ensure([],() => r(require('../page/introduce/subpage/cardDetail.vue')),'cardDetail')
+
 const routes=[
   {
     path:'/',
@@ -190,6 +200,28 @@ const routes=[
   {
     path:'/openFirm',
     component:openFirm
+  },
+  {
+    path:'/register',
+    component:register
+  },
+  {
+    path:'/forgetPassword',
+    component:forgetPassword
+  },
+  {
+    path:'/introduce',
+    component:introduce,
+    children:[
+      {
+        path:'placard',
+        component:placard
+      },
+      {
+        path:'article',
+        component:cardDetail
+      }
+    ]
   }
 ]
 

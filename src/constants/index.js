@@ -126,6 +126,20 @@ const getAllForNormalFC='/api/services/app/brokerCompanyService/GetAllForNormalF
 //创建经纪商账号(实盘账号)
 const createBrokerCompanyAccountFC="/api/services/app/brokerCompanyAccountService/CreateBrokerCompanyAccountFC"
 
+//注册
+const register='/Register/Register'
+
+//忘记密码
+const findPassword="/api/services/app/userService/FindPassword"
+
+//得到文章分类的目录
+const getArticleTypeList="/api/services/app/articleTypeService/GetArticleTypeList"
+
+//获取介绍类文章
+const getArticleList="/api/services/app/articleService/getArticleListByPageFilter"
+
+//获得具体的文章
+const getArticleById="/api/services/app/articleService/Get?id="
 
 let api={
     getArticleListByPageFilter:getArticleListByPageFilter,
@@ -169,7 +183,12 @@ let api={
     getMatchResult:getMatchResult,
     unBind:unBind,
     getAllForNormalFC:getAllForNormalFC,
-    createBrokerCompanyAccountFC:createBrokerCompanyAccountFC
+    createBrokerCompanyAccountFC:createBrokerCompanyAccountFC,
+    register:register,
+    findPassword:findPassword,
+    getArticleTypeList:getArticleTypeList,
+    getArticleList:getArticleList,
+    getArticleById:getArticleById
 }
 
 export default api;

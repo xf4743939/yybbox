@@ -139,3 +139,18 @@ export const getAllForNormalFC= data => post(api.getAllForNormalFC + data)
 
 //创建经纪商账号(实盘账号)
 export const createBrokerCompanyAccountFC= data => post(api.createBrokerCompanyAccountFC,data)
+
+//注册
+export const register= data => post(api.register,data)
+
+//忘记密码
+export const findPassword= data => post(api.findPassword,data)
+
+//得到文章分类目录
+export const getArticleTypeList= data => post(api.getArticleTypeList,data)
+
+//获取介绍类文章
+export const getArticleList= data => post(api.getArticleList,data)
+
+//得到具体的文章
+export const getArticleById= data => post(api.getArticleById + data)
