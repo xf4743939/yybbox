@@ -14,7 +14,8 @@ import strateSwiper from './strateSwiper'
 import headTop from '../../components/headTop'
 import footBom from '../../components/footer'
 import traderList from '../../components/traderList'
-
+import {getAllForTop} from '../../api/getData'
+import message from '../../config/message'
 export default {
     data(){
         return{

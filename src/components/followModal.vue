@@ -128,7 +128,7 @@ export default {
                     data["followPercentage"] = Number(_that.num2);
                 }
                 let res= await followCreate(data);
-                debugger;
+              
                 if(res && res.success){
                   
                     this.$emit('hideModal')            

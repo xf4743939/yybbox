@@ -2,7 +2,7 @@
    <div class="login_page fillcontain">
     
             <headt-top></headt-top>
-            <section style="margin-top:117px;">
+            <section >
                 <div class="login d" id="userLogin">
                     <form  method="post" v-on:submit.prevent="userLogin" > 
                         <div class="d1">

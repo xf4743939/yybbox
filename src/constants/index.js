@@ -141,6 +141,9 @@ const getArticleList="/api/services/app/articleService/getArticleListByPageFilte
 //获得具体的文章
 const getArticleById="/api/services/app/articleService/Get?id="
 
+//获取推荐策略组合
+const getAllForTop="/api/services/app/combiStrategyService/GetAllForTop?wh="
+
 let api={
     getArticleListByPageFilter:getArticleListByPageFilter,
     getTraderForProfitSortList:getTraderForProfitSortList,
@@ -188,7 +191,8 @@ let api={
     findPassword:findPassword,
     getArticleTypeList:getArticleTypeList,
     getArticleList:getArticleList,
-    getArticleById:getArticleById
+    getArticleById:getArticleById,
+    getAllForTop:getAllForTop
 }
 
 export default api;

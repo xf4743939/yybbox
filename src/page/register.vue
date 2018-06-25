@@ -154,7 +154,7 @@ export default {
                  }
                   _that.registerForm.registerName="注册中，请稍等...."
                  let res =await register(data)
-                 debugger
+             
                  if(res && res.success){
                       _that.registerForm.registerName="注册成功,将登入..."
                       setTimeout( () => {
@@ -185,7 +185,7 @@ export default {
              return false;
           }
           if(reg.test(this.registerForm.phoneNumber)){
-              debugger;
+           
               let timer
               timer=setInterval( () => {
                   _that.registerForm.count--;

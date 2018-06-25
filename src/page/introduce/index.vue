@@ -37,6 +37,53 @@ export default {
        navBar(index){
            this.active=index;
        },
+       getActive(){
+              const url=this.$route.path.substring(this.$route.path.lastIndexOf("/")+1,)
+            
+              switch(url){
+                case 'placard':
+                    this.active=0
+                    break; 
+                case 'article':
+                    this.active=0
+                     break;    
+                case 'brief':
+                    this.active=1
+                    break; 
+                case 'about':
+                        this.active=2
+                        break; 
+                case 'partner':
+                        this.active=3
+                        break; 
+                case 'policy':
+                        this.active=4
+                        break; 
+                case 'service':
+                        this.active=5
+                        break;
+                case 'serviceDetail':
+                        this.active=5
+                        break;              
+                case 'declare':
+                        this.active=6
+                        break; 
+                case 'guide':
+                        this.active=7
+                        break; 
+                case 'guideDetail':
+                        this.active=7
+                        break;         
+                case 'problem':
+                        this.active=8
+                        break;
+                case 'problemDetail':
+                        this.active=8
+                        break;        
+                default:
+                    this.active=0
+           }
+       },
       async getNavs(){
           const _that=this;
            let data={
@@ -50,7 +97,7 @@ export default {
                      _that.menus[0].url='/introduce/brief';            
                      _that.menus[1].url='/introduce/about';    
                     _that.menus[2].url='/introduce/partner';        
-                    _that.menus[3].url='/introduce/private';      
+                    _that.menus[3].url='/introduce/policy';      
                     _that.menus[4].url='/introduce/service';
                     _that.menus[5].url='/introduce/declare';
                     _that.menus[6].url='/introduce/guide';
@@ -67,7 +114,8 @@ export default {
        } 
     },
     mounted(){
-        this.getNavs()
+        this.getNavs();
+        this.getActive();
     }
 }
 </script>

@@ -2,9 +2,9 @@
   <div>
     <head-top></head-top>
      <section class="body-main">
-        <div class="piclist big">
-            <swiper ref="mySwiper">
-                 <swiper-slide :options="swiperOption" v-for="(item,index) in swiperSlides" :key="item.id" >
+        <div class="piclist big" v-if="swiperSlides.length">
+            <swiper ref="mySwiper" :options="swiperOption">
+                 <swiper-slide  v-for="(item,index) in swiperSlides" :key="item.id" >
                       <a  style="display:block;">
                          <img :src="'http://follow.yybbox.com' + item.imageURL " height="100%;"/>                      
                       </a>
@@ -35,11 +35,20 @@
                               label="基本信息"
                               width="180">
                               <template slot-scope="scope">
-                                  <a style="display: block;" v-bind:href="scope.row.bcaType==8 ||scope.row.bcaType==4 ? '/Trade/TFDetails/' + scope.row.id + '-1-True' : '/Trade/TFDetails/' +scope.row.id + '-1-Flase' ">
-                                      <img v-bind:src="scope.row.icon!=null ? 'http://follow.yybbox.com' + scope.row.icon : '/Contents/images/default/30x30.png' "/>
-                                      <span class="nickname" >{{ scope.row.nickname }}</span>
+                                <div v-if="scope.row.worldOrHome===1">
+                                     <a style="display: block;" v-bind:href="scope.row.bcaType==8 ||scope.row.bcaType==4 ? '/tradeDetail/' + scope.row.id +'/'+ scope.row.worldOrHome + '/1' : '/tradeDetail/' +scope.row.id +'/'+ scope.row.worldOrHome +'/0' ">
+                                      <img v-bind:src="scope.row.icon!=null ? 'http://follow.yybbox.com' + scope.row.icon : '../../static/default/30x30.png' "/>
+                                      <span class="nickname" :title="scope.row.nickname" >{{ scope.row.nickname }}</span>
                                   </a>
-                                  <span v-bind:style="{color:(scope.row.bcaType==4 || scope.row.bcaType==8 ) ? '#f43f4b' : '#35ABEC' }" class="traderOrfollow">{{ (scope.row.bcaType==4 || scope.row.bcaType==8 ) ? "交易者" : "跟随者" }}</span>
+                                  <span v-bind:style="{color:(scope.row.bcaType==4 || scope.row.bcaType==8 ) ? '#f43f4b' : '#35ABEC' }" class="traderOrfollow">{{ (scope.row.bcaType==4 || scope.row.bcaType==8 ) ? "(交易者)" : "(跟随者)" }}</span>
+                                </div>
+                                <div v-if="scope.row.worldOrHome===2">
+                                     <a style="display: block;" v-bind:href="scope.row.homeBCAType==8 ||scope.row.homeBCAType==4 ? '/tradeDetail/' + scope.row.id +'/'+ scope.row.worldOrHome + '/1' : '/tradeDetail/' +scope.row.id +'/'+ scope.row.worldOrHome +'/0' ">
+                                      <img v-bind:src="scope.row.icon!=null ? 'http://follow.yybbox.com' + scope.row.icon : '../../static/default/30x30.png' "/>
+                                      <span class="nickname" :title="scope.row.nickname" >{{ scope.row.nickname }}</span>
+                                     </a>
+                                  <span v-bind:style="{color:(scope.row.homeBCAType==4 || scope.row.homeBCAType==8 ) ? '#f43f4b' : '#35ABEC' }" class="traderOrfollow">{{ (scope.row.homeBCAType==4 || scope.row.homeBCAType==8 ) ? "(交易者)" : "(跟随者)" }}</span>
+                                </div>
                               </template>
                           </el-table-column>
                           <el-table-column prop="tradeQty"
@@ -91,7 +100,6 @@
 import headTop from '../components/headTop';
 import footBom from '../components/footer';
 import {swiper,swiperSlide} from 'vue-awesome-swiper'
-import 'swiper/dist/css/swiper.min.css'
 import moment from 'moment' ;
 import {getSwipers,getTraderForProfitSortList} from '../api/getData';
 import message from '../config/message';
@@ -101,15 +109,23 @@ export default {
    data(){
      return{
         swiperOption:{
-           spaceBetween:30,
-           autoplay:true,    
-           speed:500,
-           loop:true,
-           pagination:{
-             el:'.swiper-pagination',
-             dynamicBullets:true,
-             clickable:true
-           }          
+                spaceBetween: 30,            
+                autoplay:{
+                  delay:3000,
+                  disableOnInteraction: false
+                },
+                 observer:true,//修改swiper自己或子元素时，自动初始化swiper 
+　　             observeParents:true,//修改swiper的父元素时，自动初始化swiper 
+                speed: 500,
+                loop: true,             
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
         },
         showPage:true,
         swiperSlides:[],
@@ -156,15 +172,17 @@ export default {
                 _that.isLoading = true;
                 setTimeout(function () {
                     _that.isLoading = false;
-                }, 1000);
+                }, 500);
                 let data= {
                     "worldOrHome":index,
                     "page": page,
                     "rows":10
                 } 
-                let res=await getTraderForProfitSortList(data);           
+                let res=await getTraderForProfitSortList(data); 
+                       
                 if(res.success){
                      _that.userTraderPofit = res.result.items;
+                
                      _that.totalNum = res.result.totalCount;
                 }else{
                 
@@ -182,12 +200,12 @@ export default {
      handleNext(val){
        const _that=this;
        this.showWorldOrHome(_that.active,val)
-     }
+     },
     
    },
    mounted(){
      this.getBanner();
-     this.showWorldOrHome(1,1);    
+     this.showWorldOrHome(1,1);
    }
 }
 </script>
@@ -277,6 +295,12 @@ export default {
           display: inline-block;
           font-size: 14px;
           margin-left: 11px;
+          width: 110px;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          position: relative;
+          top:9px;
        }
        a{
          img{

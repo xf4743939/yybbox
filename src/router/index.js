@@ -64,6 +64,28 @@ const placard= r => require.ensure([],() => r(require('../page/introduce/subpage
 
 const cardDetail= r =>require.ensure([],() => r(require('../page/introduce/subpage/cardDetail.vue')),'cardDetail')
 
+const brief= r =>require.ensure([],() => r(require('../page/introduce/subpage/brief.vue')),'brief')
+
+const about= r =>require.ensure([],() => r(require('../page/introduce/subpage/about.vue')),'about')
+
+const partner= r =>require.ensure([],() => r(require('../page/introduce/subpage/partner.vue')),'partner')
+
+const policy =r =>require.ensure([],() => r(require('../page/introduce/subpage/private.vue')),'policy')
+
+const service = r=>require.ensure([],() => r(require('../page/introduce/subpage/service.vue')),'service')
+
+const serviceDeatail= r =>require.ensure([],() => r(require('../page/introduce/subpage/serviceDetail.vue')),'serviceDeatail')
+
+const declare= r =>require.ensure([],() =>r(require('../page/introduce/subpage/declare.vue')),'declare')
+
+const guide= r =>require.ensure([],() =>r(require('../page/introduce/subpage/guide.vue')),'guide')
+
+const guideDetail = r =>require.ensure([],() =>r(require('../page/introduce/subpage/guideDetail.vue')),'guideDetail')
+
+const problem= r =>require.ensure([],() =>r(require('../page/introduce/subpage/problem.vue')),'problem')
+
+const problemDetail= r =>require.ensure([],() =>r(require('../page/introduce/subpage/problemDetail.vue')),'problemDetail')
+
 const routes=[
   {
     path:'/',
@@ -220,6 +242,50 @@ const routes=[
       {
         path:'article',
         component:cardDetail
+      },
+      {
+        path:'brief',
+        component:brief
+      },
+      {
+        path:'about',
+        component:about
+      },
+      {
+        path:'partner',
+        component:partner
+      },
+      {
+        path:'policy',
+        component:policy
+      },
+      {
+        path:'service',
+        component:service
+      },
+      {
+        path:'serviceDetail',
+        component:serviceDeatail
+      },
+      {
+        path:'declare',
+        component:declare
+      },
+      {
+        path:'guide',
+        component:guide
+      },
+      {
+        path:'guideDetail',
+        component:guideDetail
+      },
+      {
+        path:'problem',
+        component:problem
+      },
+      {
+        path:'problemDetail',
+        component:problemDetail
       }
     ]
   }

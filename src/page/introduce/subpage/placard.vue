@@ -44,15 +44,17 @@ export default {
 </script>
 <style lang="less">
   .wrap{
-      width: 980px;
-      height: 720px;
+       width: 960px;
+        height: 720px;
+        float: left;
+        background: #fff;
+        margin-left: 20px;
       .title{
-          font-size: 15px;
-            width: 920px;
-            height: 58px;
-            margin: 0 auto;
-            line-height: 58px;
-            border-bottom: 1px solid #e6e6e6;
+        font-size: 15px;
+        height: 58px;
+        line-height: 58px;
+        border-bottom: 1px solid #e6e6e6;
+        padding-left: 25px;
       }
       ul{
           height: 610px;

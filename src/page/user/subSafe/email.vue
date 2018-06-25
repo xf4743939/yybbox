@@ -72,7 +72,7 @@ export default {
         async onSubmit(formName)
         {
            this.$refs[formName].validate((valid)=>{
-                  debugger;
+              
                if(valid){
                    console.log('提交修改邮箱');
                }else{
@@ -99,7 +99,7 @@ export default {
               
                 let data={};
                 return;
-                 debugger;
+             
                 let res =await getPhoneCode(data);
                 if(res && res.success){
                      console.log(res.result)

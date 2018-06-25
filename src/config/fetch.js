@@ -2,10 +2,10 @@ import axios from 'axios'
 import {getStore,removeStore} from './mUtils'
 import router from '../router/index'
 
-axios.defaults.timeout=5000;
-axios.defaults.baseURL="http://localhost:10088";
+axios.defaults.timeout=1000;
+axios.defaults.baseURL="http://192.168.1.201:10086";
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-//  axios.defaults.withCredentials=true;
+
 
 axios.interceptors.request.use(
   config => {
@@ -25,7 +25,7 @@ axios.interceptors.response.use(
      return response ;
    },
    error => {
-     if(error.response){
+     if(error && error.response){
         switch(error.response.status){
            case 401 :
            //清楚token 并跳转登陆界面
@@ -36,9 +36,45 @@ axios.interceptors.response.use(
                redirect: router.currentRoute.fullPath
              }
            })
+           break;
+           case 400:
+           error.message='错误请求'
+           break;
+           case 404:
+           error.message = '请求错误,未找到该资源'
+           break;
+         case 405:
+           error.message = '请求方法未允许'
+           break;
+         case 408:
+           error.message = '请求超时'
+           break;
+         case 500:
+           error.message = '服务器端出错'
+           break;
+         case 501:
+           error.message = '网络未实现'
+           break;
+         case 502:
+           error.message = '网络错误'
+           break;
+         case 503:
+           error.message = '服务不可用'
+           break;
+         case 504:
+           error.message = '网络超时'
+           break;
+         case 505:
+           error.message = 'http版本不支持该请求'
+           break;
+         default:
+           error.message = `连接错误${err.response.status}`
         }
+     }else{
+       error.message= "连接到服务器失败"
      }
-     return Promise.reject(error.response.data);  //返回接口返回的错误信息
+     console.log(error.message)
+     return Promise.reject(error.response);  //返回接口返回的错误信息
    })
 
 

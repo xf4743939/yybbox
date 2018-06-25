@@ -328,7 +328,7 @@ export default {
                     "rows": 10
                 };
                      let res = await getTraderForNBList(data);
-                     debugger;
+                
                      if(res && res.success){       
                          _that.followers = res.result.items;              
                         _that.totalNum = res.result.totalCount;

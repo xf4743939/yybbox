@@ -274,9 +274,9 @@ export default {
                             "bankNumber": this.bankNumber,
                             "bankCode": this.code
                         };  
-                        debugger;
+                
                         let res= await addBankCard(data);
-                        debugger;
+                  
                         if(res && res.success){
                             message(_that,{},'添加银行卡成功','success',true);
                         }else{

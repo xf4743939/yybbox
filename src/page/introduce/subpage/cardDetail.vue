@@ -40,26 +40,24 @@ export default {
     }
 }
 </script>
-<style lang="less">
+<style lang="less" scoped>
   .wrap {
-    width: 980px;
-    height: 720px;
+        width: 960px;
+        height: 720px;
+        float: left;
+        background: #fff;
+        margin-left: 20px;
    .title {
        a{
-           font-size: 15px;
-        width: 920px;
+         font-size: 15px;
         height: 58px;
-        margin: 0 auto;
         line-height: 58px;
         border-bottom: 1px solid #e6e6e6;
+        padding-left: 25px;
+        display: block;
         color: #333;
        }
-    font-size: 15px;
-    width: 920px;
-    height: 58px;
-    margin: 0 auto;
-    line-height: 58px;
-    border-bottom: 1px solid #e6e6e6;
+ 
   }
   .artitle_wrap {
     width: 920px;
@@ -83,6 +81,7 @@ export default {
     height: 560px;
     overflow: hidden;
     overflow-y: auto;
+    color: #666;
     span{
         float: right;
         margin-top: 80px;

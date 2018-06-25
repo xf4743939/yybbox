@@ -154,3 +154,6 @@ export const getArticleList= data => post(api.getArticleList,data)
 
 //得到具体的文章
 export const getArticleById= data => post(api.getArticleById + data)
+
+//获取推荐组合策略
+export const getAllForTop= data => post(api.getAllForTop + data)

@@ -91,7 +91,7 @@ export default {
             let findImg=this.headerImgs.find(function(value,index){
                return value==imgUrl
             })
-              debugger;
+          
             if(!findImg){          
                  if(_that.isShow){
                      _that.isShow=false;

@@ -12,8 +12,7 @@
      baseUrl='http://localhost:10086';
      baseImgPath='http://localhost:10086/img/'
  }else{
-    baseUrl='http://cangdu.org:8001';
-    baseImgPath='http://cangdu.org:8001/img/'
+    baseUrl='http://http://follow.yybbox.com';
  }
 
  export {

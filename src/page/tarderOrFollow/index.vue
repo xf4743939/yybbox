@@ -318,7 +318,7 @@ export default {
        },
     },
     mounted(){
-        debugger;
+    
         this.getUserGameStatus();
         this.getTraderInfo();
     }

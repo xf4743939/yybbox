@@ -125,7 +125,7 @@ export default {
                      "code":_that.registerForm.code,
                  }
                  let res =await findPassword(data)
-            debugger;
+          
                  if(res && res.success){
                     _that.$message({
                             message: '新密码设置成功',
@@ -155,7 +155,7 @@ export default {
              return false;
           }
           if(reg.test(this.registerForm.phoneNumber)){
-              debugger;
+         
               let timer
               timer=setInterval( () => {
                   _that.registerForm.count--;
