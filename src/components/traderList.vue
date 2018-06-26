@@ -11,30 +11,30 @@
                                 <button  v-bind:class="activeWorldOrHome==1 ? 'activeBtn' :'' "  v-on:click="selectedWorldOrHome(1)">国际期货</button>
                                 <button v-bind:class="activeWorldOrHome==2 ? 'activeBtn' :'' " v-on:click="selectedWorldOrHome(2)">国内期货</button>
                             </div>
-                            <div class="trader_time">
+                            <!-- <div class="trader_time">
                                 <span>近期有交易:</span>
                                 <button v-bind:class="activeDateBtn==1 ? 'activeBtn1' :'' " v-on:click="selectedDate(1)">全部</button>
                                 <button v-bind:class="activeDateBtn==2 ? 'activeBtn1' :'' "  v-on:click="selectedDate(2)" >近一日</button>
                                 <button v-on:click="selectedDate(3)" v-bind:class="activeDateBtn==3 ? 'activeBtn1' :'' " >近一周</button>
                                 <button v-on:click="selectedDate(4)" v-bind:class="activeDateBtn==4 ? 'activeBtn1' :'' " >近一个月</button>
-                            </div>
+                            </div> -->
                             <div class="money">
                                 <span>策略资金:</span>
-                                <input type="text" />
+                                <input type="text" v-model="startMoney" />
                                 <span>-</span>
-                                <input type="text" style="margin-left: 0px;" />
+                                <input type="text" v-model="endMoney" style="margin-left: 0px;" />
                                 <span>万元</span>
-                                <button class="money_save">确定</button>
+                                <button class="money_save" @click="searchByMoney">确定</button>
                             </div>
-                            <div class="tarder_nickname">
+                            <!-- <div class="tarder_nickname">
                                 <span>搜索昵称:</span>
                                 <el-input placeholder="请输入内容" v-model="searchName">
                                 </el-input>
                                 <i class="el-icon-search" v-on:click="searchByName" style="position: relative; left: -24px; width: 16px; height: 16px; cursor: pointer;"></i>
-                            </div>
+                            </div> -->
                         </div>
                     </el-tab-pane>
-                    <el-tab-pane label="适合我的组合" name=’2>
+                    <el-tab-pane label="适合我的组合" name='2'>
                         <div class="sorts">
                             <div class="trader_type">
                                 <span>交易类型:</span>
@@ -94,11 +94,113 @@
                             </div>
                         </div>
                     </el-tab-pane>
-                    <el-tab-pane label="策略报告" name='4'>策略报告</el-tab-pane>
+                    <el-tab-pane label="策略报告" name='4'>还没有数据.....</el-tab-pane>
                 </el-tabs>
             </div>
         </div>
-        <div class="profit_table">
+        <!-- 组合策略 -->
+        <div class="profit_table" :key="activeName" v-if="activeName=='1' || activeName=='2' ">
+            <el-table v-bind:data="strategys"
+                    stripe
+                    v-on:sort-change="sortStragey"
+                    style="width: 100%"
+                    v-loading="isLoading"
+                    element-loading-text="加载中"
+                    element-loading-spinner="el-icon-loading"
+                    element-loading-background="rgba(0, 0, 0, 0.7)">
+                <el-table-column label="基本信息"
+                                width="200">
+                    <template slot-scope="scope" class="clear">
+                        <a style="display:inline-block;cursor:pointer" @click="goDetail(scope.row)" class="clear left">
+                            <img v-bind:src="scope.row.icon!=null ? iconUrl + scope.row.icon : defaultUrl "/>
+                        </a>
+                        <div class="left">
+                            <span style="margin-top:6px;cursor:pointer" @click="goDetail(scope.row)" class="nickname">{{ scope.row.name }}</span>
+                        </div>                 
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    label="净值"
+                    sortable='custom'
+                    width="130">
+                    <template slot-scope="scope">
+                        <span>0</span>
+                    </template>
+                </el-table-column>
+                <el-table-column 
+                                sortable='custom'
+                                width="100"
+                                label="交易笔数">
+                           <template slot-scope="scope">
+                             <span>0</span>
+                           </template>       
+                </el-table-column>
+
+                <el-table-column label="交易胜率"
+                                sortable='custom'                          
+                                width="100">
+                    <template slot-scope="scope">
+                        <span>
+                             {{ scope.row.winRate.toFixed(2) + '%' }}
+                       </span>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    sortable='custom'
+                    width="120"
+                    label="收益回撤比">
+                    <template slot-scope="scope">
+                        <span>0</span>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    sortable='custom'
+                    label="最小跟投资金">
+                      <template slot-scope="scope">
+                        <span>{{ scope.row.leastMoneyLine/10000 | toDecimal }}万</span>
+                     </template>
+                </el-table-column>
+                <el-table-column
+                    sortable='custom'
+                    width="100"
+                    label="跟投人数">
+                    <template slot-scope="scope">
+                        <span>0</span>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="weekNum"
+                                label="剩余份额/总份额">
+                                  <template slot-scope="scope">
+                                     <div>
+                                         <el-progress  :text-inside="true" :stroke-width="12" :percentage="getPercen(scope.row)" status="exception"></el-progress>
+                                     </div>
+                                  </template> 
+                </el-table-column>
+                <el-table-column
+                    label="跟头操作">
+                    <template slot-scope="scope">
+                        <el-button v-if="scope.row.firmFollowStatus" size="mini"
+                                style="padding: 3px 15px;"
+                                type="danger"
+                                v-on:click="handleFirm(1 ,true,scope.row)">编辑实盘</el-button>
+                        <el-button v-else size="mini"
+                                style="padding: 3px 15px;"
+                                type="danger"
+                                v-on:click="handleFirm(2,true,scope.row)">实盘跟投</el-button>
+                        <el-button v-if="scope.row.simFollowStatus" size="mini"
+                                v-bind:disabled="isDisableSimBtn"
+                                style="padding: 3px 15px; margin-top: 5px; margin-left: 0px;"
+                                v-on:click="handleFirm(3,false,scope.row)">编辑模拟</el-button>
+                        <el-button v-else size="mini"
+                                v-bind:disabled="isDisableSimBtn"
+                                style="padding: 3px 15px; margin-top: 5px; margin-left: 0px;"
+                                v-on:click="handleFirm(4,false,scope.row)">模拟跟投</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </div>
+           <!-- 交易牛人 -->
+        <div class="profit_table " :key="activeName" v-if="activeName=='3'" >
             <el-table v-bind:data="tarders"
                       stripe
                       v-on:sort-change="sortChange"
@@ -108,14 +210,13 @@
                       element-loading-spinner="el-icon-loading"
                       element-loading-background="rgba(0, 0, 0, 0.7)">
                 <el-table-column label="基本信息"
-                                 width="180">
+                                 width="200">
                     <template slot-scope="scope" class="clear">
                         <a style="display:inline-block;cursor:pointer" @click="goDetail(scope.row)" class="clear left">
                             <img v-bind:src="scope.row.icon!=null ? iconUrl + scope.row.icon : defaultUrl "/>
                         </a>
                         <div class="left">
-                             <span style="margin-top:4px;cursor:pointer" @click="goDetail(scope.row)" class="nickname">{{ scope.row.nickname }}</span>
-                            <span style="margin-left: 8px; display: block;margin-top:4px;">富昌经纪商</span>
+                             <span style="margin-top:6px;cursor:pointer" @click="goDetail(scope.row)" class="nickname">{{ scope.row.nickname }}</span>
                         </div>                 
                     </template>
                 </el-table-column>
@@ -154,7 +255,7 @@
                 </el-table-column>
                 <el-table-column
                     sortable='custom'
-                    width="110"
+                    width="100"
                     label="跟投人数">
                     <template slot-scope="scope">
                         <span>{{ scope.row.followPeopleForFrim + scope.row.followPeopleForSim }}</span>
@@ -275,7 +376,12 @@
 </template>
 <script>
 import {navIndex} from '../constants/enum'
-import{followCreate,unFollowBind,getBrokerCompanyAccountOrNullFC,getTraderList,currentUserGameStatus,getTraderForNBList} from '../api/getData.js'
+import{
+    followCreate,unFollowBind,
+getBrokerCompanyAccountOrNullFC,getTraderList,
+currentUserGameStatus,getTraderForNBList,
+getStrategyListByFilter,getStrategyListForMeByFilter
+} from '../api/getData.js'
 import message from '../config/message';
 import{mapState,mapActions} from 'vuex'
 import getUserInfo from '../config/getUserInfo'
@@ -309,7 +415,10 @@ export default {
                 defaultUrl:'../../static/default/30x30.png',
                 arrowUrl:'../../static/default/fl_arrow.png',
                 sort:1, //排序高低
-                sortField:0 //默认排序
+                sortField:0 ,//默认排序
+                startMoney:'',//开始资金
+                endMoney:'', //结束资金
+                strategys:[]
         }
     },
     created(){
@@ -320,9 +429,83 @@ export default {
     },
     methods:{
           ...mapActions(['getUserInfo']),
+          //搜索通过跟投资金
+             searchByMoney(){
+                 if(Number(this.activeName)==1){
+                    this.getStrategyListByFilter(1,0)
+                 }else if(Number(this.activeName)==2){
+                    this.getStrategyListForMeByFilter(1,0)
+                 }else if(Number(this.activeName)==3){
+                     this.getData(1,0)
+                 }else{
+
+                 }
+              
+            },
+             //已用的份额数
+            getPercen(item){
+                //qty 总份额 havingQty 剩余份额
+                let num=item.qty-item.havingQty;
+                return  Number((num/item.qty)*100);
+            },
+            //策略组合排序 和适合我的策略
+            sortStragey(row){
+                if(!row.column) return;
+                this.sort=row.order=="ascending"? 2 : 1;             
+                switch(row.column.label) {
+                    case "净值":
+                        if(Number(this.activeName)==1){
+                            this.getStrategyListByFilter(1, sortField.noSort);
+                        }else if(Number(this.activeName)==2){
+                            this.getStrategyListForMeByFilter(1,sortField.noSort)
+                        }
+                        break;
+                    case "交易笔数":
+                        if(Number(this.activeName)==1){
+                            this.getStrategyListByFilter(1, sortField.qty);
+                        }else if(Number(this.activeName)==2){
+                            this.getStrategyListForMeByFilter(1,sortField.qty)
+                        }
+                        break;
+                    case "交易胜率":
+                       if(Number(this.activeName)==1){
+                            this.getStrategyListByFilter(1, sortField.winRate);
+                        }else if(Number(this.activeName)==2){
+                            this.getStrategyListForMeByFilter(1,sortField.winRate)
+                        }
+                        break;
+                    case "收益回撤比":
+                       if(Number(this.activeName)==1){
+                            this.getStrategyListByFilter(1, 0);
+                        }else if(Number(this.activeName)==2){
+                            this.getStrategyListForMeByFilter(1,0)
+                        }
+                        break;
+                    case "最小跟投资金":
+                      if(Number(this.activeName)==1){
+                            this.getStrategyListByFilter(1, 0);
+                        }else if(Number(this.activeName)==2){
+                            this.getStrategyListForMeByFilter(1,0)
+                        }
+                        break;
+                    case "跟投人数":
+                     if(Number(this.activeName)==1){
+                            this.getStrategyListByFilter(1, sortField.followNUm);
+                        }else if(Number(this.activeName)==2){
+                            this.getStrategyListForMeByFilter(1,sortField.followNUm)
+                        }
+                        break;
+                    default:
+                       if(Number(this.activeName)==1){
+                            this.getStrategyListByFilter(1, 0);
+                        }else if(Number(this.activeName)==2){
+                            this.getStrategyListForMeByFilter(1,0)
+                        }
+                }          
+            },
            //排序搜索过滤(*排序缺降序要修改)
             sortChange(row){     
-             
+           
                if(!row.column) return;
                 this.sort=row.order=="ascending"? 2 : 1;
                
@@ -347,13 +530,14 @@ export default {
                         break;
                     default:
                         this.getData(1, 0);
-                }
-              
+                }          
             },
               //选择国际国内
             selectedWorldOrHome(index) {
-                this.activeWorldOrHome = index;
-                this.getData(1,0);
+                if(Number(this.activeName)==1){
+                     this.activeWorldOrHome = index;
+                     this.getStrategyListByFilter(1,0)
+                }    
             },
               //选择交易的时间
             selectedDate: function (index) {
@@ -383,11 +567,23 @@ export default {
             },
               //选项卡
             handleClick(tab, event) {
+                this.activeName=tab.name;
                 this.activeWorldOrHome = 1;
                 this.selectedTradeDate = "";
                 this.activeDateBtn = 1;
                 this.searchName = "";
-                this.getData(1,sortField.noSort);
+                if(Number(this.activeName)==1){
+                    this.getStrategyListByFilter(1,0)
+                }else if(Number(this.activeName)==2){
+                    this.getStrategyListForMeByFilter(1,0)
+                }else if(Number(this.activeName)===3){
+                 
+                    this.getData(1,0)
+                }else{
+
+                }
+           
+                // this.getData(1,sortField.noSort);
             },
                //确定跟投
            async handleFollow(){
@@ -526,7 +722,8 @@ export default {
                       this.sortField=0
                   }
             },
-            async getData(page,sortVal) {          
+            async getData(page,sortVal) { 
+                
                   const _that = this;
                  _that.isLoading = true;
                  this.getSortField(sortVal);  
@@ -545,7 +742,8 @@ export default {
                     "rows": 10
                 };
                      let res = await getTraderList(data);
-                     if(res && res.success){       
+                     if(res && res.success){   
+                 
                          _that.tarders = res.result.items;              
                         _that.totalNum = res.result.totalCount;
                        }else{
@@ -553,6 +751,62 @@ export default {
                        }  
                  
             
+            },
+            //获取组合策略
+            async getStrategyListByFilter(page,sortVal){
+                  const _that = this;
+                 _that.isLoading = true;
+                 this.getSortField(sortVal);  
+                 setTimeout(() => {
+                     _that.isLoading=false
+                 },300)
+                 let data={
+                        "combiId": 0,
+                        "startMoney":_that.startMoney + '0000',//开始资金
+                        "endMoney":_that.endMoney + '0000',//结束资金
+                        "sortName": _that.sortField,
+                        "wh":_that.activeWorldOrHome,
+                        "sort": _that.sort,
+                        "page": page,
+                        "rows":10
+                 }
+             
+                 let res= await getStrategyListByFilter(data);
+                 if(res && res.success){
+                    
+                    this.strategys=res.result.items;
+                    console.log(this.strategys)
+                    _that.totalNum=res.result.totalCount
+                 }else{
+                     message(_that,res)
+                 } 
+            },
+            //获取适合我的策略
+           async getStrategyListForMeByFilter(page,sortVal){
+                  const _that = this;
+                 _that.isLoading = true;
+                 this.getSortField(sortVal);  
+                 setTimeout(() => {
+                     _that.isLoading=false
+                 },300)
+                 let data={
+                        "combiId": 0,
+                        "startMoney":_that.startMoney + '0000',//开始资金
+                        "endMoney":_that.endMoney + '0000',//结束资金
+                        "sortName": _that.sortField,
+                        "wh":_that.activeWorldOrHome,
+                        "sort": _that.sort,
+                        "page": page,
+                        "rows":10
+                 }  
+                 let res= await getStrategyListForMeByFilter(data);
+          
+                 if(res && res.success){        
+                    this.strategys=res.result.items;
+                    _that.totalNum=res.result.totalCount
+                 }else{
+                     message(_that,res)
+                 } 
             },
             handleCurrentPage(val) {
                 this.getData(val,sortField.noSort);
@@ -572,8 +826,7 @@ export default {
                   res = await currentUserGameStatus(1)
                }else{
                    res= await currentUserGameStatus(2)
-               }
-             
+               }             
                if(res && res.success)
                {
                    this.getData(1,sortField.noSort)
@@ -585,16 +838,23 @@ export default {
                         }
                     }
                }
-               
             },
-            goDetail(row){             
-                let url=`tradeDetail/${row.id}/${row.worldOrHome}/1`
-                this.$router.push({path:url})
+            goDetail(row){
+            
+                if(Number(this.activeName)==1 || Number(this.activeName)==2 ){
+                   let url=`tradeDetail/${row.id}/${row.wh}/1`
+                    this.$router.push({path:url})
+                }else if(Number(this.activeName)==3){
+                      let url=`tradeDetail/${row.id}/${row.worldOrHome}/1`
+                       this.$router.push({path:url})
+                }             
+            
             }
     },
     mounted(){
-         this.getUserGameStatus();
-         this.getData(1,sortField.noSort) 
+        //  this.getUserGameStatus();
+         this.getStrategyListByFilter(1,sortField.noSort)
+        //  this.getData(1,sortField.noSort) 
     }
 }
 </script>
@@ -678,7 +938,7 @@ export default {
       min-height: 500px;
   }
      .profit_table a img {
-         margin-top: 10px;
+        
         width: 30px;
         float: left;
         border-radius: 50%;
@@ -687,10 +947,14 @@ export default {
          display: block;
      }
      .profit_table .nickname {
-         color: #333;
+        color: #333;
         display: inline-block;
         font-size: 14px;
         margin-left: 11px;
+        width: 131px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
      }
       .profit_table .traderOrfollow {
           font-size: 12px;
@@ -715,6 +979,9 @@ export default {
                line-height: 59px;
             }
         }
+        .el-progress-bar__innerText{
+             margin-top: -5px;
+         }
     }
       .traderMain .trader_content h3 {
          font-size: 18px;

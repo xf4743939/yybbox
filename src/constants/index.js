@@ -127,7 +127,7 @@ const getAllForNormalFC='/api/services/app/brokerCompanyService/GetAllForNormalF
 const createBrokerCompanyAccountFC="/api/services/app/brokerCompanyAccountService/CreateBrokerCompanyAccountFC"
 
 //注册
-const register='/Register/Register'
+const register='/api/services/app/userService/CreateUser'
 
 //忘记密码
 const findPassword="/api/services/app/userService/FindPassword"
@@ -143,6 +143,15 @@ const getArticleById="/api/services/app/articleService/Get?id="
 
 //获取推荐策略组合
 const getAllForTop="/api/services/app/combiStrategyService/GetAllForTop?wh="
+
+//获取汇率
+const getAllexchangeRate='/api/services/app/exchangeRateService/GetAll'
+
+//获取组合策略列表
+const getStrategyListByFilter="/api/services/app/combiStrategyService/GetStrategyListByFilter"
+
+//适合我的组合策略
+const getStrategyListForMeByFilter= "/api/services/app/combiStrategyService/GetStrategyListForMeByFilter"
 
 let api={
     getArticleListByPageFilter:getArticleListByPageFilter,
@@ -192,7 +201,10 @@ let api={
     getArticleTypeList:getArticleTypeList,
     getArticleList:getArticleList,
     getArticleById:getArticleById,
-    getAllForTop:getAllForTop
+    getAllForTop:getAllForTop,
+    getAllexchangeRate:getAllexchangeRate,
+    getStrategyListByFilter:getStrategyListByFilter,
+    getStrategyListForMeByFilter:getStrategyListForMeByFilter
 }
 
 export default api;

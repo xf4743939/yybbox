@@ -12,12 +12,12 @@
         <div class="detail_info">
             <ul class="clear"  v-if="userInfoForTrader">
                 <li class="left">
-                     <img :src=" !userInfoForTrader.icon ? '../../../static/default/traderTop.png' : userInfoForTrader.icon " class="left">
+                     <img :src=" !userInfoForTrader.icon ? '../../../static/default/traderGroup.png' : 'userInfoForTrader.icon' " class="left">
                     <div class="clear left info">
                         <img  src="../../../static/default/50x50.png" class="left info_left">
                         <div class="left info_right">
                             <p>xxxx组合<img :src="traderUrl" alt=""></p>
-                            <p ><span>{{ isTrader ? '交易者' : '跟随者' }}</span>个人</p>
+                            <p ><span>{{ isTrader ? '交易者' : '跟随者' }}</span>组合</p>
                             <p class="info_num"> 
                                 <img src="../../../static/default/circle.png" alt="">
                                 <span>被跟投人数</span>
@@ -278,14 +278,15 @@ export default {
             }
         
         },
-      async getUserGameStatus(){
+     async getUserGameStatus(){
                const _that=this;
                let res;
                if(this.modalInfo.worldOrHome===1){
                   res = await currentUserGameStatus(1)
                }else{
                    res= await currentUserGameStatus(2)
-               }           
+               }
+             
                if(res && res.success)
                {
                     
@@ -296,7 +297,8 @@ export default {
                             _that.isDisableSimBtn = false;
                         }
                     }
-               }            
+               }
+               
         },
     tradeNav(tab,event){
      

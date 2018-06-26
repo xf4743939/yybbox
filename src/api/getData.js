@@ -157,3 +157,12 @@ export const getArticleById= data => post(api.getArticleById + data)
 
 //获取推荐组合策略
 export const getAllForTop= data => post(api.getAllForTop + data)
+
+//获取汇率
+export const getAllexchangeRate = () => post(api.getAllexchangeRate)
+
+//获取组合策略列表
+export const getStrategyListByFilter= data =>post(api.getStrategyListByFilter,data)
+
+//适合我的组合
+export const getStrategyListForMeByFilter= data => post(api.getStrategyListForMeByFilter,data)

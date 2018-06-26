@@ -10,7 +10,7 @@
                                 <div class="d3">
                                     <p class="d31">会员登录</p>
                                     <p class="d32">
-                                        没账号？<a href="/user/register">立即注册</a>
+                                        没账号？<a href="/register">立即注册</a>
                                     </p>
                                 </div>
 
@@ -58,6 +58,7 @@
  import footBom from '../components/footer'
  import {mapState,mapActions, mapMutations} from 'vuex'
  import {setStore} from '../config/mUtils'
+ import md5 from 'js-md5'
 export default {
    data(){  
       return {
@@ -90,9 +91,12 @@ export default {
                     this.loginText = "登录密码为空";
                     return false;
                 } else {                
-                    this.loginText = "登录中....";              
+                     this.loginText = "登录中....";  
+                     _that.password=md5(_that.password).toUpperCase()
+                            
                      let options = "userName=" + _that.userName + "&password=" + _that.password + "&grant_type=password&client_id=app&client_secret=app";                  
                      let res= await getToken(options);
+                    
                      if(res && res.access_token){
                          setStore('token', res);
                          let response=await getCurrentLoginInformations();

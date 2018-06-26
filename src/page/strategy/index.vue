@@ -42,6 +42,7 @@ export default {
         .container_trader h3 {
             font-size: 20px;
             color: #666;
+            margin-bottom: 20px;
           
         }
 </style>

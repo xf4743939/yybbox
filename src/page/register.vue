@@ -147,10 +147,12 @@ export default {
                     return false
                  }
                  let data={
-                     phoneNumber:_that.registerForm.phoneNumber,
-                     Password:_that.registerForm.password,
-                     Code:_that.registerForm.code,
-                     Nickname:_that.registerForm.nickName
+                        "phoneNumber":_that.registerForm.phoneNumber,
+                        "webIdType":0,
+                        "nickname": _that.registerForm.nickName,
+                        "password":_that.registerForm.password,
+                        "code":_that.registerForm.code,
+                        "seoParentId": 0
                  }
                   _that.registerForm.registerName="注册中，请稍等...."
                  let res =await register(data)
@@ -163,10 +165,9 @@ export default {
                          })
                       },1000)
                  }else{
-                      _that.registerForm.registerName="立即注册"
-                     
+                      _that.registerForm.registerName="立即注册"                   
                       _that.$message({
-                          message:res.result,
+                          message:res.error.message,
                           type:'warning'
                       })
                      

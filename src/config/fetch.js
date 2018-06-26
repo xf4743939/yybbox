@@ -4,8 +4,7 @@ import router from '../router/index'
 
 axios.defaults.timeout=1000;
 axios.defaults.baseURL="http://192.168.1.201:10086";
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-
+ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
 axios.interceptors.request.use(
   config => {

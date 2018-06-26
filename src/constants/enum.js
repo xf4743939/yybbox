@@ -33,6 +33,18 @@ export const sortField={
    followProfit:8 //跟随获利 
 }
 
+//策略搜索排序字段
+export const sortFieldByStrategy={
+    noSort:0, //默认排序
+    profit:1, //盈亏金额
+    winRate:2,//交易胜率
+    avgAmt:3, //平均获利点数
+    proAmt:4, //盈亏点数
+     qty:5,//交易手数
+    followNUm:6,//跟投人数
+    followProfit:7 //跟随获利 
+ }
+
 //排序的方向
 export const sortDirection={
     desc:1, //从高到底
