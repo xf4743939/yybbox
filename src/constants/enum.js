@@ -95,10 +95,8 @@ export const tableField={
     account:account,
     trader:trader,
     delegate:delegate,
-    followerFollowing,
-    followerFollowed
+    followerFollowing:followerFollowing,
+    followerFollowed:followerFollowed
 }
-
-
 
 export const prdUrl='http://follow.yybbox.com';

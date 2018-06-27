@@ -81,6 +81,7 @@
  import {mapState,mapActions, mapMutations} from 'vuex'
  import {getStore, removeStore} from '../config/mUtils'
 import {getCurrentLoginInformations} from '../api/getData'
+import {prdUrl} from '../constants/enum'
  export default {
     data(){
         return{
@@ -89,6 +90,7 @@ import {getCurrentLoginInformations} from '../api/getData'
            activeIndex:1,
            userInfos:null,
            imgUrl:require('../images/trade/50x50.png'),//默认头像
+           prdUrl:prdUrl
         }
     },
     computed:{     
@@ -133,7 +135,7 @@ import {getCurrentLoginInformations} from '../api/getData'
              if(!res.result.user.icon){
                    this.imgUrl=require('../images/trade/50x50.png')    
              }else{
-                  this.imgUrl=this.userInfos.icon;     
+                  this.imgUrl=this.prdUrl + this.userInfos.icon;     
              }
           }else{
              console.log(res.error.message)  

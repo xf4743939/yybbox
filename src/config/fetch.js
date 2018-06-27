@@ -2,7 +2,7 @@ import axios from 'axios'
 import {getStore,removeStore} from './mUtils'
 import router from '../router/index'
 
-axios.defaults.timeout=1000;
+axios.defaults.timeout=3000;
 axios.defaults.baseURL="http://192.168.1.201:10086";
  axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 

@@ -237,8 +237,8 @@
                     <template slot-scope="scope">
                         <span 
                         v-if="(scope.row.oneUserInfo.totalPlusProfitQty + scope.row.oneUserInfo.totalMinusProfitQty)">
-                        {{ (scope.row.oneUserInfo.totalPlusProfitQty/(scope.row.oneUserInfo.totalPlusProfitQty + scope.row.oneUserInfo.totalMinusProfitQty)) | toDecimal }}</span>
-                        <span v-else>{{ (scope.row.oneUserInfo.totalPlusProfitQty/1) | toDecimal }}</span>
+                        {{ (scope.row.oneUserInfo.totalPlusProfitQty/(scope.row.oneUserInfo.totalPlusProfitQty + scope.row.oneUserInfo.totalMinusProfitQty)) | toPercent }}</span>
+                        <span v-else>{{ (scope.row.oneUserInfo.totalPlusProfitQty/1) | toPercent }}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -246,7 +246,7 @@
                     width="130"
                     label="收益回撤比">
                     <template slot-scope="scope">
-                        <span>{{ scope.row.oneUserInfo.sortPercent | toDecimal }}</span>
+                        <span>{{ Number(scope.row.oneUserInfo.sortPercent).toFixed(2) + "%" }}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -298,10 +298,10 @@
             </el-pagination>
         </div>
 
-        <!-- 跟投弹窗 -->
+        <!-- 交易牛人跟投弹窗 -->
         <el-dialog
                  class="followDialog"
-            v-bind:visible.sync="isVisible"          
+            v-bind:visible.sync="isVisible2"          
                    >
             <span slot="title">
                   <span v-if="worldOrHome==1" style="position: relative; left: 5px; font-weight: bold;" >国际</span>
@@ -372,6 +372,9 @@
                 <el-button class="cancelFollow" v-if="(clickBtn==1 || clickBtn==3 )" v-on:click="cancelFollow">取消跟投</el-button>
             </span>
         </el-dialog>
+
+          <!-- 组合策略modal -->
+        <stragey-modal :isVisible="isVisible"     v-on:hideModal="hideModal" v-if="initData" :modalInfo="modalInfo" :groupStrateInfo="groupStrateInfo"></stragey-modal>
     </div>    
 </template>
 <script>
@@ -397,7 +400,11 @@ export default {
                 totalNum: 0,
                 isLoading: true,
                 isShow:true, //message显示
-                isVisible:false,//跟投dialog
+                isVisible:false,
+                initData:false,//控制组合策略弹窗
+                modalInfo:null, //组合策略弹窗传参
+                isVisible2:false,//跟投交易员dialog
+                groupStrateInfo:null,//组合策略信息
                 num1: 1, //固定手数值
                 num2: 1,  //百分比
                 activeStyle: 1, //1表示选中固定数量2.表示按比例下单
@@ -602,7 +609,7 @@ export default {
                 }
                 let res= await followCreate(data);
                 if(res && res.success){
-                     _that.isVisible=false //dialog隐藏
+                     _that.isVisible2=false //dialog隐藏
                      _that.getData(1,sortField.noSort);
                 }else{
                      message(_that,res)
@@ -619,7 +626,7 @@ export default {
                 }
                let res = await unFollowBind(data);
                if(res && res.success){
-                      _that.isVisible = false; //dialog隐藏                  
+                      _that.isVisible2 = false; //dialog隐藏                  
                         _that.getData(1,sortField.noSort);
                }else{
                    message(_that,res)
@@ -683,7 +690,7 @@ export default {
                             }
                            //获取经济商账户，有就让他跟投
                             if(res && res.success){
-                                _that.isVisible = true;
+                                _that.isVisible2 = true;
                             }else{
                                  message(_that,res)
                             }
@@ -741,11 +748,12 @@ export default {
                     "page": page,
                     "rows": 10
                 };
+               
                      let res = await getTraderList(data);
                      if(res && res.success){   
-                 
                          _that.tarders = res.result.items;              
                         _that.totalNum = res.result.totalCount;
+                    
                        }else{
                               message(_that,res)
                        }  
@@ -768,7 +776,7 @@ export default {
                         "wh":_that.activeWorldOrHome,
                         "sort": _that.sort,
                         "page": page,
-                        "rows":10
+                        "rows":1000
                  }
              
                  let res= await getStrategyListByFilter(data);
@@ -839,10 +847,9 @@ export default {
                     }
                }
             },
-            goDetail(row){
-            
+            goDetail(row){           
                 if(Number(this.activeName)==1 || Number(this.activeName)==2 ){
-                   let url=`tradeDetail/${row.id}/${row.wh}/1`
+                   let url=`groupDetail/${row.id}/${row.wh}`
                     this.$router.push({path:url})
                 }else if(Number(this.activeName)==3){
                       let url=`tradeDetail/${row.id}/${row.worldOrHome}/1`

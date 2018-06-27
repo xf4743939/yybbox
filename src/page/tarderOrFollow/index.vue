@@ -12,11 +12,11 @@
         <div class="detail_info">
             <ul class="clear"  v-if="userInfoForTrader">
                 <li class="left">
-                     <img :src=" !userInfoForTrader.icon ? '../../../static/default/traderTop.png' : userInfoForTrader.icon " class="left">
+                     <img src="../../../static/default/traderTop.png" class="left">
                     <div class="clear left info">
-                        <img  src="../../../static/default/50x50.png" class="left info_left">
+                        <img  style="border-radius:50%;" :src="!userInfoForTrader.icon ? '../../../static/default/50x50.png' : prdUrl + userInfoForTrader.icon "  class="left info_left">
                         <div class="left info_right">
-                            <p>xxxx组合<img :src="traderUrl" alt=""></p>
+                            <p>{{ userInfoForTrader.nickname }}<img :src="traderUrl" alt=""></p>
                             <p ><span>{{ isTrader ? '交易者' : '跟随者' }}</span>个人</p>
                             <p class="info_num"> 
                                 <img src="../../../static/default/circle.png" alt="">
@@ -75,11 +75,15 @@
         <div class="trader_wrap">
             <el-tabs v-model="tradeActive" @tab-click="tradeNav" class="trade_navs">
                 <el-tab-pane label="业绩" name="1">业绩</el-tab-pane>
-                <el-tab-pane label="策略" name="2">策略</el-tab-pane>
+                <el-tab-pane label="策略" name="2">
+                   <strategy-detail></strategy-detail>
+                </el-tab-pane>
                 <el-tab-pane label="跟投" name="3">
+                    <!-- 跟投组件 -->
                    <follow-list v-if="isShowFollowTable" :isTrader="isTrader" :userInfoForTrader="userInfoForTrader" ></follow-list>
                 </el-tab-pane>
                 <el-tab-pane label="订单" name="4">
+                    <!-- 订单组件 -->
                     <order-list v-if="showOrderTable" :worldOrHome="this.modalInfo.worldOrHome" :userInfoForTrader="userInfoForTrader" ></order-list>
                 </el-tab-pane>
             </el-tabs>
@@ -100,6 +104,9 @@
  import followModal from '../../components/followModal'
  import followList from '../../components/followList'
  import orderList from '../../components/orderList'
+ import {prdUrl} from '../../constants/enum'
+ import strategyDetail from '../../components/strategy'
+
 export default {
     data(){
         return{
@@ -131,7 +138,7 @@ export default {
             avator:'', //用户头像
             btnStatus:btnStatus,//判断按钮状态
             isShow:true, //message显示     
-            isDisableSimBtn: false, //参加模拟比赛禁用
+            prdUrl:prdUrl,//服务器的地址
         }
     },
     components:{
@@ -139,7 +146,8 @@ export default {
       footBom,
       followModal,
       followList,
-      orderList
+      orderList,
+      strategyDetail
     },
     created(){
        getUserInfo(this);
@@ -195,6 +203,7 @@ export default {
        
          if(res && res.success){
              this.userInfoForTrader=res.result.items[0];
+           
            
          }else{
            message(_that,res)
@@ -316,7 +325,7 @@ export default {
        },
     },
     mounted(){
-    
+      
         this.getUserGameStatus();
         this.getTraderInfo();
     }

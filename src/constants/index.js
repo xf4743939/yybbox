@@ -153,6 +153,16 @@ const getStrategyListByFilter="/api/services/app/combiStrategyService/GetStrateg
 //适合我的组合策略
 const getStrategyListForMeByFilter= "/api/services/app/combiStrategyService/GetStrategyListForMeByFilter"
 
+//获取组合策略详细信息
+const getCombiStrategyDetail="/api/services/app/combiStrategyService/GetCombiStrategyDetail"
+
+//组合策略跟投
+const strategyFollow="/api/services/app/combiStrategyService/Follow"
+
+ //组合策略取消跟投
+const unFollowStrategy="/api/services/app/combiStrategyService/UnFollow"
+
+
 let api={
     getArticleListByPageFilter:getArticleListByPageFilter,
     getTraderForProfitSortList:getTraderForProfitSortList,
@@ -204,7 +214,10 @@ let api={
     getAllForTop:getAllForTop,
     getAllexchangeRate:getAllexchangeRate,
     getStrategyListByFilter:getStrategyListByFilter,
-    getStrategyListForMeByFilter:getStrategyListForMeByFilter
+    getStrategyListForMeByFilter:getStrategyListForMeByFilter,
+    getCombiStrategyDetail:getCombiStrategyDetail,
+    strategyFollow:strategyFollow,
+    unFollowStrategy:unFollowStrategy
 }
 
 export default api;

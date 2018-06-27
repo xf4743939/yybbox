@@ -166,3 +166,12 @@ export const getStrategyListByFilter= data =>post(api.getStrategyListByFilter,da
 
 //适合我的组合
 export const getStrategyListForMeByFilter= data => post(api.getStrategyListForMeByFilter,data)
+
+//获取组合策略的详细信息
+export const getCombiStrategyDetail= data => post(api.getCombiStrategyDetail,data)
+
+//组合策略跟投
+export const strategyFollow= data => post(api.strategyFollow,data)
+
+ //组合策略取消跟投
+ export const unFollowStrategy= data => post(api.unFollowStrategy,data)

@@ -6,17 +6,16 @@
 
  let baseUrl='';
  let routerMode='history';
- let baseImgPath;
+ let baseImgUrl;
 
  if(process.env.NODE_ENC == 'development'){
-     baseUrl='http://localhost:10086';
-     baseImgPath='http://localhost:10086/img/'
+     baseImgUrl='http://follow.yybbox.com';
  }else{
-    baseUrl='http://http://follow.yybbox.com';
+    baseUrl='http://follow.yybbox.com';
  }
 
  export {
      baseUrl,
      routerMode,
-     baseImgPath
+     baseImgUrl
  }

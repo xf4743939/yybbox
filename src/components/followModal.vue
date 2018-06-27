@@ -4,7 +4,7 @@
          <el-dialog
                  class="followDialog"
                  :before-close="hideModal"
-                v-bind:visible.sync="isVisible"          
+                v-bind:visible.sync="isVisible2"          
                    >
             <span slot="title">
                   <span v-if="worldOrHome==1" style="position: relative; left: 5px; font-weight: bold;" >国际</span>
@@ -99,7 +99,7 @@ export default {
     created(){
       
     },
-    props:['isVisible','modalInfo'],
+    props:['isVisible2','modalInfo'],
     methods:{
            hideModal(){
                this.$emit('hideModal')      

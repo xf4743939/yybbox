@@ -86,6 +86,8 @@ const problem= r =>require.ensure([],() =>r(require('../page/introduce/subpage/p
 
 const problemDetail= r =>require.ensure([],() =>r(require('../page/introduce/subpage/problemDetail.vue')),'problemDetail')
 
+const groupDetail =r => require.ensure([],() =>r(require('../page/tarderOrFollow/group.vue')),'groupDetail')
+
 const routes=[
   {
     path:'/',
@@ -100,8 +102,12 @@ const routes=[
     component:login
   },
   {
-     path:'/tradeDetail/:traderUserId/:worldOrHomw/:isTrader',
+     path:'/tradeDetail/:traderUserId/:worldOrHome/:isTrader',
      component:tradeDetail
+  },
+  {
+     path:'/groupDetail/:comId/:worldOrHome',
+     component:groupDetail
   },
   {
     path:'/user',
