@@ -1,50 +1,35 @@
 <template>
-     <div class="strategy_info">
+     <div class="strategy_info" v-if="strateInfo">
          <h2>策略信息</h2>
          <div class="strategy_item">
               <h3>包含策略</h3>
               <div class="item_content">
                    <div class="item_card clear">
-                       <el-card class="box-card left">
+                       <el-card class="box-card left" v-for="(item,index) in strates ">
                             <div class="text item1">
-                                <span>宝盈量化01</span>
+                                <span>{{ item.name }}</span>
                                 <img src="../../static/default/trade.png">    
                             </div>
                              <div class="text item2">
                                 <span>最少跟投资金</span>
                                 <span>
-                                    <span style="color:#fc543c;">10.00</span>
+                                    <span style="color:#fc543c;">{{ (item.leastMoneyLine/10000).toFixed(2) }}</span>
                                     <span>万元/份</span>
                                 </span>
                             </div>
                             <div class="text item3">
                                 <span>手数</span>
                                 <span>
-                                    <span style="color:#fc543c;">2</span>
+                                    <span style="color:#fc543c;">{{ item.everyQty }}</span>
                                     <span>手/份</span>
                                 </span>
                             </div>
                             <div class="text item4">
                                 <span>年费</span>
                                 <span>
-                                    <span style="color:#fc543c;">100.00</span>
+                                    <span style="color:#fc543c;">{{ item.fee.toFixed(2) }}</span>
                                     <span>元/份</span>
                                 </span>
-                            </div>
-                       </el-card>
-                       <el-card class="box-card left">
-                            <div v-for="o in 4" :key="o" class="text item">
-                                {{'列表内容 ' + o }}
-                            </div>
-                       </el-card>
-                        <el-card class="box-card left">
-                            <div v-for="o in 4" :key="o" class="text item">
-                                {{'列表内容 ' + o }}
-                            </div>
-                       </el-card>
-                      <el-card class="box-card left">
-                            <div v-for="o in 4" :key="o" class="text item">
-                                {{'列表内容 ' + o }}
                             </div>
                        </el-card>
                   </div>
@@ -52,21 +37,21 @@
                         <div >
                            <span>最少跟投总资金</span>
                            <span>
-                               <span style="color:#fc543c;">10.00</span>
+                               <span style="color:#fc543c;">{{ (leastMoney/10000).toFixed(2) }}</span>
                                <span>万元/份</span>
                           </span>
                         </div>
                         <div >
                            <span >总手数</span>
                            <span>
-                               <span style="color:#fc543c;">2</span>
+                               <span style="color:#fc543c;">{{ allNum }}</span>
                                <span>手/份</span>
                           </span>
                         </div>
                         <div >
                            <span>总年费</span>
                            <span>
-                               <span style="color:#fc543c;">100.00</span>
+                               <span style="color:#fc543c;">{{ allFee }}</span>
                                <span>元/份</span>
                           </span>
                         </div>
@@ -76,15 +61,22 @@
 
         <div class="strategy_item">
             <h3>交易描述</h3>
-            <div class="item_content dec">
-                交易描述交易描述交易描述
+            <div class="item_content dec" v-if="!strateInfo.description" >
+                还没有数据.....
+            </div>
+            <div class="item_content dec" v-else>
+               {{ strateInfo.description }}
             </div>            
         </div> 
 
          <div class="strategy_item">
             <h3>交易品种</h3>
             <div class="item_content types">
-                交易描述交易描述交易描述
+                 <!-- <ul class="clear products">
+                     <li class="left">很值</li>
+                     <li class="left">过天济南的</li>
+                 </ul> -->
+                 还没有数据....
             </div>            
         </div> 
         <div class="strategy_item">
@@ -94,21 +86,21 @@
                         <div class="infos">
                            <span>最大跟投份额</span>
                            <span>
-                               <span style="color:#fc543c;">10.00</span>
+                               <span style="color:#fc543c;">0</span>
                                <span>份</span>
                           </span>
                         </div>
                         <div class="infos">
                            <span>份额年费</span>
                            <span>
-                               <span style="color:#fc543c;">1000.00</span>
+                               <span style="color:#fc543c;">{{allFee}}</span>
                                <span>元/份</span>
                           </span>
                         </div>
                         <div class="infos">
                            <span>最少跟投资金</span>
                            <span>
-                               <span style="color:#fc543c;">56465116.00</span>
+                               <span style="color:#fc543c;">{{ strateInfo.leastMoneyLine.toFixed(2)}}</span>
                                <span>元/份</span>
                           </span>
                         </div>
@@ -119,7 +111,38 @@
 </template>
 <script>
 export default {
-    
+    data(){
+        return{
+              strateInfo:null, //策略信息
+              strates:[],//策略集合
+              leastMoney:0,//最少跟投总资金
+              allNum:0,//最少跟投总数
+              allFee:0,//最少跟投总费率
+        }
+    },
+    props: ['groupStrateInfo'],
+    methods:{
+        initData(){
+            debugger;
+           this.strateInfo=this.groupStrateInfo
+           this.strates=this.groupStrateInfo.strategyItemList
+           this.calMoney(this.strates)
+        },
+        //计算总年费手数
+        calMoney(items){
+            const _that=this;
+            if(!items)return;
+            items.forEach( item=>{
+                _that.leastMoney+=item.leastMoneyLine
+                _that.allNum+=item.everyQty
+                _that.allFee+=item.fee
+            } )
+        },
+    },
+    mounted(){
+        this.initData();
+        console.log(this.groupStrateInfo)
+    }
 }
 </script>
 <style lang="less">
@@ -149,6 +172,18 @@ export default {
            .types{
                  padding-left: 25px;
                min-height: 30px;
+               .products{
+                   li{
+                       background: #fc543c;
+                        color: #fff;
+                        float: left;
+                        padding: 6px 16px;
+                        border-radius: 6px;
+                        min-width: 40px;
+                        text-align: center;
+                        margin-left: 20px;
+                   }
+               }
            }
            .item_content{
                margin-bottom: 20px;

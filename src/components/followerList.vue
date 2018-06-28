@@ -3,9 +3,8 @@
         <div class="trader_content">
             <h3>跟投牛人排行榜</h3>
             <div class="trade_tips">
-                <el-tabs type="border-card" v-model="activeName" v-on:tab-click="handleClick">
-                    <el-tab-pane label="精选组合" name='1'>
-                        <div class="sorts">
+                   <div class="panel">
+                       <div class="sorts">
                             <div class="trader_type">
                                 <span>交易类型:</span>
                                 <button  v-bind:class="activeWorldOrHome==1 ? 'activeBtn' :'' "  v-on:click="selectedWorldOrHome(1)">国际期货</button>
@@ -33,69 +32,7 @@
                                 <i class="el-icon-search" v-on:click="searchByName" style="position: relative; left: -24px; width: 16px; height: 16px; cursor: pointer;"></i>
                             </div>
                         </div>
-                    </el-tab-pane>
-                    <el-tab-pane label="适合我的组合" name=’2>
-                        <div class="sorts">
-                            <div class="trader_type">
-                                <span>交易类型:</span>
-                                <button v-bind:class="activeWorldOrHome==1 ? 'activeBtn' :'' " v-on:click="selectedWorldOrHome(1)">国际期货</button>
-                                <button v-bind:class="activeWorldOrHome==2 ? 'activeBtn' :'' " v-on:click="selectedWorldOrHome(2)">国内期货</button>
-                            </div>
-                            <div class="trader_time">
-                                <span>近期有交易:</span>
-                                <button v-bind:class="activeDateBtn==1 ? 'activeBtn1' :'' " v-on:click="selectedDate(1)">全部</button>
-                                <button v-bind:class="activeDateBtn==2 ? 'activeBtn1' :'' " v-on:click="selectedDate(2)">近一日</button>
-                                <button v-on:click="selectedDate(3)" v-bind:class="activeDateBtn==3 ? 'activeBtn1' :'' ">近一周</button>
-                                <button v-on:click="selectedDate(4)" v-bind:class="activeDateBtn==4 ? 'activeBtn1' :'' ">近一个月</button>
-                            </div>
-                            <div class="money">
-                                <span>策略资金:</span>
-                                <input type="text" />
-                                <span>-</span>
-                                <input type="text" style="margin-left: 0px;" />
-                                <span>万元</span>
-                                <button class="money_save">确定</button>
-                            </div>
-                            <div class="tarder_nickname">
-                                <span>搜索昵称:</span>
-                                <el-input placeholder="请输入内容" v-model="searchName">
-                                </el-input>
-                                <i class="el-icon-search" v-on:click="searchByName" style="position: relative; left: -24px; width: 16px; height: 16px; cursor: pointer;"></i>
-                            </div>
-                        </div>
-                    </el-tab-pane>
-                    <el-tab-pane label="交易牛人" name='3'>
-                        <div class="sorts">
-                            <div class="trader_type">
-                                <span>交易类型:</span>
-                                <button v-bind:class="activeWorldOrHome==1 ? 'activeBtn' :'' " v-on:click="selectedWorldOrHome(1)">国际期货</button>
-                                <button v-bind:class="activeWorldOrHome==2 ? 'activeBtn' :'' " v-on:click="selectedWorldOrHome(2)">国内期货</button>
-                            </div>
-                            <div class="trader_time">
-                                <span>近期有交易:</span>
-                                <button v-bind:class="activeDateBtn==1 ? 'activeBtn1' :'' " v-on:click="selectedDate(1)">全部</button>
-                                <button v-bind:class="activeDateBtn==2 ? 'activeBtn1' :'' " v-on:click="selectedDate(2)">近一日</button>
-                                <button v-on:click="selectedDate(3)" v-bind:class="activeDateBtn==3 ? 'activeBtn1' :'' ">近一周</button>
-                                <button v-on:click="selectedDate(4)" v-bind:class="activeDateBtn==4 ? 'activeBtn1' :'' ">近一个月</button>
-                            </div>
-                            <div class="money">
-                                <span>策略资金:</span>
-                                <input type="text" />
-                                <span>-</span>
-                                <input type="text" style="margin-left: 0px;" />
-                                <span>万元</span>
-                                <button class="money_save">确定</button>
-                            </div>
-                            <div class="tarder_nickname">
-                                <span>搜索昵称:</span>
-                                <el-input placeholder="请输入内容" v-model="searchName">
-                                </el-input>
-                                <i class="el-icon-search" v-on:click="searchByName" style="position: relative; left: -24px; width: 16px; height: 16px; cursor: pointer;"></i>
-                            </div>
-                        </div>
-                    </el-tab-pane>
-                    <el-tab-pane label="策略报告" name='4'>策略报告</el-tab-pane>
-                </el-tabs>
+                </div>
             </div>
         </div>
         <div class="profit_table">
@@ -113,9 +50,9 @@
                         <a style="display:inline-block;cursor:pointer" @click="goDetail(scope.row)" class="clear left">
                             <img v-bind:src="scope.row.icon!=null ? iconUrl + scope.row.icon : defaultUrl "/>
                         </a>
-                        <div class="left">
-                             <span style="margin-top:4px;cursor:pointer" @click="goDetail(scope.row)" class="nickname">{{ scope.row.nickname }}</span>
-                            <span style="margin-left: 8px; display: block;margin-top:4px;">富昌经纪商</span>
+                        <div class="left" style="min-width:90px;">
+                             <span style="margin-top:16px;cursor:pointer" @click="goDetail(scope.row)" class="nickname">{{ scope.row.nickname }}</span>
+                         
                         </div>                 
                     </template>
                 </el-table-column>
@@ -158,7 +95,7 @@
                 </el-table-column>
                 <el-table-column label="走势图">
                      <template slot-scope="scope">
-                        <span style="display:inline-block;height:100%;width:100%" :id="scope.row.i">12</span>
+                        <span style="display:inline-block;height:100%;width:100%" :id="scope.row.i">--</span>
                     </template>    
                 </el-table-column>
         
@@ -350,7 +287,7 @@ export default {
                 this.getData(val,sortField.noSort);
             },
             goDetail(row){             
-                let url=`tradeDetail/${row.id}/${row.worldOrHome}/0`
+                let url=`followDetail/${row.id}/${row.worldOrHome}/0`
                 this.$router.push({path:url})
             }
     },
@@ -360,10 +297,16 @@ export default {
 }
 </script>
 <style lang="less">
-      .trade_tips .el-tabs--border-card>.el-tabs__header .el-tabs__item.is-active {
-            color: #FD8A88;
-            border-top: 4px solid #EF5E5D;
-        }
+      .trade_tips{
+          margin-bottom: 10px;
+          .panel{
+                padding: 20px 15px;
+                background: #fff;
+                border: 1px solid #dcdfe6;
+                -webkit-box-shadow: 0 2px 4px 0 rgba(0,0,0,.12), 0 0 6px 0 rgba(0,0,0,.04);
+                box-shadow: 0 2px 4px 0 rgba(0,0,0,.12), 0 0 6px 0 rgba(0,0,0,.04);
+          }
+      }
         .trader_type button {
     
             border-radius: 18px;
@@ -479,8 +422,8 @@ export default {
     }
       .traderMain .trader_content h3 {
          font-size: 18px;
-       color: #666;
-       margin-bottom: 5px; 
+       color: #333;
+       margin-bottom: 15px; 
        font-weight: 400;
       }
 </style>

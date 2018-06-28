@@ -4,7 +4,8 @@
             <div class="item-swiper">
                 <local-swiper ref="awesomeSwiperB" v-bind:options="swiperOption">
                     <local-slide v-for="item in strategys" :key="item.id">
-                         <div class="strategy">
+                        <router-link :to="'/groupDetail/' +item.id +'/' +item.wh ">
+                          <div class="strategy">
                              <div class="strategy_top clear">
                                   <p style="height:35px;line-height:35px;background:#fc543c;color:#fff;">{{ item.name }}</p>
                              </div>
@@ -40,6 +41,8 @@
                                  </div>
                              </div>
                          </div>    
+                        </router-link>
+                        
                     </local-slide>
                     <div class="swiper-pagination" slot="pagination"></div>
                 </local-swiper>          
@@ -119,6 +122,7 @@ export default {
                message(this,res)
            }
        },
+   
        drawLine(id,item){
     
             this.charts=echarts.init(document.getElementById(id))

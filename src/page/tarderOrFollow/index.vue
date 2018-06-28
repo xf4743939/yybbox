@@ -13,14 +13,19 @@
             <ul class="clear"  v-if="userInfoForTrader">
                 <li class="left">
                      <img src="../../../static/default/traderTop.png" class="left">
+                
                     <div class="clear left info">
                         <img  style="border-radius:50%;" :src="!userInfoForTrader.icon ? '../../../static/default/50x50.png' : prdUrl + userInfoForTrader.icon "  class="left info_left">
                         <div class="left info_right">
-                            <p>{{ userInfoForTrader.nickname }}<img :src="traderUrl" alt=""></p>
-                            <p ><span>{{ isTrader ? '交易者' : '跟随者' }}</span>个人</p>
+                            <p>{{ userInfoForTrader.nickname }}
+                                <img :src="traderUrl" v-if="isTrader==1">
+                                <img src="../../../static/default/follow.png" v-if="isTrader==0">
+                            </p>
+                            <p ><span>{{ isTrader ? '交易者' : '跟随者' }}</span><span v-if="isTrader==1">个人</span></p>
                             <p class="info_num"> 
                                 <img src="../../../static/default/circle.png" alt="">
-                                <span>被跟投人数</span>
+                                <span v-if="isTrader==1" >被跟投人数</span>
+                                <span v-if="isTrader==0">已跟投项目数</span>
                                 <span>{{userInfoForTrader.followPeopleForFrim }}</span>
                             </p>
                         </div>
@@ -74,9 +79,10 @@
         </div>
         <div class="trader_wrap">
             <el-tabs v-model="tradeActive" @tab-click="tradeNav" class="trade_navs">
-                <el-tab-pane label="业绩" name="1">业绩</el-tab-pane>
+                <el-tab-pane label="业绩" name="1">还没有数据....</el-tab-pane>
                 <el-tab-pane label="策略" name="2">
-                   <strategy-detail></strategy-detail>
+                    还没有数据....
+                   <!-- <strategy-detail></strategy-detail> -->
                 </el-tab-pane>
                 <el-tab-pane label="跟投" name="3">
                     <!-- 跟投组件 -->
@@ -203,8 +209,7 @@ export default {
        
          if(res && res.success){
              this.userInfoForTrader=res.result.items[0];
-           
-           
+             console.log( this.userInfoForTrader)
          }else{
            message(_that,res)
          }
@@ -340,6 +345,7 @@ export default {
        .trader_wrap{
            background: #fff;
            margin-top: 20px;
+           padding-bottom: 60px;
            .el-tabs--top{
              .el-tabs__nav{
                  margin-left: 26px;

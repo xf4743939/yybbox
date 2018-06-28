@@ -41,13 +41,13 @@
                                 <button v-bind:class="activeWorldOrHome==1 ? 'activeBtn' :'' " v-on:click="selectedWorldOrHome(1)">国际期货</button>
                                 <button v-bind:class="activeWorldOrHome==2 ? 'activeBtn' :'' " v-on:click="selectedWorldOrHome(2)">国内期货</button>
                             </div>
-                            <div class="trader_time">
+                            <!-- <div class="trader_time">
                                 <span>近期有交易:</span>
                                 <button v-bind:class="activeDateBtn==1 ? 'activeBtn1' :'' " v-on:click="selectedDate(1)">全部</button>
                                 <button v-bind:class="activeDateBtn==2 ? 'activeBtn1' :'' " v-on:click="selectedDate(2)">近一日</button>
                                 <button v-on:click="selectedDate(3)" v-bind:class="activeDateBtn==3 ? 'activeBtn1' :'' ">近一周</button>
                                 <button v-on:click="selectedDate(4)" v-bind:class="activeDateBtn==4 ? 'activeBtn1' :'' ">近一个月</button>
-                            </div>
+                            </div> -->
                             <div class="money">
                                 <span>策略资金:</span>
                                 <input type="text" />
@@ -56,12 +56,12 @@
                                 <span>万元</span>
                                 <button class="money_save">确定</button>
                             </div>
-                            <div class="tarder_nickname">
+                            <!-- <div class="tarder_nickname">
                                 <span>搜索昵称:</span>
                                 <el-input placeholder="请输入内容" v-model="searchName">
                                 </el-input>
                                 <i class="el-icon-search" v-on:click="searchByName" style="position: relative; left: -24px; width: 16px; height: 16px; cursor: pointer;"></i>
-                            </div>
+                            </div> -->
                         </div>
                     </el-tab-pane>
                     <el-tab-pane label="交易牛人" name='3'>
@@ -182,19 +182,20 @@
                         <el-button v-if="scope.row.firmFollowStatus" size="mini"
                                 style="padding: 3px 15px;"
                                 type="danger"
-                                v-on:click="handleFirm(1 ,true,scope.row)">编辑实盘</el-button>
+                                v-on:click="cancelGroup(true,scope.row)">取消实盘</el-button>
                         <el-button v-else size="mini"
                                 style="padding: 3px 15px;"
                                 type="danger"
-                                v-on:click="handleFirm(2,true,scope.row)">实盘跟投</el-button>
+                                v-on:click="followGroup(2,true,scope.row)">实盘跟投</el-button>
                         <el-button v-if="scope.row.simFollowStatus" size="mini"
                                 v-bind:disabled="isDisableSimBtn"
                                 style="padding: 3px 15px; margin-top: 5px; margin-left: 0px;"
-                                v-on:click="handleFirm(3,false,scope.row)">编辑模拟</el-button>
+                                v-on:click="cancelGroup(false,scope.row)">取消模拟</el-button>
+                              
                         <el-button v-else size="mini"
                                 v-bind:disabled="isDisableSimBtn"
                                 style="padding: 3px 15px; margin-top: 5px; margin-left: 0px;"
-                                v-on:click="handleFirm(4,false,scope.row)">模拟跟投</el-button>
+                                v-on:click="followGroup(4,false,scope.row)">模拟跟投</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -383,14 +384,15 @@ import{
     followCreate,unFollowBind,
 getBrokerCompanyAccountOrNullFC,getTraderList,
 currentUserGameStatus,getTraderForNBList,
-getStrategyListByFilter,getStrategyListForMeByFilter
+getStrategyListByFilter,getStrategyListForMeByFilter,
+getCombiStrategyDetail,unFollowStrategy
 } from '../api/getData.js'
 import message from '../config/message';
 import{mapState,mapActions} from 'vuex'
 import getUserInfo from '../config/getUserInfo'
 import{ prdUrl,sortField,sortDirection} from '../constants/enum.js'
 import moment from 'moment'
-
+import strageyModal from './strageyFollowModal'
 export default {
     data(){
         return{
@@ -402,7 +404,7 @@ export default {
                 isShow:true, //message显示
                 isVisible:false,
                 initData:false,//控制组合策略弹窗
-                modalInfo:null, //组合策略弹窗传参
+                modalInfo:{}, //组合策略弹窗传参
                 isVisible2:false,//跟投交易员dialog
                 groupStrateInfo:null,//组合策略信息
                 num1: 1, //固定手数值
@@ -434,8 +436,22 @@ export default {
     computed:{
          ...mapState(['userInfo'])
     },
+    components:{
+       strageyModal
+    },
     methods:{
           ...mapActions(['getUserInfo']),
+            //隐藏跟投modal
+            hideModal(){
+                    this.initData=false;
+                    this.isVisible = false;
+                    if(Number(this.activeName)==1){
+                      this.getStrategyListByFilter(1,0)
+                    }else if(Number(this.activeName)==2){
+                       this.getStrategyListForMeByFilter(1,0)
+                    }
+                    // this.getCombiStrategyDetail();
+            },
           //搜索通过跟投资金
              searchByMoney(){
                  if(Number(this.activeName)==1){
@@ -584,7 +600,6 @@ export default {
                 }else if(Number(this.activeName)==2){
                     this.getStrategyListForMeByFilter(1,0)
                 }else if(Number(this.activeName)===3){
-                 
                     this.getData(1,0)
                 }else{
 
@@ -592,7 +607,7 @@ export default {
            
                 // this.getData(1,sortField.noSort);
             },
-               //确定跟投
+               //确定跟投交易牛人
            async handleFollow(){
                 const _that = this;     
                 let data = {
@@ -615,7 +630,7 @@ export default {
                      message(_that,res)
                 }
             },
-              //取消跟投
+              //取消跟投交易牛人
            async cancelFollow() {
                 const _that = this;
                       
@@ -627,11 +642,92 @@ export default {
                let res = await unFollowBind(data);
                if(res && res.success){
                       _that.isVisible2 = false; //dialog隐藏                  
-                        _that.getData(1,sortField.noSort);
+                      _that.getData(1,sortField.noSort);
                }else{
                    message(_that,res)
                }
             },
+            //获取组合策略详情
+           async getCombiStrategyDetail(id,wh){  
+                  const _that=this;       
+                        let data = {
+                                "combiId":id,
+                                "wh":wh,
+                            };
+                    let res =await getCombiStrategyDetail(data);
+                    if(res && res.success){
+                        this.groupStrateInfo=res.result;
+                          _that.isVisible = true;
+                         _that.initData=true; 
+                    }else{
+                    message(_that,res)
+                    }
+         },
+            //跟投组合策略(点击跟投出现dialog)
+            async followGroup(index,isFirm,row) { 
+                        const _that = this;   
+                        _that.modalInfo.clickBtn = index;
+                        _that.modalInfo.isFirm = isFirm ? 2 : 1;  //模拟跟实盘跟
+                        _that.modalInfo.worldOrHome = row.wh; 
+                    if(!this.user){
+                        if(this.isShow){
+                            this.isShow=false;
+                            message(_that,{},'您当前未登入系统，不能跟随操作')
+                        } 
+                    }else{
+                            let res;                         
+                            if (row.wh === 1) {        
+                                res = await getBrokerCompanyAccountOrNullFC(1);
+                                } else {
+                                    res= await getBrokerCompanyAccountOrNullFC(2)                            
+                                }            
+                            //获取经济商账户，有就让他跟投
+                                if(res && res.success){
+                                    this.getCombiStrategyDetail(row.id,row.wh);                                                
+                                }else{
+                                    message(_that,res)
+                                }
+                    } 
+        }, 
+             //取消组合策略跟投
+       async cancelGroup(isFirm,item) {
+                const _that = this; 
+                let data
+                if(isFirm){
+                    data= {
+                        "combiStrategyId": item.id,
+                        "number": 0,
+                        "followType":2
+                    }
+                }
+                else
+                 {
+                    data= {
+                        "combiStrategyId":item.id,
+                        "number": 0,
+                        "followType":1
+                    }
+                }    
+                  this.$confirm('取消跟投操作会把你该跟投的持仓进行平仓,是否取消跟投?', '取消跟投', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                    }).then( async() => {
+                            let res = await unFollowStrategy(data);                 
+                            if(res && res.success){
+                                 if(Number(_that.activeName)==1){
+                                    _that.getStrategyListByFilter(1,0)
+                                    }else if(Number(_that.activeName)==2){
+                                      _that.getStrategyListForMeByFilter(1,0)
+                                    }        
+                            }else{
+                                message(_that,res)
+                            }
+                    }).catch(() => {
+                             
+                    });
+           
+         }, 
                //跟投(点击跟投出现dialog)
            async handleFirm(index,isFirm,row) {      
                 const _that = this;
@@ -730,7 +826,7 @@ export default {
                   }
             },
             async getData(page,sortVal) { 
-                
+             
                   const _that = this;
                  _that.isLoading = true;
                  this.getSortField(sortVal);  
@@ -748,8 +844,9 @@ export default {
                     "page": page,
                     "rows": 10
                 };
-               
+             
                      let res = await getTraderList(data);
+             
                      if(res && res.success){   
                          _that.tarders = res.result.items;              
                         _that.totalNum = res.result.totalCount;
@@ -783,7 +880,7 @@ export default {
                  if(res && res.success){
                     
                     this.strategys=res.result.items;
-                    console.log(this.strategys)
+                  console.log(this.strategys)
                     _that.totalNum=res.result.totalCount
                  }else{
                      message(_that,res)
@@ -996,5 +1093,22 @@ export default {
        margin-bottom: 5px; 
        font-weight: 400;
       }
+.el-message-box{
+    .el-message-box__header{
+        border: 1px solid #e4e4e4;
+        .el-message-box__title{
+            text-align: center;
+            span{
+                color: #333;
+            }
+        }
+    }
+    .el-message-box__btns{
+        button:nth-child(2){
+            background: #fc543c;
+            border-color: #fc543c;
+        }
+    }
+}
 </style>
 

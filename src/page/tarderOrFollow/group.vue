@@ -70,17 +70,20 @@
         </div>
         <div class="trader_wrap">
             <el-tabs v-model="tradeActive" @tab-click="tradeNav" class="trade_navs">
-                <el-tab-pane label="业绩" name="1">业绩</el-tab-pane>
+                <el-tab-pane label="业绩" name="1">
+                    <out-standing v-if="isShowOutStanding" :groupStrateInfo="groupStrateInfo"></out-standing>
+                </el-tab-pane>
                 <el-tab-pane label="策略" name="2">
-                   <strategy-detail></strategy-detail>
+                   <strategy-detail v-if="isShowStrategy" :groupStrateInfo="groupStrateInfo" ></strategy-detail>
                 </el-tab-pane>
                 <el-tab-pane label="跟投" name="3">
+                    还没有数据.....
                     <!-- 跟投组件 -->
-                   <follow-list v-if="isShowFollowTable" :isTrader="isTrader" :userInfoForTrader="userInfoForTrader" ></follow-list>
+                   <!-- <follow-list v-if="isShowFollowTable" :isTrader="isTrader" :userInfoForTrader="userInfoForTrader" ></follow-list> -->
                 </el-tab-pane>
                 <el-tab-pane label="订单" name="4">
                     <!-- 订单组件 -->
-                    <order-list v-if="showOrderTable" :worldOrHome="this.modalInfo.worldOrHome" :userInfoForTrader="userInfoForTrader" ></order-list>
+                  <group-order v-if="isShowGroupOrder" :groupStrateInfo="groupStrateInfo"></group-order>
                 </el-tab-pane>
             </el-tabs>
         </div>
@@ -102,10 +105,10 @@
  import { btnStatus} from '../../constants/enum'
  import strageyModal from '../../components/strageyFollowModal'
  import followList from '../../components/followList'
- import orderList from '../../components/orderList'
+ import groupOrder from '../../components/groupOrder'
  import {prdUrl} from '../../constants/enum'
  import strategyDetail from '../../components/strategy'
-
+ import outStanding from '../../components/outstanding'
 export default {
     data(){
         return{
@@ -117,9 +120,11 @@ export default {
                //正在跟投历史跟投的参数
             }, 
             worldOrHome:1,
-            showOrderTable:false, //显示订单列表
+            isShowGroupOrder:false, //显示订单列表
             isShowFollowTable:false, //显示跟投列表   
             isDisableSimBtn: false, //参加模拟比赛禁用
+            isShowOutStanding:false, //是否显示净值组件
+            isShowStrategy:false,//是否显示策略组件
             tradeActive:'1', //当前导航
             avator:'', //用户头像
             btnStatus:btnStatus,//判断按钮状态
@@ -134,8 +139,9 @@ export default {
       footBom,
       strageyModal,
       followList,
-      orderList,
-      strategyDetail
+      groupOrder,
+      strategyDetail,
+      outStanding
     },
     created(){
        getUserInfo(this);
@@ -170,7 +176,6 @@ export default {
                         "followType":1
                     }
                 }    
-                debugger;      
                   this.$confirm('取消跟投操作会把你该跟投的持仓进行平仓,是否取消跟投?', '取消跟投', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -200,7 +205,8 @@ export default {
           let res =await getCombiStrategyDetail(data);
          if(res && res.success){
              this.groupStrateInfo=res.result;
-             console.log(this.groupStrateInfo);          
+             this.isShowOutStanding=true;  
+           
          }else{
            message(_that,res)
          }
@@ -234,18 +240,21 @@ export default {
             } 
         },
     tradeNav(tab,event){
-     
            switch(parseInt(tab.name)){
                case 1:
+                this.isShowOutStanding=true
                break;
-               case 2: 
+               case 2:
+                this.isShowStrategy=true 
                break;
                case 3:
-                this.isShowFollowTable=true;       
+                this.isShowFollowTable=true       
+               break;
+               case 4:
+               this.isShowGroupOrder=true
                break;
                default:
-               this.showOrderTable=true;
-
+               this.isShowOutStanding=true
            }
            console.log(tab,event)
        },

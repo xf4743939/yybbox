@@ -36,7 +36,7 @@
                         </div>
                     </div>
                     <div class="main_right" style="height: 100%;">
-                        <div id="userINFO" class="head_category">
+                        <div id="userINFO" class="head_category" v-cloak>
                             <div v-if="userInfos"  style="min-width: 200px; height: 100%;" class="loginInfo" index="1">
                                 <a style="min-width: 150px; margin-right: 3px;">
                                     <img class="header-avator" :src="imgUrl"/>
@@ -108,20 +108,67 @@ import {prdUrl} from '../constants/enum'
            this.activeIndex=1;
         },
         getCurrentIndex(){
-                   var url = window.location.href.substring(window.location.href.lastIndexOf("/") + 1);
-                    if (!url) {
-                        this.activeIndex = 1;
-                    } else {
-                        if (url.toLowerCase() === 'trader') {
-                            this.activeIndex = 2;
-                        } else if (url.toLowerCase() === 'follower') {
-                            this.activeIndex = 3;
-                        } else if (url.toLowerCase() === 'game') {
-                            this.activeIndex = 4;
-                        } else {
-                            this.activeIndex = 5;
-                        }
-                    }
+                   let a=window.location.pathname; 
+                   let url = a.substring(a.indexOf('/')+1) //获取URL
+                   if(url.indexOf('/')>0){
+                       url=url.substring(0,url.indexOf('/'))
+                   }
+                 
+                   switch(url.toLowerCase()){
+                       case 'trader':
+                         this.activeIndex = 2;
+                       break;
+                         case 'follower':
+                         this.activeIndex = 3;
+                       break;
+                         case 'login':
+                         this.activeIndex =1;
+                       break;
+                         case 'register':
+                         this.activeIndex = 1;
+                       break;
+                         case 'forgetpassword':
+                         this.activeIndex = 1;
+                       break;
+                         case 'user':
+                         this.activeIndex = 5;
+                       break;
+                         case 'groupdetail':
+                         this.activeIndex = 2;
+                       break;
+                         case 'tradedetail':
+                         this.activeIndex = 2;
+                       break;
+                        case 'followdetail':
+                         this.activeIndex = 3;
+                       break;
+                         case 'game':
+                         this.activeIndex =4;
+                       break;
+                       default:
+                       this.activeIndex=1
+                       
+                   }
+                    // if (!url) {
+                    //     this.activeIndex = 1;
+                    // }
+                    //  else {
+                    //     if (url.toLowerCase() === 'trader') {
+                    //         this.activeIndex = 2;
+                    //     } else if (url.toLowerCase() === 'follower') {
+                    //         this.activeIndex = 3;
+                    //     } else if (url.toLowerCase() === 'game') {
+                    //         this.activeIndex = 4;
+                    //     }else if(url.toLowerCase()=='login'){
+                    //        this.activeIndex = 1;
+                    //     }else if(url.toLowerCase()=='register'){
+                    //           this.activeIndex = 1;
+                    //     }else if(url.toLowerCase()=='forgetpassword'){
+                    //           this.activeIndex = 1;
+                    //     } else {
+                    //         this.activeIndex = 5;
+                    //     }
+                    // }
         },
         logOut(){
            removeStore('token');
@@ -145,17 +192,33 @@ import {prdUrl} from '../constants/enum'
     mounted(){   
         this.getCurrentIndex();
         const token = JSON.parse(getStore('token'));
+        let info=JSON.parse(getStore('userInfo'))
         if(token){
-          this.initData();
+            if(!info){
+               this.initData();
+            }else{
+                 this.userInfos=info.user;
+                 if(!info.user.icon){
+                   this.imgUrl=require('../images/trade/50x50.png')    
+               }else{
+                  this.imgUrl=this.prdUrl + this.userInfos.icon;     
+               }  
+            }
         }else{
            this.userInfos=null;
         }
     }
 }
 </script>
-<style lang="less" scoped>
+<style lang="less" >
+[v-cloak] {
+    display: none;
+}
    .header_container{
        height: 119px;
+       .el-menu--horizontal>.el-menu-item.is-active{
+           border-bottom: 2px solid #fc543c;
+       }
    }
     .header_top{
         background: #f5f5f5;

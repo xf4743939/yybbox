@@ -3,7 +3,7 @@
           <div class="btn_group">
                     <a @click="selectFolow(followStatus.following)" :class="{active_btn:active==followStatus.following}">正在被跟投</a>
                     <a @click="selectFolow(followStatus.followed)" :class="{active_btn:active==followStatus.followed}">历史被跟投</a>
-                    <a @click="selectFolow(followStatus.vipFollow)" :class="{active_btn:active==followStatus.vipFollow}">已付费</a>
+                    <a v-if="false" @click="selectFolow(followStatus.vipFollow)" :class="{active_btn:active==followStatus.vipFollow}">已付费</a>
                     <div class="table_list" v-if="followers && isTrader==1" >
                          <el-table
                                 :data="followers"
