@@ -29,6 +29,7 @@
                                                             <span class="text1">账号</span>
                                                             <span v-if="brokerCompanyAccountsLongInfo" class="ellipsis text_content">{{brokerCompanyAccountsLongInfo.account | subStr(2,1)}}</span>
                                                             <span v-else>未绑定</span>
+                                                            <span class="errMessage" v-if="brokerCompanyAccountsLongInfo && brokerCompanyAccountsLongInfo.recvMessage">{{brokerCompanyAccountsLongInfo.recvMessage}}</span>
                                                         </li>
                                                         <li v-if="brokerCompanyAccountsLongInfo">
                                                             <img class="img_type" :src="tradeOrFollowLogo" alt=""/>
@@ -56,7 +57,7 @@
                                                        经济商
                                                    </span>
                                                    <span style="font-size:17px;margin-left:6px;">
-                                                       香港富商
+                                                    
                                                    </span>
                                                </li>
                                                <li class="left" style="margin-left:49px;" v-if="brokerCompanyAccountsLongInfo">
@@ -169,20 +170,20 @@
                                     <el-collapse-item>
                                           <template slot="title">
                                               <div class="acconut_info">
-                                                    <ul v-if="user">
+                                                    <ul v-if="gameDetail">
                                                         <li><span class="line"></span><span class="text_tip">账户详情</span></li>
                                                         <li>
                                                             <img  class="img_type" src="../../images/account.png"/>
                                                             <span class="text1">账号</span>
-                                                            <span v-if="user" class="ellipsis text_content">{{user.userName | subStr(4,4)}}</span>
+                                                            <span style="width:100px" class="ellipsis text_content">{{gameDetail.user.userName | subStr(4,4)}}</span>
         
                                                         </li>
                                                       
-                                                     <li v-if="user.gameUserDetail" style="float:right;margin-right:120px;">
+                                                      <li v-if="gameDetail"  style="float:right;margin-right:120px;">
                                                             <img class="img_type firm_icon"  :src="isJoin" alt="">
                                                             <span class="text1 firm_tip" style="background:#999;color:#fff;padding:3px 7px;border-radius:8px;">
                                                                 <span>已报名参赛</span>
-                                                               <span>{{ user.gameUserDetail.gameName}}{{user.gameUserDetail.level==1 ? "选拔大赛" : "实盘预备赛" }}</span>
+                                                               <span>{{ gameDetail.cycel.name}}{{gameDetail.user.level==1 ? "选拔大赛" : "实盘预备赛" }}</span>
                                                             </span>
                                                         </li>
                                                         <li v-else>
@@ -203,20 +204,20 @@
                                     <el-collapse-item>
                                           <template slot="title">
                                               <div class="acconut_info">
-                                                    <ul v-if="user">
+                                                    <ul v-if="gameDetail">
                                                         <li><span class="line"></span><span class="text_tip">账户详情</span></li>
                                                         <li>
                                                             <img  class="img_type" src="../../images/account.png"/>
                                                             <span class="text1">账号</span>
-                                                            <span v-if="user" class="ellipsis text_content">{{user.userName | subStr(4,4)}}</span>
+                                                            <span v-if="user" style="width:100px" class="ellipsis text_content">{{gameDetail.user.userName | subStr(4,4)}}</span>
         
                                                         </li>
                                                       
-                                                     <li v-if="user.gameUserDetail" style="float:right;margin-right:120px;">
+                                                     <li v-if="gameDetail" style="float:right;margin-right:120px;">
                                                             <img class="img_type firm_icon"  :src="isJoin" alt="">
                                                             <span class="text1" style="background:#999;color:#fff;padding:3px 7px;border-radius:8px;"> 
                                                                 <span>已报名参赛</span>
-                                                               <span>{{ user.gameUserDetail.gameName}}{{user.gameUserDetail.level==1 ? "选拔大赛" : "实盘预备赛" }}</span>
+                                                               <span>{{ gameDetail.cycel.name}}{{gameDetail.user.level==1 ? "选拔大赛" : "实盘预备赛" }}</span>
                                                             </span>
                                                         </li>
                                                         <li v-else>
@@ -324,16 +325,17 @@
                             </div>
                        
                    </div>
+                  
                    <div class="trader_wrap">
                          <h4 class="title">
                             <span class="line"></span>
                             <span>交易详情</span>
                         </h4>
                         <el-tabs v-model="tradeActive" @tab-click="tradeNav" class="trade_navs">
-                            <el-tab-pane label="业绩" name="1">业绩</el-tab-pane>
-                            <el-tab-pane label="策略" name="2">策略</el-tab-pane>
+                            <el-tab-pane label="业绩" name="1">还没有数据...</el-tab-pane>
+                            <el-tab-pane label="策略" name="2">还没有数据...</el-tab-pane>
                             <el-tab-pane label="跟投" name="3">
-                                <follow-table :accountObj="accountObj"></follow-table>
+                                <follow-table v-if="isShowFollowTable"  :isTrader="isTrader" :uId="user.id" :type="types"></follow-table>
                             </el-tab-pane>
                             <el-tab-pane label="订单" name="4">订单</el-tab-pane>
                         </el-tabs>
@@ -343,30 +345,28 @@
 <script>
 import {getStore} from '../../config/mUtils'
 import{mapState,mapActions} from 'vuex'
-import {getByUserIdAndAccountTypeFC,unBind,getBrokerCompanyAccountOrNullFC} from '../../api/getData'
+import {getByUserIdAndAccountTypeFC,unBind,getBrokerCompanyAccountOrNullFC,getCurrentLoginInformations,getGameDetailOfUserId} from '../../api/getData'
 import message from '../../config/message'
 import moment from 'moment'
-import followTable from '../../components/followList'
+import followTable from '../../components/userFollow'
 export default {
     data(){
         return{
             activeName:'1', //当前的选择账户的class
+            types:1,//表示实盘类型 
             tradeActive:'1',//交易详情导航指示
             user:null,
             isSim:false,//模拟账号
             accMoneyInfo:null,
+            isShowFollowTable:false,//是否显示跟投组件
             brokerCompanyAccountsLongInfo:null,
             tradeOrFollowLogo:'', //交易者或者跟投者的图标
             bindLogo:'', //绑定或者没绑定的图标
             worldOrHoeme:1, //1.表示国际 2.表示国内
             isJoin:'',//图标地址报名未报名
             isShow:true,
-            accountObj:{
-                "accountType":2,
-                "worldOrHome":1,
-                "isTrader":0
-            }  //传给跟投列表
-
+            isTrader:0, //是否是交易者1.交易者0.跟投者
+            gameDetail:null, //大赛信息
         }
     },
     filters:{
@@ -382,8 +382,11 @@ export default {
         followTable
     },
     methods:{
+        ...mapActions(['getUserInfo']),
        tradeNav(tab,event){
-          
+          if(Number(tab.name)==3){
+              this.isShowFollowTable=true;
+          }
        },
       async unBinding(){
          const _that=this;
@@ -417,59 +420,86 @@ export default {
 
            })
       },
-      async selectAccount(tab,event){
-          const _that=this;
-            let mr; 
-            let tp;
-            switch(Number(tab.name)){
-                case 1:            
-                  mr=1;
-                  tp=2;
-                  this.worldOrHoeme=1;
-                break;
-                case 2 :
-                    mr=2;
-                    tp=2;
-                    this.worldOrHoeme=2;
-                break;
-                break;
-                case 3:
-                     mr=1;
-                     tp=1;
-                     this.worldOrHoeme=1;
-                break;
-                case 4:
-                     mr=2;
-                     tp=1;
-                     this.worldOrHoeme=2
-                break;
-                default:
-                    mr=1;
-                    tp=2;
-                    this.worldOrHoeme=1
-            }
-            let data = {
-                "accountType": tp,
-                "worldOrHome": mr
+      //如果没有全局userInfo就重新请求
+      async getInfo(){
+          if(!this.userInfo){
+              let res= await getCurrentLoginInformations();
+                if(res && res.success){
+                    this.user=res.result.user;
+                    console.log(this.user)
+                }else{
+                    message(this,res)
+                }
+          }else{
+                this.user=this.userInfo.user;
+          }   
+      },
+      //得到账户模拟账号详情
+      async getGameDetail(id,wh){
+         let data={
+             "userId":id,
+             "worldOrHome":wh,
+         };
+         let res=await getGameDetailOfUserId(data)
+         if(res && res.success){
+             this.gameDetail=res.result
+               if(!this.gameDetail){
+                this.isJoin=require('../../images/nogame.png') 
+              }else{
+                this.isJoin=require('../../images/game.png');
+             }  
+         }else{
+             message(_that,res)
+         }
+      },
+      //得到经济商资金详情
+      async getAccMoneyInfo(accountType,wh){
+           let data = {
+                "accountType":accountType,
+                "worldOrHome":wh
                 };
-              this.accountObj={
-                "accountType": tp,
-                "worldOrHome": mr
-              }
-            let res2=await  getBrokerCompanyAccountOrNullFC(this.worldOrHoeme);
-          
-            if(res2 && res2.success){
-               this.brokerCompanyAccountsLongInfo=res2.result;
-            }else{
-                message(_that,res2)
-            } 
-           let res=await getByUserIdAndAccountTypeFC(data);
+
+            let res=await getByUserIdAndAccountTypeFC(data);
            if(res.success){
-               this.accMoneyInfo=res.result.accMoneyInfo;
-             
+               this.accMoneyInfo=res.result.accMoneyInfo;  
            }else{
               message(this,res);
-           }      
+           }            
+      },
+      //得到经纪商账户信息
+      async getBrokerCompanyAccountOrNullFC(wh){
+             let res=await  getBrokerCompanyAccountOrNullFC(wh);
+            if(res && res.success){
+               this.brokerCompanyAccountsLongInfo=res.result;
+              if(!this.brokerCompanyAccountsLongInfo){
+                     this.bindLogo=require('../../images/nogame.png') 
+              }else{ 
+                 this.bindLogo=require('../../images/game.png');
+                 this.getImgUrl(this.brokerCompanyAccountsLongInfo);
+               }              
+              this.isTrader=this.brokerCompanyAccountsLongInfo.accountType==1? 1 : 0 
+            }else{
+                message(_that,res)
+            } 
+      },
+      //国际国内实盘账户信息
+      async selectAccount(tab,event){
+      
+          this.activeName=tab.name;
+          this.types=Number(tab.name)
+          if(Number(tab.name)==1 ||  tab==1 ){
+                  this.getBrokerCompanyAccountOrNullFC(1);
+                  this.getAccMoneyInfo(2,1)
+          }else if(Number(tab.name)==2){
+                  this.getBrokerCompanyAccountOrNullFC(2);
+                  this.getAccMoneyInfo(2,2)
+          } else if(Number(tab.name)==3){       
+              this.getGameDetail(this.user.id,1)
+              this.getAccMoneyInfo(1,1)
+          }else if(Number(tab.name)==4){
+                this.getAccMoneyInfo(1,2)
+               this.getGameDetail(this.user.id,2)
+          } 
         },
         getImgUrl(item){
             if(item.accountType===1){
@@ -481,34 +511,8 @@ export default {
         }
     },
     mounted(){  
-     
-       if(!this.userInfo){  
-         let getInfo=JSON.parse(getStore("userInfo"));
-       
-           if(getInfo){          
-              this.user=getInfo.user;
-              this.brokerCompanyAccountsLongInfo=getInfo.brokerCompanyAccountsLongInfo;          
-         
-            }        
-       }else{
-          this.user=this.userInfo.user;
-          this.brokerCompanyAccountsLongInfo=this.userInfo.brokerCompanyAccountsLongInfo
-       }
-       if(!this.brokerCompanyAccountsLongInfo){
-            this.bindLogo=require('../../images/nogame.png') 
-       }else{
-          this.accountObj.isTrader=this.brokerCompanyAccountsLongInfo.accountType==1? 1 : 0
-          this.bindLogo=require('../../images/game.png');
-          this.getImgUrl(this.brokerCompanyAccountsLongInfo);
-       }
-       
-       if(!this.user.gameUserDetail){
-           this.isJoin=require('../../images/nogame.png') 
-       }else{
-           this.isJoin=require('../../images/game.png');
-       }  
-       this.selectAccount(1);     
-          
+         this.getInfo();
+        this.selectAccount(1);           
     }
 }
 </script>
@@ -644,7 +648,7 @@ export default {
                 display: inline-block;
                 position: relative;
                 top:3px;
-                width: 130px;
+                width: 50px;
             }
             .follows{
                 font-size: 16px;
@@ -658,7 +662,14 @@ export default {
             padding-left: 15px;
         }
         li:nth-of-type(2){
-            width: 20%;
+            width: 24%;
+            
+        }
+         li:nth-of-type(3){
+            margin-right: 36px;      
+        }
+        .errMessage{
+            color: #fc543c;
         }
     }
  
@@ -704,6 +715,7 @@ export default {
       border-top:1px solid #e4e4e4;
       ul{
           padding-top: 10px;
+          padding-bottom: 10px;
       }
   } 
   .trade_rule{

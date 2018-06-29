@@ -4,10 +4,8 @@
                 <el-menu-item index="1">基本资料</el-menu-item>
                 <el-menu-item index="2">头像设置</el-menu-item>
           </el-menu>
-          <transition>
-           
+          <transition> 
                 <router-view></router-view>
-          
           </transition>
      </div>
 </template>

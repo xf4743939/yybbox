@@ -104,8 +104,7 @@
  import message from '../../config/message'
  import headTop from '../../components/headTop'
  import footBom from '../../components/footer'
- import getUserInfo from '../../config/getUserInfo'
- import {getTraderList,getTraderForNBList,getBrokerCompanyAccountOrNullFC,currentUserGameStatus} from '../../api/getData'
+ import {getTraderList,getTraderForNBList,getBrokerCompanyAccountOrNullFC,currentUserGameStatus,getCurrentLoginInformations} from '../../api/getData'
  import { btnStatus} from '../../constants/enum'
  import followModal from '../../components/followModal'
  import followList from '../../components/followList'
@@ -156,39 +155,33 @@ export default {
       strategyDetail
     },
     created(){
-       getUserInfo(this);
+       this.getInfo()
     },
     computed:{
          ...mapState(['userInfo'])
     },
     methods:{
        ...mapActions(['getUserInfo']),
+         //如果没有全局userInfo就重新请求
+            async getInfo(){
+                if(!this.userInfo){
+                    let res= await getCurrentLoginInformations();
+                        if(res && res.success){
+                            this.user=res.result.user;
+                        }else{
+                            message(this,res)
+                        }
+                }else{
+                    this.user=this.userInfo.user;          
+                }   
+            }, 
        //隐藏跟投modal
        hideModal(){
             this.initData=false;
             this.isVisible = false;
             this.getTraderInfo();
        },
-       //判断正在跟投历史跟投按钮
-    //    handleStatus(index){
-    //       this.relationStatus=index;
-    //       if(index==1){
-    //          this.followOptions.followRelationshipStatus=1
-    //       }else if(index==2){
-    //          this.followOptions.followRelationshipStatus=0
-    //       }
-    //    },
-    //   getFollowOptions(){
-    //       let arrUrl=this.$route.path.split('/');
-    //       this.followOptions.worldOrHome=Number(arrUrl[3]);
-    //       this.followOptions.isTrader=Number(arrUrl[4]);
-    //       this.followOptions.hasNickName=1;
-    //       this.followOptions.followDirection=0;
-    //       this.followOptions.followType=2; //表示实盘
-    //       this.followOptions.rows=10;
-    //       this.followOptions.traderUserId=Number(arrUrl[2]) //交易员id
-    //       this.followOptions.followRelationshipStatus=this.relationStatus  //1.表示正在跟投 0表示历史跟投
-    //   },
+    
       async getTraderInfo(){
             const _that=this
             let arrUrl=this.$route.path.split('/');

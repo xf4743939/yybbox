@@ -90,6 +90,10 @@ const problemDetail= r =>require.ensure([],() =>r(require('../page/introduce/sub
 
 const groupDetail =r => require.ensure([],() =>r(require('../page/tarderOrFollow/group.vue')),'groupDetail')
 
+const seoUser= r =>require.ensure([],() =>r(require('../page/user/shareMoney/seoUser.vue')),'seoUser')
+
+const myUser= r =>require.ensure([],()=>r(require('../page/user/shareMoney/myUser.vue')),'myUser')
+
 const routes=[
   {
     path:'/',
@@ -201,7 +205,21 @@ const routes=[
       {
         path:'shareMoney',
         component:shareMoney,
-        meta: { requireAuth:true },  
+        meta: { requireAuth:true },
+        children:[
+          {
+            path:'',
+            component:seoUser
+          },
+          {
+            path:'seouser',
+            component:seoUser
+          },
+          {
+             path:'myuser',
+             component:myUser
+          }
+        ]  
       }
    ]
   },

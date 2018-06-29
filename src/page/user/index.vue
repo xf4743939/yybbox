@@ -48,7 +48,7 @@ export default {
 </script>
 <style lang="less" >
   .main{
-      margin-top: 119px;
+     
       margin-left: auto;
       margin-right: auto;
       width: 1200px;

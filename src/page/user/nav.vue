@@ -31,6 +31,9 @@
 </template>
 <script>
 import {getStore} from '../../config/mUtils'
+import {getCurrentLoginInformations} from '../../api/getData'
+import{mapState,mapActions} from 'vuex'
+import { prdUrl} from '../../constants/enum'
 export default {
     data(){
           return{
@@ -40,7 +43,40 @@ export default {
              activeIndex:'1'
           }
     },
+    computed:{
+          ...mapState(['userInfo'])
+    },
     methods:{
+              ...mapActions(['getUserInfo']),
+            //如果没有全局userInfo就重新请求
+            async getInfo(){
+                if(!this.userInfo){
+                    let res= await getCurrentLoginInformations();
+                        if(res && res.success){
+                         this.user=res.result.user;
+                         this.getUrl()
+                        }else{
+                            message(this,res)
+                        }
+                }else{
+                    this.user=this.userInfo.user;  
+                    this.getUrl()        
+                }   
+            }, 
+            getUrl(){
+               
+                     if(this.user && this.user.icon){
+                           this.avatorUrl=prdUrl + this.user.icon
+                        }
+                        if(this.user.sex===0){
+                           this.sexUrl=require('../../images/trade/50x50.png')
+                        }
+                        else if(this.user.sex===1){
+                           this.sexUrl=require('../../images/default/men.png')
+                        }else if(this.user.sex===2){         
+                           this.sexUrl=require('../../images/default/women.png')
+                        }
+            }, 
           navClick(key,keyPath){
              this.activeIndex=''+ key;
              if(key==1){
@@ -93,6 +129,12 @@ export default {
                       break;
                       case 'sharemoney':
                       this.activeIndex='4'
+                      break
+                      case 'myuser':
+                        this.activeIndex='4'
+                      break;
+                        case 'seouser':
+                        this.activeIndex='4'
                       break;
                       default:
                       this.activeIndex='1'
@@ -101,27 +143,7 @@ export default {
     },
     mounted(){
           this.getActiveIndex();
-           if(!this.userInfo){  
-                  let getInfo=JSON.parse(getStore("userInfo"));  
-                    if(getInfo){   
-                        this.user=getInfo.user;
-                        if(this.user && this.user.icon){
-                           this.avatorUrl=this.user.icon
-                        }
-                        if(this.user.sex===0){
-                           this.sexUrl=require('../../images/trade/50x50.png')
-                        }
-                        else if(this.user.sex===1){
-                           this.sexUrl=require('../../images/default/men.png')
-                        }else if(this.user.sex===2){
-                           
-                           this.sexUrl=require('../../images/default/women.png')
-                        }
-                      }        
-                }else{
-                       this.user=this.userInfo.user;
-                 }
-                
+          this.getInfo()
     }
 }
 </script>

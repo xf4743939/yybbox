@@ -5,7 +5,7 @@
               <h3>包含策略</h3>
               <div class="item_content">
                    <div class="item_card clear">
-                       <el-card class="box-card left" v-for="(item,index) in strates ">
+                       <el-card class="box-card left" v-for="(item,index) in strates " :key="item.id">
                             <div class="text item1">
                                 <span>{{ item.name }}</span>
                                 <img src="../../static/default/trade.png">    

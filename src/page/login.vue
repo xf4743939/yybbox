@@ -110,8 +110,8 @@ export default {
                                 removeStore("userName");
                                 }
                                 setInterval(
-                                    () => {
-                                    this.$router.push({path:'/'})
+                                    () => {                                 
+                                      window.location.href="/"
                                     },500)                  
                          }else{
                             _that.loginText=response.error.message;

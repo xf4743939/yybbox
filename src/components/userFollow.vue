@@ -160,12 +160,21 @@ export default {
        }
    },
    created(){
-       if(!this.userInfoForTrader)return;
-       this.followers=this.userInfoForTrader.followerList
-       this.copyFollowers=this.userInfoForTrader.followerList
-
+       if(this.isTrader){
+          if(this.active==1){
+            this.tableField=tableField.traderFollowing
+          }else if(this.active==2){
+            this.tableField=tableField.traderFollowed
+          }
+       }else{
+           if(this.active==1){
+             this.tableField=tableField.followerFollowing
+          }else if(this.active==2){
+             this.tableField=tableField.followerFollowed
+          }
+       }
    },
-   props:['userInfoForTrader','isTrader'],
+   props:['type','isTrader','uId'],
    methods:{
       handleEdit(index, row) {
         console.log(index, row);
@@ -175,23 +184,129 @@ export default {
       },
       selectFolow(index){
         this.active=index;
-        if(index==this.followStatus.following){
-           this.followers=this.copyFollowers.filter(x=>x.relationshipStatus>0)      
-        }else if(index==this.followStatus.followed){     
-           this.followers=this.copyFollowers.filter(x=>x.relationshipStatus==0) 
-        }else{
+        this.getFollowers(this.type,this.isTrader,1,10)
+      },
+      //得到当前用户的跟投者
+     async getFollowers(type,isTrader,page,num){
+         let data={};
+         debugger
+        switch(Number(type)){
+            case 1:
+            if(isTrader){
+                    data = {
+                    "worldOrHome": 1,
+                    "hasNickName": 1,
+                    "followDirection": 0, 
+                    "isTrader": 1,
+                    "followType": 2,
+                    "page":page,
+                    "rows":num
+                }
+            }else{
+                 data = {
+                        "worldOrHome": 1,
+                        "hasNickName": 1,
+                        "followDirection": 0,
+                        "isTrader": 0,
+                        "followType": 2,
+                         "page":page,
+                         "rows":num
+                        }
+            } 
+            break;
+            case 2:
+            if(isTrader){
+                 data = {
+                            "worldOrHome": 2,
+                            "hasNickName": 1,
+                            "followDirection": 0,
+                            "isTrader": 1,
+                            "followType": 2,
+                            "page":page,
+                            "rows":num
+                        }
+            }else{
+                 data = {
+                            "worldOrHome": 2,
+                            "hasNickName": 1,
+                            "followDirection": 0,
+                            "isTrader": 0,
+                            "followType": 2,
+                            "page":page,
+                            "rows":num
+                        }
+            }
+            break;
+            case 3:
+            if(isTrader){
+                data = {
+                        "worldOrHome": 1,
+                        "hasNickName": 1,
+                        "followDirection": 0,
+                        "isTrader": 1,
+                        "followType": 1,
+                        "page":page,
+                         "rows":num
+                        }
+            }else{
+                data = {
+                        "worldOrHome": 1,
+                        "hasNickName": 1,
+                        "followDirection": 0,
+                        "isTrader": 0,
+                        "followType": 1,
+                        "page":page,
+                        "rows":num
+                        }
+            }
+            break;
+            default:
+            if(isTrader){
+                    data = {
+                            "worldOrHome": 2,
+                            "hasNickName": 1,
+                            "followDirection": 0,
+                            "isTrader": 1,
+                            "followType": 1,
+                            "page":page,
+                            "rows":num
+                        }
+            }else{
+                 data = {
+                            "worldOrHome": 2,
+                            "hasNickName": 1,
+                            "followDirection": 0,
+                            "isTrader": 0,
+                            "followType": 1,
+                             "page":page,
+                             "rows":num
+                        }
+            }
 
         }
-      },
-   
-   
+        if(this.active==1){
+             data["followRelationshipStatus"] = 1;
+        }else if(this.active==2){
+           data["followRelationshipStatus"] = 0;
+        }
+        debugger;
+        let res = await followRelationshipService(data)
+        if(res && res.success){
+             if(isTrader){
+                this.followers=res.result.filter( x => x.traderUserId==this.uId)
+             }else{
+                 this.followers=res.result.filter( x => x.followerUserId==this.uId)
+             }
+        }else{
+            message(_that,res)
+        }
+     }
    },
    mounted(){
-       if(this.isTrader){
-          this.tableField=tableField.traderFollowing
-       }else{
-           this.tableField=tableField.followerFollowing
-       }
+       console.log(this.type)
+       console.log(this.isTrader)
+       console.log(this.uId)
+        this.getFollowers(this.type,this.isTrader,1,10)
    }    
 }
 </script>

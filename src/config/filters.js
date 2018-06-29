@@ -3,6 +3,7 @@ import Vue from 'vue'
 
 Vue.filter('subStr',function(name,type,end){
     //type 1 表示姓名 2.表示电子邮箱 3. 证件号码 4.手机号码 5 银行卡
+
     switch(type) {
      case 1:
        if (name && name.length > 2) {

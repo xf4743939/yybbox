@@ -385,14 +385,14 @@ import{
 getBrokerCompanyAccountOrNullFC,getTraderList,
 currentUserGameStatus,getTraderForNBList,
 getStrategyListByFilter,getStrategyListForMeByFilter,
-getCombiStrategyDetail,unFollowStrategy
+getCombiStrategyDetail,unFollowStrategy,getCurrentLoginInformations
 } from '../api/getData.js'
 import message from '../config/message';
 import{mapState,mapActions} from 'vuex'
-import getUserInfo from '../config/getUserInfo'
 import{ prdUrl,sortField,sortDirection} from '../constants/enum.js'
 import moment from 'moment'
 import strageyModal from './strageyFollowModal'
+import getUser from '../config/getUserInfo'
 export default {
     data(){
         return{
@@ -431,7 +431,7 @@ export default {
         }
     },
     created(){
-       getUserInfo(this);
+      getUser(this);
     },
     computed:{
          ...mapState(['userInfo'])
@@ -441,6 +441,7 @@ export default {
     },
     methods:{
           ...mapActions(['getUserInfo']),
+
             //隐藏跟投modal
             hideModal(){
                     this.initData=false;

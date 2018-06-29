@@ -90,7 +90,8 @@ import {prdUrl} from '../constants/enum'
            activeIndex:1,
            userInfos:null,
            imgUrl:require('../images/trade/50x50.png'),//默认头像
-           prdUrl:prdUrl
+           prdUrl:prdUrl,
+           isHave:false
         }
     },
     computed:{     
@@ -149,26 +150,6 @@ import {prdUrl} from '../constants/enum'
                        this.activeIndex=1
                        
                    }
-                    // if (!url) {
-                    //     this.activeIndex = 1;
-                    // }
-                    //  else {
-                    //     if (url.toLowerCase() === 'trader') {
-                    //         this.activeIndex = 2;
-                    //     } else if (url.toLowerCase() === 'follower') {
-                    //         this.activeIndex = 3;
-                    //     } else if (url.toLowerCase() === 'game') {
-                    //         this.activeIndex = 4;
-                    //     }else if(url.toLowerCase()=='login'){
-                    //        this.activeIndex = 1;
-                    //     }else if(url.toLowerCase()=='register'){
-                    //           this.activeIndex = 1;
-                    //     }else if(url.toLowerCase()=='forgetpassword'){
-                    //           this.activeIndex = 1;
-                    //     } else {
-                    //         this.activeIndex = 5;
-                    //     }
-                    // }
         },
         logOut(){
            removeStore('token');
@@ -187,26 +168,29 @@ import {prdUrl} from '../constants/enum'
           }else{
              console.log(res.error.message)  
           }     
-      }
+      },
+      getInfo(){
+            const token = JSON.parse(getStore('token'));
+            let info=JSON.parse(getStore('userInfo'))
+            if(token){
+                if(!info){
+                this.initData();
+                }else{
+                    this.userInfos=info.user;
+                    if(!info.user.icon){
+                    this.imgUrl=require('../images/trade/50x50.png')    
+                }else{
+                    this.imgUrl=this.prdUrl + this.userInfos.icon;     
+                }  
+                }
+            }else{
+            this.userInfos=null;
+            }
+       }
     },
     mounted(){   
         this.getCurrentIndex();
-        const token = JSON.parse(getStore('token'));
-        let info=JSON.parse(getStore('userInfo'))
-        if(token){
-            if(!info){
-               this.initData();
-            }else{
-                 this.userInfos=info.user;
-                 if(!info.user.icon){
-                   this.imgUrl=require('../images/trade/50x50.png')    
-               }else{
-                  this.imgUrl=this.prdUrl + this.userInfos.icon;     
-               }  
-            }
-        }else{
-           this.userInfos=null;
-        }
+        this.getInfo()
     }
 }
 </script>

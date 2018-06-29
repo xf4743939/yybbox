@@ -79,8 +79,8 @@
 <script>
 import message from '../../../config/message'
 import{mapState,mapActions} from 'vuex'
-import getUserInfo from '../../../config/getUserInfo'
-import {realNameAuthentication,getCard} from '../../../api/getData'
+
+import {realNameAuthentication,getCard,getCurrentLoginInformations} from '../../../api/getData'
 
 export default {
     data(){
@@ -104,6 +104,30 @@ export default {
     },
     methods:{
         ...mapActions(['getUserInfo']),
+          //如果没有全局userInfo就重新请求
+      async getInfo(){
+          const _that=this
+          if(!this.userInfo){
+              let res= await getCurrentLoginInformations();
+                if(res && res.success){
+                    this.user=res.result.user; 
+                     if(!_that.user || !_that.user.surname || !_that.user.emailAddress || !_that.user.cardTypeCode ||!_that.user.cardID ){
+                            _that.isEdit=true
+                        }else{      
+                        _that.isEdit=false;
+                    }                
+                }else{
+                    message(this,res)
+                }
+          }else{
+               this.user=this.userInfo.user;
+                 if(!_that.user || !_that.user.surname || !_that.user.emailAddress || !_that.user.cardTypeCode ||!_that.user.cardID ){
+                            _that.isEdit=true
+                        }else{      
+                        _that.isEdit=false;
+                    }              
+          }   
+      },
          async saveAuth() {
                 const _that = this;
                 if(this.cardTypes && this.cardTypes.length){
@@ -144,14 +168,9 @@ export default {
           }
     },
     mounted(){
-       const _that=this;
-       getUserInfo(this);
+       this.getInfo()
        this.getCard()
-      if(!_that.user || !_that.user.surname || !_that.user.emailAddress || !_that.user.cardTypeCode ||!_that.user.cardID ){
-            _that.isEdit=true
-        }else{      
-          _that.isEdit=false;
-      }       
+     
     }
 }
 </script>

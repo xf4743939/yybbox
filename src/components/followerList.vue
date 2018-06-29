@@ -115,10 +115,10 @@
 </template>
 <script>
 import {navIndex} from '../constants/enum'
-import{getBrokerCompanyAccountOrNullFC,getTraderForNBList} from '../api/getData.js'
+import{getBrokerCompanyAccountOrNullFC,getTraderForNBList,getCurrentLoginInformations} from '../api/getData.js'
 import message from '../config/message';
 import{mapState,mapActions} from 'vuex'
-import getUserInfo from '../config/getUserInfo'
+import getUser from '../config/getUserInfo'
 import{ prdUrl,sortField,sortDirection} from '../constants/enum.js'
 import moment from 'moment'
 
@@ -145,13 +145,14 @@ export default {
         }
     },
     created(){
-       getUserInfo(this);
+       getUser(this);
     },
     computed:{
          ...mapState(['userInfo'])
     },
     methods:{
           ...mapActions(['getUserInfo']),
+    
            //排序搜索过滤(*排序缺降序要修改)
             sortChange(row){     
              

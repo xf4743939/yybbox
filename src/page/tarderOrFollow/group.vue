@@ -100,8 +100,7 @@
  import message from '../../config/message'
  import headTop from '../../components/headTop'
  import footBom from '../../components/footer'
- import getUserInfo from '../../config/getUserInfo'
- import {getCombiStrategyDetail,getBrokerCompanyAccountOrNullFC,unFollowStrategy} from '../../api/getData'
+ import {getCombiStrategyDetail,getBrokerCompanyAccountOrNullFC,unFollowStrategy,getCurrentLoginInformations} from '../../api/getData'
  import { btnStatus} from '../../constants/enum'
  import strageyModal from '../../components/strageyFollowModal'
  import followList from '../../components/followList'
@@ -144,13 +143,26 @@ export default {
       outStanding
     },
     created(){
-       getUserInfo(this);
+       this.getInfo()
     },
     computed:{
          ...mapState(['userInfo'])
     },
     methods:{
        ...mapActions(['getUserInfo']),
+         //如果没有全局userInfo就重新请求
+            async getInfo(){
+                if(!this.userInfo){
+                    let res= await getCurrentLoginInformations();
+                        if(res && res.success){
+                            this.user=res.result.user;
+                        }else{
+                            message(this,res)
+                        }
+                }else{
+                    this.user=this.userInfo.user;          
+                }   
+            },
        //隐藏跟投modal
        hideModal(){
             this.initData=false;

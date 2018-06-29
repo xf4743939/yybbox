@@ -204,8 +204,7 @@ import message from '../../../config/message'
 import headTop from '../../../components/headTop'
 import footBom from '../../../components/footer'
 import {getStore} from '../../../config/mUtils'
-import getUserInfo from '../../../config/getUserInfo'
-import {getAllForNormalFC,getCard,createBrokerCompanyAccountFC} from '../../../api/getData'
+import {getAllForNormalFC,getCard,createBrokerCompanyAccountFC,getCurrentLoginInformations} from '../../../api/getData'
 export default {
     data(){
         return{
@@ -263,8 +262,24 @@ export default {
            }
        }
     },
+    created(){
+       this.getInfo()
+    },
     methods:{
           ...mapActions(['getUserInfo']),
+            //如果没有全局userInfo就重新请求
+            async getInfo(){
+                if(!this.userInfo){
+                    let res= await getCurrentLoginInformations();
+                        if(res && res.success){
+                            this.user=res.result.user;
+                        }else{
+                            message(this,res)
+                        }
+                }else{
+                    this.user=this.userInfo.user;          
+                }   
+            }, 
         //申请绑定
           bindInfo() {         
                 const  _that = this;
@@ -453,15 +468,7 @@ export default {
        }          
     },
     mounted(){
-           getUserInfo(this);
-    //     if(!this.userInfo){  
-    //       let getInfo=JSON.parse(getStore("userInfo"));       
-    //        if(getInfo){          
-    //           this.user=getInfo.user;            
-    //         }        
-    //    }else{
-    //       this.user=this.userInfo.user;
-    //    }
+
       this.getCards()
 
     }

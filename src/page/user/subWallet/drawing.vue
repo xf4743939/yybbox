@@ -108,7 +108,6 @@ export default {
             delay:false,   
         }
     },
-    inject:['reload'],
     created(){
        if(!this.userInfo){  
          let getInfo=JSON.parse(getStore("userInfo"));  

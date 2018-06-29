@@ -175,3 +175,12 @@ export const strategyFollow= data => post(api.strategyFollow,data)
 
  //组合策略取消跟投
  export const unFollowStrategy= data => post(api.unFollowStrategy,data)
+
+ //推广用户赚钱
+ export const seoUserStatistice= () => post(api.seoUserStatistice)
+
+ //推广的用户集合
+ export const seoUserList=() =>post(api.seoUserList)
+
+ //得到大赛详情
+ export const getGameDetailOfUserId= data => post(api.getGameDetailOfUserId,data)

@@ -36,9 +36,9 @@
 </template>
 <script>
 import{mapState,mapActions} from 'vuex'
-import getUserInfo from '../../../config/getUserInfo'
+
 import message from '../../../config/message'
-import { updateHeadImg} from '../../../api/getData'
+import { updateHeadImg,getCurrentLoginInformations} from '../../../api/getData'
 
 export default {
     data(){
@@ -62,6 +62,21 @@ export default {
     },
     methods:{
         ...mapActions(['getUserInfo']),
+          //如果没有全局userInfo就重新请求
+      async getInfo(){
+          if(!this.userInfo){
+              let res= await getCurrentLoginInformations();
+                if(res && res.success){
+                    this.user=res.result.user;
+                    this.selectedImgUrl=(this.user && this.user.icon) ? this.userInfo.icon :'../../../../static/avator/a0.png'          
+                }else{
+                    message(this,res)
+                }
+          }else{
+               this.user=this.userInfo.user;
+                this.selectedImgUrl=(this.user && this.user.icon) ? this.userInfo.icon :'../../../../static/avator/a0.png'      
+          }   
+      },
         getAvator(){
             for(let i=1;i<=100;i++){
                let avator={
@@ -120,8 +135,8 @@ export default {
 
     },
     mounted(){
-       getUserInfo(this)
-       this.selectedImgUrl=(this.user && this.user.icon) ? this.userInfo.icon :'../../../../static/avator/a0.png'
+       this.getInfo()
+     
     }
 }
 </script>

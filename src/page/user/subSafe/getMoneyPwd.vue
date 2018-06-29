@@ -60,8 +60,7 @@
 <script>
 import message from '../../../config/message'
 import{mapState,mapActions} from 'vuex'
-import getUserInfo from '../../../config/getUserInfo'
-import {upDatePayPwd,getPhoneCode} from '../../../api/getData'
+import {upDatePayPwd,getPhoneCode,getCurrentLoginInformations} from '../../../api/getData'
 import {removeStore} from '../../../config/mUtils'
 export default {
     data(){
@@ -147,10 +146,23 @@ export default {
                         message(_that,res)
                     }
                 }
+            },
+               //如果没有全局userInfo就重新请求
+            async getInfo(){
+                if(!this.userInfo){
+                    let res= await getCurrentLoginInformations();
+                        if(res && res.success){
+                            this.user=res.result.user;
+                        }else{
+                            message(this,res)
+                        }
+                }else{
+                    this.user=this.userInfo.user;          
+                }   
             },         
     },
     mounted(){
-          getUserInfo(this);
+        this.getInfo()
     }
 }
 </script>

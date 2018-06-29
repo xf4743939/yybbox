@@ -1,7 +1,7 @@
 <template>
   <div>
     <head-top></head-top>
-     <section class="body-main">
+     <section class="body-main" >
         <div class="piclist big" v-if="swiperSlides.length">
             <swiper ref="mySwiper" :options="swiperOption">
                  <swiper-slide  v-for="(item,index) in swiperSlides" :key="item.id" >
@@ -143,6 +143,13 @@ export default {
      swiper,
      swiperSlide
    },
+   created(){
+     this.$nextTick(function(){
+        this.getBanner();
+       this.showWorldOrHome(1,1);
+    
+     })
+   },
    computed:{
        swiper(){
          return this.$refs.mySwiper.swiper;
@@ -204,8 +211,7 @@ export default {
     
    },
    mounted(){
-     this.getBanner();
-     this.showWorldOrHome(1,1);
+    
    }
 }
 </script>

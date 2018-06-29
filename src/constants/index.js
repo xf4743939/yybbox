@@ -162,6 +162,14 @@ const strategyFollow="/api/services/app/combiStrategyService/Follow"
  //组合策略取消跟投
 const unFollowStrategy="/api/services/app/combiStrategyService/UnFollow"
 
+//分享赚钱推广介绍
+const seoUserStatistice="/api/services/app/userService/SeoUserStatistice"
+
+//推广的用户集合
+const seoUserList="/api/services/app/userService/SeoUserList"
+
+//得到大赛详情
+const getGameDetailOfUserId="/api/services/app/gameUserService/GetGameDetailOfUserId";
 
 let api={
     getArticleListByPageFilter:getArticleListByPageFilter,
@@ -217,7 +225,10 @@ let api={
     getStrategyListForMeByFilter:getStrategyListForMeByFilter,
     getCombiStrategyDetail:getCombiStrategyDetail,
     strategyFollow:strategyFollow,
-    unFollowStrategy:unFollowStrategy
+    unFollowStrategy:unFollowStrategy,
+    seoUserStatistice:seoUserStatistice,
+    seoUserList:seoUserList,
+    getGameDetailOfUserId:getGameDetailOfUserId
 }
 
 export default api;
