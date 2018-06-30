@@ -333,11 +333,13 @@
                         </h4>
                         <el-tabs v-model="tradeActive" @tab-click="tradeNav" class="trade_navs">
                             <el-tab-pane label="业绩" name="1">还没有数据...</el-tab-pane>
-                            <el-tab-pane label="策略" name="2">还没有数据...</el-tab-pane>
+                            <el-tab-pane  label="策略" name="2">还没有数据...</el-tab-pane>
                             <el-tab-pane label="跟投" name="3">
-                                <follow-table v-if="isShowFollowTable"  :isTrader="isTrader" :uId="user.id" :type="types"></follow-table>
+                                <follow-table v-if="isShowFollowTable"  :isTrader="isTrader" :uId="user.id" :type="activeName"></follow-table>
                             </el-tab-pane>
-                            <el-tab-pane label="订单" name="4">订单</el-tab-pane>
+                            <el-tab-pane label="订单" name="4">
+                                <user-order v-if="isShowOrderTable" :type="activeName"></user-order>
+                            </el-tab-pane>
                         </el-tabs>
                    </div>
         </el-col>
@@ -349,6 +351,7 @@ import {getByUserIdAndAccountTypeFC,unBind,getBrokerCompanyAccountOrNullFC,getCu
 import message from '../../config/message'
 import moment from 'moment'
 import followTable from '../../components/userFollow'
+import userOrder from '../../components/userOrder'
 export default {
     data(){
         return{
@@ -359,6 +362,7 @@ export default {
             isSim:false,//模拟账号
             accMoneyInfo:null,
             isShowFollowTable:false,//是否显示跟投组件
+            isShowOrderTable:false, //是否显示订单组件
             brokerCompanyAccountsLongInfo:null,
             tradeOrFollowLogo:'', //交易者或者跟投者的图标
             bindLogo:'', //绑定或者没绑定的图标
@@ -378,14 +382,22 @@ export default {
     computed:{
        ...mapState(['userInfo'])
     },
+    watch:{
+        activeName(newValue,oldValue){
+           
+        }  
+    },
     components:{
-        followTable
+        followTable,
+        userOrder
     },
     methods:{
         ...mapActions(['getUserInfo']),
        tradeNav(tab,event){
           if(Number(tab.name)==3){
               this.isShowFollowTable=true;
+          }else if(Number(tab.name)==4){
+              this.isShowOrderTable=true;
           }
        },
       async unBinding(){
@@ -479,12 +491,11 @@ export default {
                }              
               this.isTrader=this.brokerCompanyAccountsLongInfo.accountType==1? 1 : 0 
             }else{
-                message(_that,res)
+                message(this,res)
             } 
       },
       //国际国内实盘账户信息
-      async selectAccount(tab,event){
-      
+       selectAccount(tab,event){  
           this.activeName=tab.name;
           this.types=Number(tab.name)
           if(Number(tab.name)==1 ||  tab==1 ){
@@ -508,11 +519,18 @@ export default {
                 this.tradeOrFollowLogo=require('../../images/follow.png')
             }
             
-        }
+        },
+         //进来初始化国际实盘数据
+         initData(wh){      
+            this.getBrokerCompanyAccountOrNullFC(wh);
+            this.getAccMoneyInfo(2,1)
+        },
     },
+   
     mounted(){  
          this.getInfo();
-        this.selectAccount(1);           
+         this.initData(1)
+        // this.selectAccount();           
     }
 }
 </script>

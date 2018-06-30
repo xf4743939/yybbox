@@ -86,6 +86,12 @@ const trader=['成交编号','合约','持仓方向','成交价格','成交手�
 //委托单
 const delegate=['报单编号','合约','持仓方向','挂单状态','报单价格','报单手数','成交手数','未成交手数','报单时间']
 
+//用户中心跟投管理字段
+//1.用户账号是跟投者
+const userFollowerFollowing=['用户','市场类型','跟随类型','份额','比例/手数','跟投方向','跟投收益','首次跟随时间','跟投操作']
+
+const userfollowerFollowed=['交易者','市场类型','跟随类型','份额','比例/手数','跟投方向','跟投收益','首次跟随时间','结束跟随时间']
+
 //列表显示字段
 export const tableField={
     traderFollowing:traderFollowing,
@@ -96,7 +102,9 @@ export const tableField={
     trader:trader,
     delegate:delegate,
     followerFollowing:followerFollowing,
-    followerFollowed:followerFollowed
+    followerFollowed:followerFollowed,
+    userFollowerFollowing:userFollowerFollowing,
+    userfollowerFollowed:userfollowerFollowed
 }
 
 export const prdUrl='http://follow.yybbox.com';

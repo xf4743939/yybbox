@@ -270,6 +270,7 @@ export default {
                      if(res && res.success){       
                          _that.followers = res.result.items;              
                         _that.totalNum = res.result.totalCount;
+                      
                        }else{
                               message(_that,res)
                        }  

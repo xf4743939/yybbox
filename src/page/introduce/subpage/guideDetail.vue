@@ -17,11 +17,12 @@
 <script>
 import {getArticleById} from '../../../api/getData'
 import message from '../../../config/message'
-
+import {prdUrl} from '../../../constants/enum'
 export default {
     data(){
         return{
                 article:'',
+                prdUrl:prdUrl
         }
     },
     methods:{

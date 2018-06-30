@@ -83,7 +83,7 @@
                 <div class="types">
                     <div class="types_content">
                         <ul class="clear">
-                            <li v-for="(item,index) in accontOpen"><a target="blank" v-bind:href="item.linkUri"><img v-bind:src="item.logo"/><span>{{ item.name }}</span></a></li>                     
+                            <li v-for="(item,index) in accontOpen"><a target="blank" v-bind:href="item.linkUri"><img v-bind:src="prdUrl+item.logo"/><span>{{ item.name }}</span></a></li>                     
                         </ul>
                     </div>
                 </div>
@@ -142,7 +142,7 @@
                 <div class="types">
                     <div class="types_content">
                         <ul class="clear">
-                            <li v-for="(item,index) in accontOpen" v-bind:class="{isSeleted:isSeleted===index}"><a @click="seletedAccount(item)"><img v-bind:src="item.logo"/><span>{{ item.name }}</span></a></li>                     
+                            <li v-for="(item,index) in accontOpen" v-bind:class="{isSeleted:isSeleted===index}"><a @click="seletedAccount(item)"><img v-bind:src="prdUrl+item.logo"/><span>{{ item.name }}</span></a></li>                     
                         </ul>
                     </div>
                 </div>
@@ -204,6 +204,7 @@ import message from '../../../config/message'
 import headTop from '../../../components/headTop'
 import footBom from '../../../components/footer'
 import {getStore} from '../../../config/mUtils'
+import { prdUrl} from '../../../constants/enum'
 import {getAllForNormalFC,getCard,createBrokerCompanyAccountFC,getCurrentLoginInformations} from '../../../api/getData'
 export default {
     data(){
@@ -233,7 +234,8 @@ export default {
             moneyPassword: '',
             tradeOrFollow: "",
             license: "",
-            appId: "",         
+            appId: "",
+            prdUrl:prdUrl,         
             homeSelectedBca: {},
 
         }
@@ -273,11 +275,13 @@ export default {
                     let res= await getCurrentLoginInformations();
                         if(res && res.success){
                             this.user=res.result.user;
+                               this.getCards()
                         }else{
                             message(this,res)
                         }
                 }else{
-                    this.user=this.userInfo.user;          
+                    this.user=this.userInfo.user; 
+                       this.getCards()         
                 }   
             }, 
         //申请绑定
@@ -385,9 +389,11 @@ export default {
             },
         //得到身份证信息
         async getCards(){
+
             let res= await getCard({})
             let id=[];
             let index;
+        
             if(res && res.success){
                 this.cards=res.result;
                 this.cards=this.cards.filter(x=>x.isStatus>0);
@@ -468,8 +474,6 @@ export default {
        }          
     },
     mounted(){
-
-      this.getCards()
 
     }
 }

@@ -1,6 +1,6 @@
 <template>
     <div class="game_wrap">
-            <div class="game_nav">
+         <div class="game_nav">
             <el-tabs type="border-card" v-model="active" @tab-click="gameNav" class="trade_navs">
                 <el-tab-pane label="大赛首页" name="1">
                     <img :src="defaultUrl" alt="">
@@ -128,7 +128,7 @@
 
                           background
                           layout="prev, pager, next"
-                          v-bind:total="totalNum"
+                           :total="totalNum"
                           v-on:prev-click="handlePrev"
                           v-on:next-click="handleNext"
                           v-on:current-change="handleCurrentPage">                     
@@ -136,14 +136,17 @@
                    </div>              
                 </el-tab-pane>
             </el-tabs>
+           
+                <span class="game_btn" @click="game">{{btnText}}</span>
+        
         </div>
     </div>
 </template>
 <script>
-import {getGameCycle,getMatchResult} from '../../api/getData'
+import {getGameCycle,getMatchResult,currentUserJoinNewGame,cancelGame,applyGame} from '../../api/getData'
 import{mapState,mapActions} from 'vuex'
 import message from '../../config/message'
-
+import {getStore} from '../../config/mUtils'
 export default {
     data(){
         return{
@@ -156,6 +159,9 @@ export default {
            totalNum:0,//总条数
            worldOrHome:1,
            page:1,
+           gameUser:null,//大赛用户信息
+           btnText:'报名模拟大赛',
+           isGame:false,//
            num:15,
            isLoading:true,
            defaultUrl:'../../../static/default/gameNum.png',
@@ -172,6 +178,80 @@ export default {
        ...mapState(['userInfo'])
     },
     methods:{
+     game(){
+    
+            const _that=this;
+            if(!this.isGame){
+                let token = JSON.parse(getStore('token'));
+                if(!token){
+                     this.$message({      
+                        message:'您还没有登陆将去登陆',
+                        type:'warning',
+                        duration:2000,
+                        center:true,
+                        onClose:function(){
+                           _that.$router.push({path:'/login'})
+                       }
+                  })  
+                  return;  
+                }
+            } 
+         
+            if(this.isGame){
+                this.$confirm('退出大赛后，您的国际期货模拟大赛账户的权益值将恢复为初始值.', '退出国际期货模拟大赛吗?', {
+                    confirmButtonText: '退赛',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+            }).then(async() => {
+                let data={
+                     "worldOrHome":1
+                }
+                 let res=await cancelGame(data)
+               
+               if(res && res.success){
+                    message(_that,{},'退赛成功','success',true);
+                  
+               }else{
+                  message(_that,res)
+               }  
+            })
+        }else{
+              this.$confirm('参加大赛后,您的国际期货模拟交易账户的权益值将恢复为初始值.', '报名参赛国际期货模拟大赛吗?', {
+                    confirmButtonText: '参赛',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+            }).then(async() => {
+                let data={
+                     "worldOrHome":1
+                }
+                 let res=await applyGame(data)
+                
+               if(res && res.success){
+               
+                     message(_that,{},'参赛成功','success',true)
+                 
+               }else{
+                  message(_that,res)
+               }  
+            })
+        }
+     },
+        //获取当前用户参加大赛状态
+     async currentUserGameStatus(){
+       let res=await currentUserJoinNewGame(1);
+       if(res && res.success){
+          this.gameUser=res.result;
+          if(this.gameUser){
+              this.btnText="退出模拟大赛";
+              this.isGame=true
+          }else{
+              this.btnText="报名模拟大赛";
+              this.isGame=false;
+          }
+       }else{
+           message(this,res)
+       }
+     },
        gameNav(tab){
            if(Number(tab.name)==3){
                this.showPage=true;
@@ -181,6 +261,7 @@ export default {
                this.showPage=false;
            }
        },
+       //处理期数
        filterCycle(items){
             if(!items) return;
             items.forEach(item => {
@@ -232,26 +313,29 @@ export default {
           if(res.success){
               this.ranks=res.result.items;
               this.totalNum=res.result.totalCount;
+
           }else{
               message(_that,res)
           }
       },
-     handleCurrentPage(val){
+      
+        handleCurrentPage(val){
+            const _that=this;
+            this.getMatchResult(val,this.num)
+        },
+        handlePrev(val){
+            const _that=this;
+        this.getMatchResult(val,this.num)
+        },
+        handleNext(val){
         const _that=this;
         this.getMatchResult(val,this.num)
-     },
-     handlePrev(val){
-        const _that=this;
-       this.getMatchResult(val,this.num)
-     },
-     handleNext(val){
-       const _that=this;
-      this.getMatchResult(val,this.num)
-     }
-      
+        }
+        
     },
     mounted(){  
-       this.getGameCycle()
+       this.currentUserGameStatus(); 
+       this.getGameCycle();
     }
 }
 </script>
@@ -273,6 +357,20 @@ export default {
          }
       } 
       .game_nav{
+          position: relative;
+          .game_btn{
+               cursor: pointer;
+              text-align: center;
+                position: absolute;
+                top: 7px;
+                z-index: 999;
+                right: 20px;
+                display: inline-block;
+                padding: 6px 12px;
+                background: #fc543c;
+                color: #fff;
+                border-radius: 6px;
+          }
           .rules{
               margin-bottom: 25px;
               h3{
@@ -328,6 +426,25 @@ export default {
            padding: 8px 0;
        }
   }
-  
+  .el-message-box__title{
+      text-align: center;
+      span{
+          text-align: center;
+      }
+  }
+   .el-message-box {
+      .el-message-box__btns{
+          text-align: right;
+          padding-right: 28px;
+          .el-button--small{
+              padding: 6PX 25PX;
+              border: 0;
+          }
+          button:nth-child(2){
+              background: #fc543c;
+               border-color: #fc543c;
+          }
+      }
+  }
 </style>
 

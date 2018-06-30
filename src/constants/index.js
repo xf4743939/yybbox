@@ -171,6 +171,51 @@ const seoUserList="/api/services/app/userService/SeoUserList"
 //得到大赛详情
 const getGameDetailOfUserId="/api/services/app/gameUserService/GetGameDetailOfUserId";
 
+//国际实盘持仓单
+const brokerCompanyAccountPositionService="/api/services/app/brokerCompanyAccountPositionService/GetListFC"
+
+//国际模拟持仓单
+const simBrokerCompanyAccountPositionService="/api/services/app/simBrokerCompanyAccountPositionService/GetListFC"
+
+//国内实盘持仓单
+const homeBrokerCompanyAccountPositionService="/api/services/app/homeBrokerCompanyAccountPositionService/GetListHFC"
+
+//国内模拟持仓单
+const homeSimBrokerCompanyAccountPositionService="/api/services/app/homeSimBrokerCompanyAccountPositionService/GetListHFC"
+
+//国际实盘成交单
+const todayTradeOrderService="/api/services/app/todayTradeOrderService/GetTradeOrderListFC"
+
+//国际模拟成交单
+const todaySimTradeOrderService="/api/services/app/todaySimTradeOrderService/GetTradeOrderListFC"
+
+//国内实盘成交单
+const todayHomeTradeOrderService="/api/services/app/todayHomeTradeOrderService/GetTradeOrderListFC"
+
+//国内模拟成交单
+const todayHomeSimTradeOrderService="/api/services/app/todayHomeSimTradeOrderService/GetTradeOrderListFC"
+
+//国际实盘挂单
+const brokerCompanyAccountDelegateOrderService="/api/services/app/todayBrokerCompanyAccountDelegateOrderService/GetDelegateOrderListFC"
+
+//国际模拟挂单
+const simDelegateOrderService="/api/services/app/todaySimDelegateOrderService/GetDelegateOrderListFC"
+
+//国内实盘挂单
+const homeBrokerCompanyAccountDelegateOrderService="/api/services/app/todayHomeBrokerCompanyAccountDelegateOrderService/GetDelegateOrderListFC"
+
+//国内模拟挂单
+const homeSimDelegateOrderService="/api/services/app/todayHomeSimDelegateOrderService/GetDelegateOrderListFC"
+
+//大赛状态信息
+const currentUserJoinNewGame="/api/services/app/gameUserService/CurrentUserJoinNewGame?type="
+
+//取消模拟大赛
+const cancelGame="/api/services/app/gameUserService/Cancel"
+
+//参加模拟大赛
+const applyGame="/api/services/app/gameUserService/ApplyFC"
+
 let api={
     getArticleListByPageFilter:getArticleListByPageFilter,
     getTraderForProfitSortList:getTraderForProfitSortList,
@@ -228,7 +273,22 @@ let api={
     unFollowStrategy:unFollowStrategy,
     seoUserStatistice:seoUserStatistice,
     seoUserList:seoUserList,
-    getGameDetailOfUserId:getGameDetailOfUserId
+    getGameDetailOfUserId:getGameDetailOfUserId,
+    brokerCompanyAccountPositionService:brokerCompanyAccountPositionService,
+    simBrokerCompanyAccountPositionService:simBrokerCompanyAccountPositionService,
+    homeBrokerCompanyAccountPositionService:homeBrokerCompanyAccountPositionService,
+    homeSimBrokerCompanyAccountPositionService:homeSimBrokerCompanyAccountPositionService,
+    todayTradeOrderService:todayTradeOrderService,
+    todaySimTradeOrderService:todaySimTradeOrderService,
+    todayHomeTradeOrderService:todayHomeTradeOrderService,
+    todayHomeSimTradeOrderService:todayHomeSimTradeOrderService,
+    brokerCompanyAccountDelegateOrderService:brokerCompanyAccountDelegateOrderService,
+    simDelegateOrderService:simDelegateOrderService,
+    homeBrokerCompanyAccountDelegateOrderService:homeBrokerCompanyAccountDelegateOrderService,
+    homeSimDelegateOrderService:homeSimDelegateOrderService,
+    currentUserJoinNewGame:currentUserJoinNewGame,
+    cancelGame:cancelGame,
+    applyGame:applyGame
 }
 
 export default api;

@@ -170,10 +170,6 @@ export default {
       padding-right: 25px;
       padding-bottom: 50px;
       .btns{
-          .el-button:active,.el-button:hover,.el-button:focus{
-             
-           
-          }
           .el-button{
                padding: 6px 18px;
                 // background: #fc543c;

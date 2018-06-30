@@ -184,3 +184,48 @@ export const strategyFollow= data => post(api.strategyFollow,data)
 
  //得到大赛详情
  export const getGameDetailOfUserId= data => post(api.getGameDetailOfUserId,data)
+
+ //国际实盘持仓单
+ export const brokerCompanyAccountPositionService= () =>post(api.brokerCompanyAccountPositionService)
+
+ //国际模拟持仓单
+ export const simBrokerCompanyAccountPositionService= () =>post(api.simBrokerCompanyAccountPositionService)
+
+ //国内实盘持仓单
+ export const homeBrokerCompanyAccountPositionService= () =>post(api.homeBrokerCompanyAccountPositionService)
+
+ //国内模拟持仓单
+ export const homeSimBrokerCompanyAccountPositionService= () =>post(api.homeSimBrokerCompanyAccountPositionService)
+
+ //国际实盘成交单
+ export const todayTradeOrderService=() =>post(api.todayTradeOrderService)
+
+ //国际模拟成交单
+ export const todaySimTradeOrderService=() =>post(api.todaySimTradeOrderService)
+
+ //国内实盘成交单
+ export const todayHomeTradeOrderService=() =>post(api.todayHomeTradeOrderService)
+
+ //国内模拟成交单
+ export const todayHomeSimTradeOrderService=() =>post(api.todayHomeSimTradeOrderService)
+
+ //国际实盘挂单
+ export const brokerCompanyAccountDelegateOrderService=() =>post(api.brokerCompanyAccountDelegateOrderService)
+
+ //国际模拟挂单
+ export const simDelegateOrderService=() =>post(api.simDelegateOrderService)
+
+ //国内实盘挂单
+ export const homeBrokerCompanyAccountDelegateOrderService=() =>post(api.homeBrokerCompanyAccountDelegateOrderService)
+
+ //国内模拟挂单
+ export const homeSimDelegateOrderService=() =>post(api.homeSimDelegateOrderService)
+
+ //当前用户大赛状态
+ export const currentUserJoinNewGame= data =>post(api.currentUserJoinNewGame + data)
+
+ //取消大赛
+ export const cancelGame=data => post(api.cancelGame,data)
+
+ //参加模拟大赛
+ export const applyGame=data => post(api.applyGame,data)

@@ -27,8 +27,8 @@
                                     :label="tableField[2]"
                                     >   
                                         <template slot-scope="scope">     
-                                        <span v-if="scope.row.followCount">{{ scope.row.followCount }}手</span>
-                                        <span v-if="scope.row.followPercentage">{{ scope.row.followPercentage }}.00倍</span>
+                                        <span v-if="scope.row.followCount>0">{{ scope.row.followCount }}手</span>
+                                        <span v-if="scope.row.followPercentage>0">{{ scope.row.followPercentage }}.00倍</span>
                                         </template>
                                     </el-table-column>
                                     <el-table-column    
@@ -110,9 +110,9 @@
                                     :label="tableField[3]"
                                     >   
                                         <template slot-scope="scope"> 
-                                            <span>2</span>    
-                                        <span v-if="scope.row.followCount">{{ scope.row.followCount }}手</span>
-                                        <span v-if="scope.row.followPercentage">{{ scope.row.followPercentage/100 }}.00倍</span>
+                    
+                                        <span v-if="scope.row.followCount>0">{{ scope.row.followCount }}手</span>
+                                        <span v-if="scope.row.followPercentage>0">{{ scope.row.followPercentage/100 }}.00倍</span>
                                         </template>
                                     </el-table-column>                   
                                     <el-table-column    
@@ -162,6 +162,7 @@ export default {
    created(){
        if(!this.userInfoForTrader)return;
        this.followers=this.userInfoForTrader.followerList
+      
        this.copyFollowers=this.userInfoForTrader.followerList
 
    },
