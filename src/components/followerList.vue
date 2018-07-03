@@ -50,7 +50,7 @@
                         <a style="display:inline-block;cursor:pointer" @click="goDetail(scope.row)" class="clear left">
                             <img v-bind:src="scope.row.icon!=null ? iconUrl + scope.row.icon : defaultUrl "/>
                         </a>
-                        <div class="left" style="min-width:90px;">
+                        <div class="left" style="width:120px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
                              <span style="margin-top:16px;cursor:pointer" @click="goDetail(scope.row)" class="nickname">{{ scope.row.nickname }}</span>
                          
                         </div>                 
@@ -104,6 +104,7 @@
         <div class="profit_page">
             <el-pagination background
                            layout="prev, pager, next"
+                           :page-size="10"
                            v-bind:total="totalNum"
                            v-on:prev-click="handlePrev"
                            v-on:next-click="handleNext"
@@ -251,9 +252,9 @@ export default {
                   const _that = this;
                  _that.isLoading = true;
                  this.getSortField(sortVal);  
-                 setTimeout(() => {
-                     _that.isLoading=false
-                 },500)  
+                //  setTimeout(() => {
+                //      _that.isLoading=false
+                //  },500)  
                 let data = {
                     "tradeUserId": 0,
                     "accountType": 2, //模拟账号还是实盘账号
@@ -263,13 +264,15 @@ export default {
                     "sort":_that.sort,
                     "startDate": _that.selectedTradeDate,
                     "page": page,
-                    "rows": 10
+                    "rows":10,
                 };
                      let res = await getTraderForNBList(data);
                 
                      if(res && res.success){       
                          _that.followers = res.result.items;              
                         _that.totalNum = res.result.totalCount;
+                        _that.isLoading=false;
+                        debugger;
                       
                        }else{
                               message(_that,res)

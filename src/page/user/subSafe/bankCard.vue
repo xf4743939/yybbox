@@ -105,7 +105,7 @@
 import message from '../../../config/message'
 import provinces from '../../../constants/province'
 import{mapState,mapActions} from 'vuex'
-
+import getUser from '../../../config/getUserInfo'
 import {getBankCards,getAllBanks,setDefaultCard,deleteCard,addBankCard,getCurrentLoginInformations} from '../../../api/getData'
 
 export default {
@@ -133,7 +133,7 @@ export default {
     },
     created(){
         this.provinces=provinces; 
-        this,getInfo()     
+        this.getInfo()     
     },
     computed:{
         ...mapState(['userInfo'])
@@ -312,7 +312,6 @@ export default {
                 }
     },
     mounted(){
-
         this.getBankCards();
         this.getAllBanks();   
     }

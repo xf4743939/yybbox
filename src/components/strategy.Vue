@@ -33,7 +33,7 @@
                             </div>
                        </el-card>
                   </div>
-                  <div class="item_foot">
+                  <div class="item_foot" style="text-align:left;">
                         <div >
                            <span>最少跟投总资金</span>
                            <span>
@@ -82,7 +82,7 @@
         <div class="strategy_item">
             <h3>跟投配置</h3>
             <div class="item_content setting">
-                    <div class="item_foot">
+                    <div class="item_foot" style="text-align:left;">
                         <div class="infos">
                            <span>最大跟投份额</span>
                            <span>

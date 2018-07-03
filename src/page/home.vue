@@ -177,9 +177,9 @@ export default {
               this.active = index;
                const _that = this;
                 _that.isLoading = true;
-                setTimeout(function () {
-                    _that.isLoading = false;
-                }, 500);
+                // setTimeout(function () {
+                //     _that.isLoading = false;
+                // }, 500);
                 let data= {
                     "worldOrHome":index,
                     "page": page,
@@ -189,7 +189,7 @@ export default {
                        
                 if(res.success){
                      _that.userTraderPofit = res.result.items;
-                
+                     _that.isLoading=false; 
                      _that.totalNum = res.result.totalCount;
                 }else{
                 

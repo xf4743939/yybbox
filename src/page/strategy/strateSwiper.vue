@@ -13,7 +13,7 @@
                                  <div :id="item.id" class="left" style="width:220px;height:150px;">
 
                                  </div>
-                                 <div class="strategy_info left">
+                                 <div class="strategy_info left" style="padding-left:0;padding-right:0;">
                                         <div>
                                             <p style="color:#999;margin-bottom:2px;">收益率</p>
                                             <p style="color:#fc543c;max-width:100%;height:18px;overflow:hidden;">{{ item.profitProbability.toFixed(2) + "%" }}</p>
@@ -21,8 +21,8 @@
                                         </div> 
                                         <div style="margin-top:10px;">
                                             <p style="color:#999;margin-bottom:2px;">策略资金</p>
-                                            <p v-if="item.wh==1" style="font-weight:bold;max-width:100%;height:18px;overflow:hidden;">{{ item.leastMoneyLine*exchangeRate/10000 | toDecimal }}万元</p>
-                                            <p v-if="item.wh==2" style="font-weight:bold;max-width:100%;height:18px;overflow:hidden;">{{ item.leastMoneyLine/10000 | toDecimal }}万元</p>
+                                            <p v-if="item.wh==1" style="font-weight:bold;max-width:100%;height:18px;overflow:hidden;color:#fc543c;">{{ item.leastMoneyLine*exchangeRate/10000 | toDecimal }}万元</p>
+                                            <p v-if="item.wh==2" style="font-weight:bold;max-width:100%;height:18px;overflow:hidden;color:#fc543c;">{{ item.leastMoneyLine/10000 | toDecimal }}万元</p>
                                         </div>     
                                  </div>
                              </div>
@@ -33,11 +33,11 @@
                                  </div>
                         
                                  <div class="trade_num clear">
-                                     <span class="left" style="margin-right:3px;">份额数</span>
+                                     <span class="left" style="margin-right:3px;color:#666;">份额数</span>
                                      <div class="left" style="width:80%;height:15px;">
                                         <el-progress  :text-inside="true" :stroke-width="12" :percentage="getPercen(item)" status="exception"></el-progress>
                                      </div>
-                                     <span class="per">{{ item.qty }}</span>
+                                     <span class="per" style="color:#666;">{{ item.qty }}</span>
                                  </div>
                              </div>
                          </div>    

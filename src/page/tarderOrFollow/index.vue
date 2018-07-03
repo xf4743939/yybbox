@@ -12,10 +12,10 @@
         <div class="detail_info">
             <ul class="clear"  v-if="userInfoForTrader">
                 <li class="left">
-                     <img src="../../../static/default/traderTop.png" class="left">
+                     <img  v-if="isTrader==1"  src="../../../static/default/traderTop.png" class="left">
                 
                     <div class="clear left info">
-                        <img  style="border-radius:50%;" :src="!userInfoForTrader.icon ? '../../../static/default/50x50.png' : prdUrl + userInfoForTrader.icon "  class="left info_left">
+                        <img   style="border-radius:50%;" :src="!userInfoForTrader.icon ? '../../../static/default/50x50.png' : prdUrl + userInfoForTrader.icon "  class="left info_left">
                         <div class="left info_right">
                             <p>{{ userInfoForTrader.nickname }}
                                 <img :src="traderUrl" v-if="isTrader==1">

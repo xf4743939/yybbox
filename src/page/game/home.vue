@@ -90,10 +90,10 @@
                    </div>
                      <div class="page_wrap" v-if="showPage">
                         <el-pagination
-                          background
-                    
+                          background           
                           layout="prev, pager, next"
                           v-bind:total="totalNum"
+                          :page-size="num"
                           v-on:prev-click="handlePrev"
                           v-on:next-click="handleNext"
                           v-on:current-change="handleCurrentPage">                     
@@ -270,13 +270,14 @@ export default {
                 "rows": num
           } 
             _that.isLoading = true;
-                setTimeout(function () {
-                    _that.isLoading = false;
-                }, 500);          
+                // setTimeout(function () {
+                //     _that.isLoading = false;
+                // }, 500);          
           let res =await getMatchResult(data); 
        
           if(res.success){
               this.ranks=res.result.items;
+              _that.isLoading=false;
               this.totalNum=res.result.totalCount;
           }else{
               message(_that,res)

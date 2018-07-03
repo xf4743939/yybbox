@@ -55,7 +55,7 @@
         </div>
         <div class="nav nav_menu" v-cloak >
             <div class="nav_content">
-                <img src="../images/default/logo.png"/>
+                <img src="../../static/default/logoTop.png"/>
                 <el-menu id="munus_top" class="el-menu-demo" mode="horizontal" v-on:select="handleSelect" >
                     <el-menu-item v-bind:style="{ 'border-bottom-color':activeIndex==1 ? '#EF5E5D':'' }" v-bind:class="activeIndex==1 ? 'isActive' : '' " index="1">
                         <router-link to="/">首页</router-link> 

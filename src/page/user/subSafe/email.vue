@@ -6,7 +6,7 @@
                         <span style="margin-left:10px;">{{ user.email | subStr(4,4) }}</span>
                   </p> -->
                 <el-form-item label="当前邮箱地址" v-if="user" >
-                      <span style="margin-left:10px;">{{ user.emailAddress | subStr(4,4) }}</span>
+                      <span style="margin-left:10px;">{{ user.emailAddress | subStr(4,3) }}</span>
                 </el-form-item>
                 <el-form-item label="邮箱验证码" class="clear">
                     <el-input class="left" v-model="code" placeholder="验证码"  auto-complete="off"></el-input>

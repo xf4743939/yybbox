@@ -126,7 +126,7 @@ export default {
 </script>
 <style lang="less">
     /*登录*/
-.login.d{background:url("../images/default/pexels-photo.jpg")  center top; height:820px; border-top:1px solid #f5f5f5; overflow:hidden;min-width:1200px;}
+.login.d{background:url("../../static/default/pexels-photo.jpg")  center top; height:820px; border-top:1px solid #f5f5f5; overflow:hidden;min-width:1200px;}
 .login .d1{ width:1200px; margin:0 auto}
 .login .d2{ width:392px; height:396px;     background: rgba(4,4,4,.4);  float:right; margin-top:60px}
 .login .d3{ width:380px; height:64px; background:#FFF; margin-left:6px; margin-top:6px; border-bottom:1px solid #d6d6d6  ; overflow:hidden}

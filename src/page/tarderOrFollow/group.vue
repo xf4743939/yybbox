@@ -20,8 +20,8 @@
                             <p ><span>交易者</span>组合</p>
                             <p class="info_num"> 
                                 <img src="../../../static/default/circle.png" alt="">
-                                <span>被跟投人数</span>
-                                <span>0</span>
+                                <span style="position:relative;top:4px;">被跟投人数</span>
+                                <span style="position:relative;top:4px;">0</span>
                             </p>
                         </div>
                     </div>
@@ -42,7 +42,7 @@
                    <el-progress :text-inside="true" :stroke-width="13" :percentage="groupStrateInfo.qty-groupStrateInfo.havingQty" color="#fc543c"></el-progress>
                    <div style="text-align:left;margin-top:20px;padding-left:45px">100份</div>
                 </li>
-                <li class="left btns">
+                <li class="left btns" style="margin-left:0px;">
                     <div class="clear">
                          <el-button v-if="groupStrateInfo.firmFollowStatus" size="mini"
                                    style="padding: 3px 15px;display:block;"

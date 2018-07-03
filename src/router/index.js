@@ -94,7 +94,13 @@ const seoUser= r =>require.ensure([],() =>r(require('../page/user/shareMoney/seo
 
 const myUser= r =>require.ensure([],()=>r(require('../page/user/shareMoney/myUser.vue')),'myUser')
 
+const notFound = r =>require.ensure([],()=>r(require('../page/notFound.vue')),'notFound')
+
 const routes=[
+  {
+     path:'*',
+     component:notFound
+  },
   {
     path:'/',
     component:home

@@ -36,7 +36,7 @@
 </template>
 <script>
 import{mapState,mapActions} from 'vuex'
-
+import {prdUrl} from '../../../constants/enum'
 import message from '../../../config/message'
 import { updateHeadImg,getCurrentLoginInformations} from '../../../api/getData'
 
@@ -51,7 +51,8 @@ export default {
           activeClass:'imgFadeIn',
           remove:'imgFadeOut',
           isShow:true,
-          headerImgs:[] 
+          headerImgs:[],
+          prdUrl:prdUrl 
        }
     },
     created(){
@@ -66,15 +67,16 @@ export default {
       async getInfo(){
           if(!this.userInfo){
               let res= await getCurrentLoginInformations();
+            
                 if(res && res.success){
                     this.user=res.result.user;
-                    this.selectedImgUrl=(this.user && this.user.icon) ? this.userInfo.icon :'../../../../static/avator/a0.png'          
+                    this.selectedImgUrl=(this.user && this.user.icon) ?this.prdUrl + this.user.icon :'../../../../static/avator/a0.png'          
                 }else{
                     message(this,res)
                 }
           }else{
-               this.user=this.userInfo.user;
-                this.selectedImgUrl=(this.user && this.user.icon) ? this.userInfo.icon :'../../../../static/avator/a0.png'      
+                this.user=this.userInfo.user;
+                this.selectedImgUrl=(this.user && this.user.icon) ?this.prdUrl +  this.user.icon :'../../../../static/avator/a0.png'      
           }   
       },
         getAvator(){

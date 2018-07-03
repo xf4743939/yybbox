@@ -115,7 +115,7 @@
                             <img v-bind:src="scope.row.icon!=null ? iconUrl + scope.row.icon : defaultUrl "/>
                         </a>
                         <div class="left">
-                            <span style="margin-top:6px;cursor:pointer" @click="goDetail(scope.row)" class="nickname">{{ scope.row.name }}</span>
+                            <span style="margin-top:16px;cursor:pointer" @click="goDetail(scope.row)" class="nickname">{{ scope.row.name }}</span>
                         </div>                 
                     </template>
                 </el-table-column>
